@@ -7,13 +7,15 @@ using namespace sf;
 
 int main()
 {
-	Font font;
+	Font font;		// Necessary to render text
 	if (!font.loadFromFile("resources/arial.ttf"))
-	{
 		cout << "Could not load font!" << endl;
-	}
-	// Show key selecting menu
+	
+	
+
 	RenderWindow window(VideoMode(800, 600), "Achtung - die Kurve!");
+	vector<Keyboard::Key> keysPressed;
+
 
 
 	// Key slection window
@@ -43,7 +45,8 @@ int main()
 
 
 
-	// Register key strokes as events. Remember wich key was pressed.
+
+	// Display which keys were selected
 	Text leftKey1;
 	leftKey1.setFont(font);
 	leftKey1.setCharacterSize(24);
@@ -59,15 +62,17 @@ int main()
 	leftKey2.setPosition(200.f, 50.f);
 
 
-	vector<Keyboard::Key> keysPressed;
+	
 
-	// Start the game
-
+	// The dot to be moved
 	CircleShape shape(10.f);
 	shape.setFillColor(Color::Green);
 	shape.setPosition(50.f, 50.f);
 
-	while (window.isOpen())		// main loop
+
+
+	// main loop
+	while (window.isOpen())		
 	{
 		Event event;
 		while (window.pollEvent(event))
@@ -75,24 +80,26 @@ int main()
 			if (event.type == Event::Closed)
 				window.close();
 			
+			// Save key selection
 			if (event.type == Event::KeyPressed) {
 				keysPressed.push_back(event.key.code);
 			}
 		}
 
-		// This can be used later in the gameplay
+		// Move the dot using the previously selected keys
 		if (keysPressed.size() >= 2) {
 			Vector2f currentPosition = shape.getPosition();
 			if (Keyboard::isKeyPressed(keysPressed.at(0))) {
-				// left key is pressed:
+				// left key is pressed -> move dot to bottom
 				shape.setPosition(currentPosition.x + 1, currentPosition.y);
 			}
 			else if (Keyboard::isKeyPressed(keysPressed.at(1))) {
+				// right key is pressed -> move dot to right
 				shape.setPosition(currentPosition.x, currentPosition.y + 1);
 			}
 		}
 		
-
+		// Draw everything
 		window.clear();
 		window.draw(headline);
 		window.draw(greenly);
