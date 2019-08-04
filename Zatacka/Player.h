@@ -4,10 +4,10 @@
 using namespace sf;
 using namespace std;
 
-class Curve {
+class Player {
 private:
 	Color color;
-	string userName;
+	string name;
 	int speed = 10;
 	Keyboard::Key leftKey;
 	Keyboard::Key rightKey;
@@ -19,7 +19,7 @@ public:
 	const int MIN_RADIUS = 10;
 	const int HOLE_DISTANCE = 10;
 
-	Curve(const Color color, const string username);
+	Player(const Color color, const string username);
 
 	void setKeys(Keyboard::Key leftKey, Keyboard::Key rightKey);
 

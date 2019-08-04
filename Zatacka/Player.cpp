@@ -1,18 +1,18 @@
 #include <SFML/Graphics.hpp>
-#include "Curve.h"
+#include "Player.h"
 
 using namespace std;
 using namespace sf;
 
 
-Curve::Curve(const Color color, const string userName) {
+Player::Player(const Color color, const string name) {
 	this->color = color;
-	this->userName = userName;
+	this->name = name;
 
 	// Initialize random starting position and direction
 }
 
-void Curve::move() {
+void Player::move() {
 	// Check if either left or right key is pressed
 
 	// If not move straight

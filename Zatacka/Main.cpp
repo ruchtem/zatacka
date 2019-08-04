@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Curve.h"
+#include "Player.h"
 
 using namespace std;
 using namespace sf;
@@ -41,6 +41,9 @@ int main()
 	redrat.setStyle(Text::Bold);
 	redrat.setPosition(10.f, 90.f);
 
+
+
+	// Register key strokes as events. Remember wich key was pressed.
 	Text leftKey1;
 	leftKey1.setFont(font);
 	leftKey1.setCharacterSize(24);
@@ -55,16 +58,14 @@ int main()
 	leftKey2.setStyle(Text::Bold);
 	leftKey2.setPosition(200.f, 50.f);
 
-	// -> Register key strokes as events. Remember wich key was pressed.
-
-	// Start the game
 
 	vector<Keyboard::Key> keysPressed;
 
+	// Start the game
+
 	CircleShape shape(10.f);
 	shape.setFillColor(Color::Green);
-
-	bool pressedKey = false;
+	shape.setPosition(50.f, 50.f);
 
 	while (window.isOpen())		// main loop
 	{
@@ -79,15 +80,18 @@ int main()
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Left)) {
-			// left key is pressed: Change color to blue
-			shape.setFillColor(sf::Color::Blue);
-			pressedKey = true;
+		// This can be used later in the gameplay
+		if (keysPressed.size() >= 2) {
+			Vector2f currentPosition = shape.getPosition();
+			if (Keyboard::isKeyPressed(keysPressed.at(0))) {
+				// left key is pressed:
+				shape.setPosition(currentPosition.x + 1, currentPosition.y);
+			}
+			else if (Keyboard::isKeyPressed(keysPressed.at(1))) {
+				shape.setPosition(currentPosition.x, currentPosition.y + 1);
+			}
 		}
-		else {
-			shape.setFillColor(Color::Green);
-			pressedKey = false;
-		}
+		
 
 		window.clear();
 		window.draw(headline);
@@ -103,14 +107,8 @@ int main()
 				leftKey2.setString(to_string(keysPressed.at(i)));
 				window.draw(leftKey2);
 			}
-			
-			cout << keysPressed.at(i) << endl;
 		}
-
-		if (pressedKey)
-			shape.setPosition(10.f, 50.f);
-		else
-			shape.setPosition(50.f, 50.f);
+			
 		window.draw(shape);
 		window.display();
 	}
