@@ -62,14 +62,11 @@ int main()
 	leftKey2.setPosition(200.f, 50.f);
 
 
-	
-
-	// The dot to be moved
-	CircleShape shape(10.f);
-	shape.setFillColor(Color::Green);
-	shape.setPosition(50.f, 50.f);
 
 
+
+	bool created = false;
+	Player* player = NULL;
 
 	// main loop
 	while (window.isOpen())		
@@ -86,19 +83,15 @@ int main()
 			}
 		}
 
-		// Move the dot using the previously selected keys
-		if (keysPressed.size() >= 2) {
-			Vector2f currentPosition = shape.getPosition();
-			if (Keyboard::isKeyPressed(keysPressed.at(0))) {
-				// left key is pressed -> move dot to bottom
-				shape.setPosition(currentPosition.x + 1, currentPosition.y);
-			}
-			else if (Keyboard::isKeyPressed(keysPressed.at(1))) {
-				// right key is pressed -> move dot to right
-				shape.setPosition(currentPosition.x, currentPosition.y + 1);
-			}
+		if (!created && keysPressed.size() == 2) {
+			player = new Player(Color::Red, "test");
+			player->setKeys(keysPressed.at(0), keysPressed.at(1));
+			created = true;
 		}
 		
+		if (player != NULL)
+			player->move();
+
 		// Draw everything
 		window.clear();
 		window.draw(headline);
@@ -115,10 +108,15 @@ int main()
 				window.draw(leftKey2);
 			}
 		}
-			
-		window.draw(shape);
+
+		if (player != NULL)
+			//window.draw(player->getDot());
+			player->draw(&window);
+
 		window.display();
 	}
+
+	delete player; player = NULL;
 
 	return 0;
 }
