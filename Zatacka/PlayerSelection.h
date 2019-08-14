@@ -12,22 +12,21 @@ private:
 
 	float xOffset = 0;
 	float yOffset = 0;
+	float selectionSpace = 4;
 
 	Font font;		// Necessary to render text
 
 	Text headline;
-	Text player0;
-	Text player1;
-	Text player2;
-	Text player3;
-	Text player4;
-	Text player5;
-	Text player6;
-	Text player7;
+	Text playerNames[8];
+	RectangleShape selectionRect;
+
+	int currentSelection = -1;	// No player selected
 
 public:
 
 	PlayerSelection();
+
+	void processEvent(Event event, RenderWindow* window);
 
 	void draw(RenderWindow* window);
 };

@@ -59,6 +59,8 @@ int main()
 			if (event.type == Event::KeyPressed) {
 				keysPressed.push_back(event.key.code);
 			}
+
+			playerSelection->processEvent(event, &window);
 		}
 
 		if (!created && keysPressed.size() == 2) {

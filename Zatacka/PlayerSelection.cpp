@@ -10,10 +10,6 @@ PlayerSelection::PlayerSelection() {
 	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
 		throw exception("Could not load font!");
 
-	float textDistance = 60;
-	float playersOffset = yOffset + 10;
-	int characterSize = 24;
-
 	headline.setFont(font);
 	headline.setString("Bitte die Tasten auswählen");
 	headline.setCharacterSize(24);
@@ -21,73 +17,49 @@ PlayerSelection::PlayerSelection() {
 	headline.setStyle(Text::Bold);
 	headline.setPosition(xOffset + 300.f, yOffset);
 
-	player0.setString(names[0]);
-	player0.setFillColor(colors[0]);
-	player0.setFont(font);
-	player0.setCharacterSize(characterSize);
-	player0.setStyle(Text::Bold);
-	player0.setPosition(xOffset, playersOffset + 0 * textDistance);
+	float textDistance = 40;
+	float playersOffset = yOffset + 10;
+	int characterSize = 24;
 
-	player1.setString(names[1]);
-	player1.setFillColor(colors[1]);
-	player1.setFont(font);
-	player1.setCharacterSize(characterSize);
-	player1.setStyle(Text::Bold);
-	player1.setPosition(xOffset, playersOffset + 1 * textDistance);
-	
-	player2.setString(names[2]);
-	player2.setFillColor(colors[2]);
-	player2.setFont(font);
-	player2.setCharacterSize(characterSize);
-	player2.setStyle(Text::Bold);
-	player2.setPosition(xOffset, playersOffset + 2 * textDistance);
+	for (int i = 0; i < 8; ++i) {
+		playerNames[i].setString(names[i]);
+		playerNames[i].setFillColor(colors[i]);
+		playerNames[i].setFont(font);
+		playerNames[i].setCharacterSize(characterSize);
+		playerNames[i].setStyle(Text::Bold);
+		playerNames[i].setPosition(xOffset, playersOffset + i * textDistance);
+	}
 
-	player3.setString(names[3]);
-	player3.setFillColor(colors[3]);
-	player3.setFont(font);
-	player3.setCharacterSize(characterSize);
-	player3.setStyle(Text::Bold);
-	player3.setPosition(xOffset, playersOffset + 3 * textDistance);
+}
 
-	player4.setString(names[4]);
-	player4.setFillColor(colors[4]);
-	player4.setFont(font);
-	player4.setCharacterSize(characterSize);
-	player4.setStyle(Text::Bold);
-	player4.setPosition(xOffset, playersOffset + 4 * textDistance);
+void PlayerSelection::processEvent(Event event, RenderWindow* window) {
+	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
+	currentSelection = -1;
 
-	player5.setString(names[5]);
-	player5.setFillColor(colors[5]);
-	player5.setFont(font);
-	player5.setCharacterSize(characterSize);
-	player5.setStyle(Text::Bold);
-	player5.setPosition(xOffset, playersOffset + 5 * textDistance);
+	// Show bounding box when mouse hovering over player name
+	for (int i = 0; i < 8; ++i) {
+		if (playerNames[i].getGlobalBounds().contains(mousePosition)) {
+			currentSelection = i;
+		}	
+	}
+	if (currentSelection >= 0) {
+		FloatRect bounding = playerNames[currentSelection].getGlobalBounds();
 
-	player6.setString(names[6]);
-	player6.setFillColor(colors[6]);
-	player6.setFont(font);
-	player6.setCharacterSize(characterSize);
-	player6.setStyle(Text::Bold);
-	player6.setPosition(xOffset, playersOffset + 6 * textDistance);
-
-	player7.setString(names[7]);
-	player7.setFillColor(colors[7]);
-	player7.setFont(font);
-	player7.setCharacterSize(characterSize);
-	player7.setStyle(Text::Bold);
-	player7.setPosition(xOffset, playersOffset + 7 * textDistance);
+		selectionRect = RectangleShape(sf::Vector2f(bounding.width + 2*selectionSpace, bounding.height + 2*selectionSpace));
+		selectionRect.setFillColor(Color::Transparent);
+		selectionRect.setOutlineThickness(2.f);
+		selectionRect.setOutlineColor(sf::Color(100, 100, 100));
+		selectionRect.setPosition(bounding.left - selectionSpace, bounding.top - selectionSpace);
+	}
 }
 
 void PlayerSelection::draw(RenderWindow* window) {
-
 	window->draw(headline);
 	
-	window->draw(player0);
-	window->draw(player1);
-	window->draw(player2);
-	window->draw(player3);
-	window->draw(player4);
-	window->draw(player5);
-	window->draw(player6);
-	window->draw(player7);
+	for (int i = 0; i < 8; ++i) {
+		window->draw(playerNames[i]);
+	}
+
+	if (currentSelection >= 0)
+		window->draw(selectionRect);
 }
