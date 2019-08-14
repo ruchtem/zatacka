@@ -21,9 +21,15 @@
     <ClCompile Include="Player.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerSelection.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSelection.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

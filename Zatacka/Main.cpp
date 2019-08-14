@@ -1,52 +1,27 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Player.h"
+#include "PlayerSelection.h"
 
 using namespace std;
 using namespace sf;
 
 int main()
 {
-	Font font;		// Necessary to render text
-	if (!font.loadFromFile("resources/arial.ttf"))
-		cout << "Could not load font!" << endl;
+	
 	
 	
 
-	RenderWindow window(VideoMode(800, 600), "Achtung - die Kurve!");
+	RenderWindow window(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::Fullscreen);
 	vector<Keyboard::Key> keysPressed;
 
-
-
-	// Key slection window
-	Text headline;
-	headline.setFont(font);
-	headline.setString("Bitte die Tasten auswählen");
-	headline.setCharacterSize(24);
-	headline.setFillColor(Color::Red);
-	headline.setStyle(Text::Bold);
-	headline.setPosition(300.f, 10.f);
-
-	Text greenly;
-	greenly.setFont(font);
-	greenly.setString("Greenly");
-	greenly.setCharacterSize(24);
-	greenly.setFillColor(Color::Green);
-	greenly.setStyle(Text::Bold);
-	greenly.setPosition(10.f, 50.f);
-
-	Text redrat;
-	redrat.setFont(font);
-	redrat.setString("Red Rat");
-	redrat.setCharacterSize(24);
-	redrat.setFillColor(Color::Red);
-	redrat.setStyle(Text::Bold);
-	redrat.setPosition(10.f, 90.f);
-
+	// Player names: greebly, redrat, greydon, purplefish, blueband
+	PlayerSelection* playerSelection = new PlayerSelection();
 
 
 
 	// Display which keys were selected
+	/*
 	Text leftKey1;
 	leftKey1.setFont(font);
 	leftKey1.setCharacterSize(24);
@@ -59,7 +34,7 @@ int main()
 	leftKey2.setCharacterSize(24);
 	leftKey2.setFillColor(Color::Green);
 	leftKey2.setStyle(Text::Bold);
-	leftKey2.setPosition(200.f, 50.f);
+	leftKey2.setPosition(200.f, 50.f);*/
 
 
 
@@ -75,6 +50,9 @@ int main()
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
+				window.close();
+
+			if (Keyboard::isKeyPressed(Keyboard::Escape))
 				window.close();
 			
 			// Save key selection
@@ -94,10 +72,10 @@ int main()
 
 		// Draw everything
 		window.clear();
-		window.draw(headline);
-		window.draw(greenly);
-		window.draw(redrat);
 
+		playerSelection->draw(&window);
+
+		/*
 		for (vector<Keyboard::Key>::size_type i = 0; i < keysPressed.size(); ++i) {
 			if (i == 0) {
 				leftKey1.setString(to_string(keysPressed.at(i)));
@@ -107,7 +85,7 @@ int main()
 				leftKey2.setString(to_string(keysPressed.at(i)));
 				window.draw(leftKey2);
 			}
-		}
+		}*/
 
 		if (player != NULL)
 			//window.draw(player->getDot());
