@@ -11,11 +11,14 @@ Player::Player(const Color color, const string name) {
 	this->color = color;
 	this->name = name;
 
+	//curve = VertexArray(PrimitiveType::TriangleStrip);
+	curve = VertexArray(PrimitiveType::LineStrip);
+
 	// Initialize random starting position and angle
 	position = Vector2f(400, 400);
 	angle = 0;
 
-	curveDot = CircleShape(3.f);
+	curveDot = CircleShape(4.f);
 	curveDot.setFillColor(color);
 	curveDot.setPosition(position);
 }
@@ -42,20 +45,19 @@ void Player::move() {
 	float y = position.y + speed * sin(angle);
 
 	// Update position
-	pastPositions.push_back(position);
 	position = Vector2f(x, y);
 
-	cout << x  << "  " << y << endl;
+	//cout << x  << "  " << y << "      " << pastPositions.size() << endl;
 
-	curveDot.setPosition(position);
+	curve.append(Vertex(Vector2f(x, y), color));
+	curveDot.setPosition(Vector2f(x - 2.f, y - 2.f));
 }
 
 void Player::draw(RenderWindow* window) {
-	for (vector<Vector2f>::size_type i = 0; i < pastPositions.size(); ++i) {
-		CircleShape dot(3.f);
-		dot.setFillColor(color);
-		dot.setPosition(pastPositions.at(i));
-		window->draw(dot);
-	}
+	
+
+
+	window->draw(curve);
+	window->draw(curveDot);
 }
 

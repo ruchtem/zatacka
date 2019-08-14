@@ -19,6 +19,7 @@ private:
 	Vector2f position;
 	float angle;	// Measured in radians
 	vector<Vector2f> pastPositions;
+	VertexArray curve;
 
 public:
 	const float MIN_RADIUS = 0.02;
@@ -33,4 +34,5 @@ public:
 	void draw(RenderWindow* window);
 
 	CircleShape getDot() { return curveDot; }
+	VertexArray getCurve() { return curve; }
 };
