@@ -23,9 +23,25 @@ Player::Player(const Color color, const string name) {
 	curveDot.setPosition(position);
 }
 
-void Player::setKeys(Keyboard::Key leftKey, Keyboard::Key rightKey) {
-	this->leftKey = leftKey;
-	this->rightKey = rightKey;
+void Player::setLeftKey(Keyboard::Key key) {
+	this->leftKey = key;
+}
+
+void Player::setRightKey(Keyboard::Key key) {
+	this->rightKey = key;
+}
+
+bool Player::isLeftKeySet() {
+	return leftKey != Keyboard::Key::Unknown;
+}
+
+bool Player::areBothKeysSet() {
+	return leftKey != Keyboard::Key::Unknown && rightKey != Keyboard::Key::Unknown;
+}
+
+void Player::resetKeys() {
+	leftKey = Keyboard::Key::Unknown;
+	rightKey = Keyboard::Key::Unknown;
 }
 
 void Player::move() {

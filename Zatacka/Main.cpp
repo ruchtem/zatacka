@@ -12,11 +12,12 @@ int main()
 	
 	
 
-	RenderWindow window(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::Fullscreen);
+	//RenderWindow window(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::Fullscreen);
+	RenderWindow window(VideoMode(800, 600), "Achtung - die Kurve!");
 	vector<Keyboard::Key> keysPressed;
 
 	// Player names: greebly, redrat, greydon, purplefish, blueband
-	PlayerSelection* playerSelection = new PlayerSelection();
+	PlayerSelection* playerSelection = new PlayerSelection(&window);
 
 
 
@@ -60,12 +61,12 @@ int main()
 				keysPressed.push_back(event.key.code);
 			}
 
-			playerSelection->processEvent(event, &window);
+			playerSelection->processEvent(event);
 		}
 
 		if (!created && keysPressed.size() == 2) {
 			player = new Player(Color::Red, "test");
-			player->setKeys(keysPressed.at(0), keysPressed.at(1));
+			//player->setKeys(keysPressed.at(0), keysPressed.at(1));
 			created = true;
 		}
 		
@@ -75,7 +76,7 @@ int main()
 		// Draw everything
 		window.clear();
 
-		playerSelection->draw(&window);
+		playerSelection->draw();
 
 		/*
 		for (vector<Keyboard::Key>::size_type i = 0; i < keysPressed.size(); ++i) {
