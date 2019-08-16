@@ -107,21 +107,26 @@ map<Keyboard::Key, string> KeyString = {
 };
 
 
-PlayerSelection::PlayerSelection(RenderWindow* window) {
+PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	this->window = window;
+	this->font = font;
 
-	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
-		throw exception("Could not load font!");
-
-	headline.setFont(font);
+	headline.setFont((*font));
 	headline.setString("Bitte die Tasten auswählen");
 	headline.setCharacterSize(24);
 	headline.setFillColor(Color::Red);
 	headline.setStyle(Text::Bold);
 	headline.setPosition(xOffset + 300.f, yOffset);
 
+	startButton.setFont((*font));
+	startButton.setString("START");
+	startButton.setCharacterSize(30);
+	startButton.setFillColor(Color::White);
+	startButton.setStyle(Text::Bold);
+	startButton.setPosition(xOffset + 400.f, yOffset + 500.f);
+
 	float textDistance = 40;
-	float playersOffset = yOffset + 10;
+	float playersOffset = yOffset + 50;
 	int characterSize = 24;
 
 	float leftKeyOffset = xOffset + 200;
@@ -130,14 +135,14 @@ PlayerSelection::PlayerSelection(RenderWindow* window) {
 	for (int i = 0; i < 8; ++i) {
 		playerNames[i].setString(names[i]);
 		playerNames[i].setFillColor(colors[i]);
-		playerNames[i].setFont(font);
+		playerNames[i].setFont((*font));
 		playerNames[i].setCharacterSize(characterSize);
 		playerNames[i].setStyle(Text::Bold);
 		playerNames[i].setPosition(xOffset, playersOffset + i * textDistance);
 
 		for (int j = 0; j < 2; ++j) {
 			selectedKeys[i][j].setFillColor(colors[i]);
-			selectedKeys[i][j].setFont(font);
+			selectedKeys[i][j].setFont((*font));
 			selectedKeys[i][j].setCharacterSize(characterSize);
 			selectedKeys[i][j].setStyle(Text::Bold);
 		}
@@ -150,6 +155,7 @@ PlayerSelection::PlayerSelection(RenderWindow* window) {
 void PlayerSelection::processEvent(Event event) {
 	registerPlayerSelection(event);
 	registerKeySelections(event);
+	registerStartClicked(event);
 }
 
 void PlayerSelection::registerPlayerSelection(Event event) {
@@ -228,12 +234,9 @@ void PlayerSelection::registerKeySelections(Event event) {
 	}
 }
 
-void prepareKeySelectionDrawing() {
-
-}
-
 void PlayerSelection::draw() {
 	window->draw(headline);
+	window->draw(startButton);
 	
 	for (int i = 0; i < 8; ++i) {
 		window->draw(playerNames[i]);
@@ -249,4 +252,26 @@ void PlayerSelection::draw() {
 
 	if (hoverSelection >= 0 || selectedPlayer >= 0)
 		window->draw(selectionRect);
+}
+
+void PlayerSelection::registerStartClicked(Event event) {
+	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
+	
+	if (startButton.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
+		playerSelectionFinished = true;
+	}
+}
+
+vector<Player*> PlayerSelection::getPlayers() {
+	vector<Player*> activePlayers;
+	for (int i = 0; i < 8; ++i) {
+		if (players[i] != NULL && players[i]->areBothKeysSet()) {
+			activePlayers.push_back(players[i]);
+		}
+	}
+	return activePlayers;
+}
+
+bool PlayerSelection::isFinished() {
+	return playerSelectionFinished;
 }

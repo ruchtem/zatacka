@@ -18,9 +18,10 @@ private:
 	float yOffset = 20;
 	float selectionSpace = 4;
 
-	Font font;		// Necessary to render text
+	Font* font;		// Necessary to render text
 
 	Text headline;
+	Text startButton;
 	Text playerNames[8];
 	RectangleShape selectionRect;
 
@@ -30,16 +31,22 @@ private:
 	int hoverSelection = -1;	// Mouse not hovering over a player
 	int selectedPlayer = -1;	// No player selected
 
+	bool playerSelectionFinished = false;
+
 	void registerPlayerSelection(Event event);
 	void registerKeySelections(Event event);
 	int determineHoverSelection();
 	void prepareSelectionDrawing();
+	void registerStartClicked(Event event);
 
 public:
 
-	PlayerSelection(RenderWindow* window);
+	PlayerSelection(RenderWindow* window, Font* font);
 
 	void processEvent(Event event);
+
+	bool isFinished();
+	vector<Player*> getPlayers();
 
 	void draw();
 };

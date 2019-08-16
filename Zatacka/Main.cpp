@@ -6,43 +6,26 @@
 using namespace std;
 using namespace sf;
 
+enum GameStages {
+	SelectPlayers = 0,
+	CurvesRunning = 1,
+	GameOver = 2
+};
+
 int main()
 {
-	
-	
-	
+	Font font;
+	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
+		throw exception("Could not load font!");
 
 	//RenderWindow window(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::Fullscreen);
 	RenderWindow window(VideoMode(800, 600), "Achtung - die Kurve!");
-	vector<Keyboard::Key> keysPressed;
+	window.setFramerateLimit(60);
 
-	// Player names: greebly, redrat, greydon, purplefish, blueband
-	PlayerSelection* playerSelection = new PlayerSelection(&window);
+	GameStages stage = SelectPlayers;
 
-
-
-	// Display which keys were selected
-	/*
-	Text leftKey1;
-	leftKey1.setFont(font);
-	leftKey1.setCharacterSize(24);
-	leftKey1.setFillColor(Color::Green);
-	leftKey1.setStyle(Text::Bold);
-	leftKey1.setPosition(150.f, 50.f);
-
-	Text leftKey2;
-	leftKey2.setFont(font);
-	leftKey2.setCharacterSize(24);
-	leftKey2.setFillColor(Color::Green);
-	leftKey2.setStyle(Text::Bold);
-	leftKey2.setPosition(200.f, 50.f);*/
-
-
-
-
-
-	bool created = false;
-	Player* player = NULL;
+	PlayerSelection playerSelection = PlayerSelection(&window, &font);
+	vector<Player*> players;
 
 	// main loop
 	while (window.isOpen())		
@@ -50,54 +33,41 @@ int main()
 		Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == Event::Closed)
+			if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
 				window.close();
 
-			if (Keyboard::isKeyPressed(Keyboard::Escape))
-				window.close();
-			
-			// Save key selection
-			if (event.type == Event::KeyPressed) {
-				keysPressed.push_back(event.key.code);
-			}
-
-			playerSelection->processEvent(event);
+			if (stage == SelectPlayers)
+				playerSelection.processEvent(event);
 		}
 
-		if (!created && keysPressed.size() == 2) {
-			player = new Player(Color::Red, "test");
-			//player->setKeys(keysPressed.at(0), keysPressed.at(1));
-			created = true;
+		if (playerSelection.isFinished()) {
+			players = playerSelection.getPlayers();
+			stage = CurvesRunning;
 		}
 		
-		if (player != NULL)
-			player->move();
 
 		// Draw everything
 		window.clear();
 
-		playerSelection->draw();
-
-		/*
-		for (vector<Keyboard::Key>::size_type i = 0; i < keysPressed.size(); ++i) {
-			if (i == 0) {
-				leftKey1.setString(to_string(keysPressed.at(i)));
-				window.draw(leftKey1);
+		if (stage == SelectPlayers)
+			playerSelection.draw();
+		else if (stage == CurvesRunning) {
+			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+				players.at(i)->move();
+				players.at(i)->draw(&window);
 			}
-			if (i == 1) {
-				leftKey2.setString(to_string(keysPressed.at(i)));
-				window.draw(leftKey2);
-			}
-		}*/
+		}
+			
 
-		if (player != NULL)
+
+		//if (player != NULL)
 			//window.draw(player->getDot());
-			player->draw(&window);
+		//	player->draw(&window);
 
 		window.display();
 	}
 
-	delete player; player = NULL;
+	//delete player; player = NULL;
 
 	return 0;
 }
