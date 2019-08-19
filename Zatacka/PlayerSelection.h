@@ -7,21 +7,39 @@ using namespace sf;
 
 class PlayerSelection {
 private:
-	string names[8] = { "Greenly", "Red Rat", "Greydon", "Purple Fish", "Blueband", "Yellomingo", "Cyanus", "Whitey" };
-	Color colors[8] = { Color::Green, Color::Red, Color(150, 150, 150), Color::Magenta, 
-		                Color::Blue, Color::Yellow, Color::Cyan, Color::White };
+	const string names[8] = { 
+		"Greenly", 
+		"Red Rat", 
+		"Greydon", 
+		"Purple Fish", 
+		"Blueband", 
+		"Yellomingo", 
+		"Cyanus", 
+		"Whitey" 
+	};
+
+	const Color colors[8] = { 
+		Color::Green, 
+		Color::Red, 
+		Color(150, 150, 150), 
+		Color::Magenta,
+		Color::Blue, 
+		Color::Yellow, 
+		Color::Cyan, 
+		Color::White };
 
 	Player* players[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 	RenderWindow* window;
 	
-	float xOffset = 20;
-	float yOffset = 20;
-	float selectionSpace = 4;
+	const float xOffset = 20;
+	const float yOffset = 20;
+	const float selectionSpace = 4;
 
 	Font* font;		// Necessary to render text
 
 	Text headline;
 	Text startButton;
+	Text fullscreen;
 	Text playerNames[8];
 	RectangleShape selectionRect;
 
@@ -32,20 +50,23 @@ private:
 	int selectedPlayer = -1;	// No player selected
 
 	bool playerSelectionFinished = false;
+	bool fullscreenToggled = false;
 
-	void registerPlayerSelection(Event event);
-	void registerKeySelections(Event event);
+	void registerPlayerSelection(const Event event);
+	void registerKeySelections(const Event event);
 	int determineHoverSelection();
 	void prepareSelectionDrawing();
-	void registerStartClicked(Event event);
+	void registerStartClicked(const Event event);
+	void registerFullscreenClicked(const Event event);
 
 public:
 
 	PlayerSelection(RenderWindow* window, Font* font);
 
-	void processEvent(Event event);
+	void processEvent(const Event event);
 
 	bool isFinished();
+	bool isFullscreen();
 	vector<Player*> getPlayers();
 
 	void draw();

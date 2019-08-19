@@ -18,56 +18,93 @@ int main()
 	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
 		throw exception("Could not load font!");
 
-	//RenderWindow window(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::Fullscreen);
-	RenderWindow window(VideoMode(800, 600), "Achtung - die Kurve!");
-	window.setFramerateLimit(60);
+	RenderWindow* window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
+	window->setFramerateLimit(60);
+	bool fullscreen = false;
 
 	GameStages stage = SelectPlayers;
 
-	PlayerSelection playerSelection = PlayerSelection(&window, &font);
+	PlayerSelection playerSelection = PlayerSelection(window, &font);
 	vector<Player*> players;
 
 	// main loop
-	while (window.isOpen())		
+	while (window->isOpen())		
 	{
+		// Handle events
 		Event event;
-		while (window.pollEvent(event))
+		while (window->pollEvent(event))
 		{
-			if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
-				window.close();
+			if (event.type == Event::Closed)
+				window->close();
 
 			if (stage == SelectPlayers)
 				playerSelection.processEvent(event);
 		}
 
-		if (playerSelection.isFinished()) {
-			players = playerSelection.getPlayers();
-			stage = CurvesRunning;
-		}
-		
 
-		// Draw everything
-		window.clear();
+		// Controll game flow
+		switch (stage) {
+		case SelectPlayers:
+			if (playerSelection.isFinished()) {
+				players = playerSelection.getPlayers();
+				stage = CurvesRunning;
+			}
+			break;
 
-		if (stage == SelectPlayers)
-			playerSelection.draw();
-		else if (stage == CurvesRunning) {
+		case CurvesRunning:
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 				players.at(i)->move();
-				players.at(i)->draw(&window);
 			}
+			break;
+
+		case GameOver:
+			break;
 		}
-			
+		
+		if (playerSelection.isFullscreen() && !fullscreen) {
+			fullscreen = true;
+			window->close();
+			delete window;
+			window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
+			window->setFramerateLimit(60);
+		}
+		else if (!playerSelection.isFullscreen() && fullscreen) {
+				fullscreen = false;
+				window->close();
+				delete window;
+				window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
+				window->setFramerateLimit(60);
+		}
 
 
-		//if (player != NULL)
-			//window.draw(player->getDot());
-		//	player->draw(&window);
+		// Draw everything
 
-		window.display();
+		window->clear();
+
+		switch (stage) {
+		case SelectPlayers:
+			playerSelection.draw();
+			break;
+
+		case CurvesRunning:
+			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+				players.at(i)->draw(window);
+			}
+			break;
+
+		case GameOver:
+			break;
+		}
+
+		window->display();
 	}
 
-	//delete player; player = NULL;
+	// Clear memory
+	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+		delete players.at(i); players.at(i) = NULL;
+	}
+
+	delete window; window = NULL;
 
 	return 0;
 }

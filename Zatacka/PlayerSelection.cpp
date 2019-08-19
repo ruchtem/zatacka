@@ -53,8 +53,8 @@ map<Keyboard::Key, string> KeyString = {
 	{Keyboard::LBracket, "[" },
 	{Keyboard::RBracket, "]" },
 	{Keyboard::Semicolon, ";" },
-	{Keyboard::Comma, "," },
-	{Keyboard::Period, "." },
+	{Keyboard::Comma, "Comma" },
+	{Keyboard::Period, "Dot" },
 	{Keyboard::Quote, "'" },
 	{Keyboard::Slash, "/" },
 	{Keyboard::Backslash, "\\" },
@@ -62,7 +62,7 @@ map<Keyboard::Key, string> KeyString = {
 	{Keyboard::Equal, "=" },
 	{Keyboard::Hyphen, "-"},
 	{Keyboard::Space, "Space" },
-	{Keyboard::Enter, "Enter"},
+	{Keyboard::Enter, "Enter" },
 	{Keyboard::Backspace, "Backspace" },
 	{Keyboard::Tab, "Tabulation" },
 	{Keyboard::PageUp, "Page up" },
@@ -72,13 +72,13 @@ map<Keyboard::Key, string> KeyString = {
 	{Keyboard::Insert, "Insert" },
 	{Keyboard::Delete, "Delete" },
 	{Keyboard::Add, "+" },
-	{Keyboard::Subtract, "-"},
+	{Keyboard::Subtract, "-" },
 	{Keyboard::Multiply, "*" },
 	{Keyboard::Divide, "/" },
-	{Keyboard::Left, "Left arrow"},
-	{Keyboard::Right, "Right arrow"},
-	{Keyboard::Up, "Up arrow"},
-	{Keyboard::Down, "Down arrow"},
+	{Keyboard::Left, "Left" },
+	{Keyboard::Right, "Right" },
+	{Keyboard::Up, "Up" },
+	{Keyboard::Down, "Down" },
 	{Keyboard::Numpad0, "numpad 0" },
 	{Keyboard::Numpad1, "numpad 1" },
 	{Keyboard::Numpad2, "numpad 2" },
@@ -125,6 +125,12 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	startButton.setStyle(Text::Bold);
 	startButton.setPosition(xOffset + 400.f, yOffset + 500.f);
 
+	fullscreen.setFont((*font));
+	fullscreen.setString("Fullscreen");
+	fullscreen.setCharacterSize(20);
+	fullscreen.setFillColor(Color::White);
+	fullscreen.setPosition(xOffset + 600.f, yOffset + 500.f);
+
 	float textDistance = 40;
 	float playersOffset = yOffset + 50;
 	int characterSize = 24;
@@ -152,13 +158,14 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	}
 }
 
-void PlayerSelection::processEvent(Event event) {
+void PlayerSelection::processEvent(const Event event) {
 	registerPlayerSelection(event);
 	registerKeySelections(event);
 	registerStartClicked(event);
+	registerFullscreenClicked(event);
 }
 
-void PlayerSelection::registerPlayerSelection(Event event) {
+void PlayerSelection::registerPlayerSelection(const Event event) {
 	hoverSelection = determineHoverSelection();
 
 	// Check if player is selected by mouse click
@@ -207,7 +214,7 @@ void PlayerSelection::prepareSelectionDrawing() {
 	}
 }
 
-void PlayerSelection::registerKeySelections(Event event) {
+void PlayerSelection::registerKeySelections(const Event event) {
 	if (selectedPlayer >= 0 && event.type == Event::KeyPressed) {
 		if (players[selectedPlayer] == NULL) {
 			players[selectedPlayer] = new Player(colors[selectedPlayer], names[selectedPlayer]);
@@ -234,9 +241,25 @@ void PlayerSelection::registerKeySelections(Event event) {
 	}
 }
 
+void PlayerSelection::registerFullscreenClicked(const Event event) {
+	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
+
+	// Turn fullscreen on
+	if (fullscreen.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
+		fullscreenToggled = true;
+	}
+
+	// Turn off
+	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+		fullscreenToggled = false;
+	}
+
+}
+
 void PlayerSelection::draw() {
 	window->draw(headline);
 	window->draw(startButton);
+	window->draw(fullscreen);
 	
 	for (int i = 0; i < 8; ++i) {
 		window->draw(playerNames[i]);
@@ -254,7 +277,7 @@ void PlayerSelection::draw() {
 		window->draw(selectionRect);
 }
 
-void PlayerSelection::registerStartClicked(Event event) {
+void PlayerSelection::registerStartClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 	
 	if (startButton.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
@@ -274,4 +297,8 @@ vector<Player*> PlayerSelection::getPlayers() {
 
 bool PlayerSelection::isFinished() {
 	return playerSelectionFinished;
+}
+
+bool PlayerSelection::isFullscreen() {
+	return fullscreenToggled;
 }
