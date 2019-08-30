@@ -15,7 +15,7 @@ Player::Player(const Color color, const string name) {
 	curve = VertexArray(PrimitiveType::LineStrip);
 
 	// Initialize random starting position and angle
-	position = Vector2f(400, 400);
+	position = Vector2f(rand() % 800, rand() % 600);
 	angle = 0;
 
 	curveDot = CircleShape(4.f);
@@ -63,17 +63,44 @@ void Player::move() {
 	// Update position
 	position = Vector2f(x, y);
 
-	//cout << x  << "  " << y << "      " << pastPositions.size() << endl;
 
 	curve.append(Vertex(Vector2f(x, y), color));
+	curveArray.push_back(Vector2f(x, y));
 	curveDot.setPosition(Vector2f(x - 2.f, y - 2.f));
 }
 
 void Player::draw(RenderWindow* window) {
-	
 
 
 	window->draw(curve);
 	window->draw(curveDot);
+}
+
+bool Player::collision(Image image, vector<Player*> players, sf::Vector2u windowSize) {
+	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+		if (!players.at(i)->curveArray.empty()) {
+			//cout << "curve Array not empty!";
+			Vector2f point = curveArray.back();
+
+			if (point.x >= windowSize.x || point.x <= 0 || point.y >= windowSize.y || point.y <= 0) {
+				cout << "Collision";
+				return true;
+			}
+			if (image.getPixel(point.x, point.y) == players.at(i)->color && color != players.at(i)->color) {
+				//Curve2 contains Point of Curve1 -> Collision
+				cout << "Collision";
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void Player::nextRound() {
+	isCollided = false;
+	curve.clear();
+	curveArray.clear();
+	pastPositions.clear();
+	position = Vector2f(rand() % 800, rand() % 600);
 }
 

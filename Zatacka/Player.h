@@ -12,6 +12,9 @@ private:
 	Keyboard::Key leftKey = Keyboard::Key::Unknown;
 	Keyboard::Key rightKey = Keyboard::Key::Unknown;
 
+	//score of 10 wins
+	int score = 0;
+
 	// The dot to be moved
 	CircleShape curveDot;
 	
@@ -20,6 +23,9 @@ private:
 	float angle;	// Measured in radians
 	vector<Vector2f> pastPositions;
 	VertexArray curve;
+	vector<Vector2f> curveArray;
+
+	bool isCollided;
 
 public:
 	const float MIN_RADIUS = 0.02f;
@@ -27,6 +33,9 @@ public:
 	const float PI = 3.14159265358979f;
 
 	Player(const Color color, const string username);
+
+	inline void setScore(int score) { this->score = score; }
+	int getScore() { return score; }
 
 	void setLeftKey(Keyboard::Key key);
 	void setRightKey(Keyboard::Key key);
@@ -37,6 +46,13 @@ public:
 	void move();
 	void draw(RenderWindow* window);
 
+	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
+
 	CircleShape getDot() { return curveDot; }
 	VertexArray getCurve() { return curve; }
+	vector<Vector2f> getCurveArray() { return curveArray; }
+	bool getCollided() { return isCollided; }
+	void setCollided(bool collision) { isCollided = collision; }
+	
+	void nextRound();
 };

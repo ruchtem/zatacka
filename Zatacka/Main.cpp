@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Player.h"
 #include "PlayerSelection.h"
+#include "GameOver.h"
 
 using namespace std;
 using namespace sf;
@@ -9,7 +10,7 @@ using namespace sf;
 enum GameStages {
 	SelectPlayers = 0,
 	CurvesRunning = 1,
-	GameOver = 2
+	GameIsOver = 2
 };
 
 int main()
@@ -25,7 +26,11 @@ int main()
 	GameStages stage = SelectPlayers;
 
 	PlayerSelection playerSelection = PlayerSelection(window, &font);
+	
 	vector<Player*> players;
+	
+
+	int collidedCounter = 0;
 
 	// main loop
 	while (window->isOpen())		
@@ -42,6 +47,13 @@ int main()
 		}
 
 
+		//Create a screenshot of the game before moving
+		sf::Vector2u windowSize = window->getSize();
+		sf::Texture texture;
+		texture.create(windowSize.x, windowSize.y);
+		texture.update(*window);
+		sf::Image screenshot = texture.copyToImage();
+
 		// Controll game flow
 		switch (stage) {
 		case SelectPlayers:
@@ -53,13 +65,40 @@ int main()
 
 		case CurvesRunning:
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-				players.at(i)->move();
+				if (!players.at(i)->getCollided()) // Only move, if not collided
+					players.at(i)->move();			
+			}
+			if (collidedCounter == players.size()) {
+				stage = GameIsOver;
+				break;
+			}
+			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+				if (!players.at(i)->getCollided()) { //Collision already happened?
+					bool collision = (players.at(i)->collision(screenshot, players, windowSize));
+					players.at(i)->setCollided(collision);
+					if (collision) {
+						players.at(i)->setScore(players.at(i)->getScore() + collidedCounter); //score ranges from 0 to amount of players-1
+						collidedCounter++; //Next player gets a higher score
+					}
+				}
 			}
 			break;
 
-		case GameOver:
+		case GameIsOver:
+			collidedCounter = 0;
+			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+				cout << players.at(i)->getScore();
+				if (players.at(i)->getScore() > 10) {
+					stage = GameIsOver;
+				}
+				else {
+					players.at(i)->nextRound();
+					stage = CurvesRunning;
+				}
+			}
 			break;
 		}
+
 		
 		if (playerSelection.isFullscreen() && !fullscreen) {
 			fullscreen = true;
@@ -92,7 +131,9 @@ int main()
 			}
 			break;
 
-		case GameOver:
+		case GameIsOver:
+			GameOver gameover = GameOver(window, &font, players);
+			gameover.draw();
 			break;
 		}
 
