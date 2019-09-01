@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "IconAngular.h"
 
 using namespace sf;
 using namespace std;
@@ -25,12 +26,15 @@ private:
 	VertexArray curve;
 	vector<Vector2f> curveArray;
 
+	vector<IconAngular> consumedIcons;
+
 	bool isCollided;
 
-public:
-	const float MIN_RADIUS = 0.02f;
-	const int HOLE_DISTANCE = 10;
 	const float PI = 3.14159265358979f;
+	const float MIN_RADIUS = 0.02f;
+
+public:
+	const int HOLE_DISTANCE = 10;
 
 	Player(const Color color, const string username);
 
@@ -46,9 +50,12 @@ public:
 	void move();
 	void draw(RenderWindow* window);
 
+	void addConsumedIcon(IconAngular icon);
+
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 
 	CircleShape getDot() { return curveDot; }
+	Vector2f getPosition() { return position; }
 	VertexArray getCurve() { return curve; }
 	vector<Vector2f> getCurveArray() { return curveArray; }
 	bool getCollided() { return isCollided; }

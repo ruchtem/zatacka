@@ -146,12 +146,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="IconAngular.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerSelection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="IconAngular.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerSelection.h" />
   </ItemGroup>

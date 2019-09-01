@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "PlayerSelection.h"
 #include "GameOver.h"
+#include "IconAngular.h"
+#include "ItemManager.h"
 
 using namespace std;
 using namespace sf;
@@ -26,11 +28,17 @@ int main()
 	GameStages stage = SelectPlayers;
 
 	PlayerSelection playerSelection = PlayerSelection(window, &font);
-	
+	ItemManager itemManager = ItemManager(window);
+
 	vector<Player*> players;
-	
 
 	int collidedCounter = 0;
+	//Create a screenshot of the game before moving
+	sf::Vector2u windowSize = window->getSize();
+	sf::Texture texture;
+	texture.create(windowSize.x, windowSize.y);
+	texture.update(*window);
+	sf::Image screenshot = texture.copyToImage();
 
 	// main loop
 	while (window->isOpen())		
@@ -47,18 +55,13 @@ int main()
 		}
 
 
-		//Create a screenshot of the game before moving
-		sf::Vector2u windowSize = window->getSize();
-		sf::Texture texture;
-		texture.create(windowSize.x, windowSize.y);
-		texture.update(*window);
-		sf::Image screenshot = texture.copyToImage();
 
 		// Controll game flow
 		switch (stage) {
 		case SelectPlayers:
 			if (playerSelection.isFinished()) {
 				players = playerSelection.getPlayers();
+				itemManager.setPlayers(players);
 				stage = CurvesRunning;
 			}
 			break;
@@ -82,6 +85,8 @@ int main()
 					}
 				}
 			}
+
+			itemManager.onNewFrame();
 			break;
 
 		case GameIsOver:
@@ -93,6 +98,7 @@ int main()
 				}
 				else {
 					players.at(i)->nextRound();
+					itemManager.reset();
 					stage = CurvesRunning;
 				}
 			}
@@ -115,7 +121,6 @@ int main()
 				window->setFramerateLimit(60);
 		}
 
-
 		// Draw everything
 
 		window->clear();
@@ -126,6 +131,7 @@ int main()
 			break;
 
 		case CurvesRunning:
+			itemManager.draw();
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 				players.at(i)->draw(window);
 			}
