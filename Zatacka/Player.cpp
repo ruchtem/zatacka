@@ -59,9 +59,8 @@ void Player::move() {
 	}
 	else {
 		for (vector<IconAngular>::size_type i = 0; i < consumedIcons.size(); ++i) {
-			IconAngular icon = consumedIcons.at(i);
-			speed = icon.alterSpeed(speed);
-			angle = icon.alterAngle(angle, leftKey, rightKey);
+			speed = consumedIcons.at(i).alterSpeed(speed);
+			angle = consumedIcons.at(i).alterAngle(angle, leftKey, rightKey);
 		}
 	}
 	
@@ -86,6 +85,7 @@ void Player::draw(RenderWindow* window) {
 }
 
 void Player::addConsumedIcon(IconAngular icon) {
+	cout << "Player: " << name << " consumed an item!" << endl;
 	consumedIcons.push_back(icon);
 }
 

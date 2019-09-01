@@ -21,25 +21,33 @@ void ItemManager::setPlayers(vector<Player*> players) {
 void ItemManager::onNewFrame() {
 	frameCount++;
 	// Check if a player collected an item
-	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-		for (vector<IconAngular>::size_type j = 0; j < displayedItems.size(); ++j) {
+	vector<IconAngular>::size_type j = 0;
+	while (j < displayedItems.size()) {
+		int items_consumed = 0;
+		for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 			Player* p = players.at(i);
 			if (displayedItems.at(j).getBounds().contains(p->getPosition())) {
-				IconAngular icon = displayedItems.at(j);
-				if (icon.isForCollector()) {
-					players.at(i)->addConsumedIcon(icon);
+				if (displayedItems.at(j).isForCollector()) {
+					players.at(i)->addConsumedIcon(displayedItems.at(j));
 				}
 				else {
 					for (vector<Player*>::size_type k = 0; k < players.size(); ++k) {
 						if (k != i) {
-							players.at(i)->addConsumedIcon(icon);
+							players.at(i)->addConsumedIcon(displayedItems.at(j));
 						}
 					}
 				}
-				
+				items_consumed++;
+				displayedItems.erase(displayedItems.begin() + j);
 			}
 		}
+		if (items_consumed == 0) {
+			j++;
+		}
+		
 	}
+
+	
 
 
 	// Remove old icon?

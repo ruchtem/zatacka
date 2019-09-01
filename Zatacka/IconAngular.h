@@ -11,6 +11,7 @@ private:
 	Sprite icon;
 	bool forCollector;
 	int framesDisplayed = 0;
+	int framesSinceLastBend = 100;	// Necessary to have no have two key strokes in almost same frame
 	float PI = 3.14159265358979f;
 	float MIN_RADIUS = 0.02f;
 

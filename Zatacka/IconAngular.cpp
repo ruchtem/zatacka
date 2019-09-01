@@ -44,11 +44,19 @@ bool IconAngular::isForCollector() {
 
 float IconAngular::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
 	float newAngle = angle;
-	if (Keyboard::isKeyPressed(leftKey)) {
-		newAngle = fmod(angle - .5f * PI, 2 * PI);		// Measure in radians
+
+	if (framesSinceLastBend > 5) {
+		framesSinceLastBend = 0;
+		if (Keyboard::isKeyPressed(leftKey)) {
+			newAngle = fmod(angle - .5f * PI, 2 * PI);		// Measure in radians
+		}
+		else if (Keyboard::isKeyPressed(rightKey)) {
+			newAngle = fmod(angle + .5f * PI, 2 * PI);
+		}
 	}
-	else if (Keyboard::isKeyPressed(rightKey)) {
-		newAngle = fmod(angle + .5f * PI, 2 * PI);
+	else {
+		framesSinceLastBend++;
 	}
+	
 	return newAngle;
 }
