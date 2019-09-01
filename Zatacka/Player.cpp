@@ -59,8 +59,19 @@ void Player::move() {
 	}
 	else {
 		for (vector<IconAngular>::size_type i = 0; i < consumedIcons.size(); ++i) {
-			speed = consumedIcons.at(i).alterSpeed(speed);
-			angle = consumedIcons.at(i).alterAngle(angle, leftKey, rightKey);
+			if (consumedIcons.at(i).isActive()) {
+				speed = consumedIcons.at(i).alterSpeed(speed);
+				angle = consumedIcons.at(i).alterAngle(angle, leftKey, rightKey);
+			}
+		}
+
+		// Delete non-active items
+		vector<IconAngular>::size_type i = 0;
+		while (i < consumedIcons.size()) {
+			if (!consumedIcons.at(i).isActive())
+				consumedIcons.erase(consumedIcons.begin() + i);
+			else
+				++i;
 		}
 	}
 	
@@ -110,6 +121,7 @@ bool Player::collision(Image image, vector<Player*> players, sf::Vector2u window
 }
 
 void Player::nextRound() {
+	consumedIcons.clear();
 	isCollided = false;
 	curve.clear();
 	curveArray.clear();

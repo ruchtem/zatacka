@@ -42,10 +42,18 @@ bool IconAngular::isForCollector() {
 	return forCollector;
 }
 
+bool IconAngular::isActive() {
+	if (framesActive < 200)
+		return true;
+	else
+		return false;
+}
+
 float IconAngular::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
+	framesActive++;
 	float newAngle = angle;
 
-	if (framesSinceLastBend > 5) {
+	if (framesSinceLastBend > 10) {
 		framesSinceLastBend = 0;
 		if (Keyboard::isKeyPressed(leftKey)) {
 			newAngle = fmod(angle - .5f * PI, 2 * PI);		// Measure in radians
