@@ -69,11 +69,20 @@ void Player::move() {
 	curveDot.setPosition(Vector2f(x - 2.f, y - 2.f));
 }
 
-void Player::draw(RenderWindow* window) {
+void Player::draw(RenderWindow* window, Font* font, int i) {
 
+
+	Text scoreText;
+	scoreText.setString(to_string(score));
+	scoreText.setFillColor(color);
+	scoreText.setFont((*font));
+	scoreText.setCharacterSize(characterSize);
+	scoreText.setStyle(Text::Bold);
+	scoreText.setPosition(xOffset, playersOffset + i * textDistance);
 
 	window->draw(curve);
 	window->draw(curveDot);
+	window->draw(scoreText);
 }
 
 bool Player::collision(Image image, vector<Player*> players, sf::Vector2u windowSize) {

@@ -13,8 +13,20 @@ enum GameStages {
 	GameIsOver = 2
 };
 
-int main()
-{
+int maxScore(vector<Player*> players) { //What is the highest score
+	int maxScore = 0;
+	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+		if (players.at(i)->getScore() > maxScore) {
+			maxScore = players.at(i)->getScore();
+		}
+	}
+	return maxScore;
+}
+
+int main() {
+
+
+
 	Font font;
 	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
 		throw exception("Could not load font!");
@@ -86,15 +98,14 @@ int main()
 
 		case GameIsOver:
 			collidedCounter = 0;
-			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-				cout << players.at(i)->getScore();
-				if (players.at(i)->getScore() > 10) {
-					stage = GameIsOver;
+			if (maxScore(players) > 10) {
+				stage = GameIsOver; //Game is either finished...
+			}
+			else {
+				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+					players.at(i)->nextRound(); //...or a new round should start
 				}
-				else {
-					players.at(i)->nextRound();
-					stage = CurvesRunning;
-				}
+				stage = CurvesRunning;
 			}
 			break;
 		}
@@ -127,7 +138,8 @@ int main()
 
 		case CurvesRunning:
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-				players.at(i)->draw(window);
+				players.at(i)->draw(window, &font, i);
+
 			}
 			break;
 

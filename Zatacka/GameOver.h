@@ -56,6 +56,8 @@ public:
 
 	GameOver(RenderWindow* window, Font* font, vector<Player*> players);
 
+	void setPlayers(vector<Player*> players) { this->players = players; }
+
 	void draw();
 };
 

@@ -25,6 +25,13 @@ private:
 	VertexArray curve;
 	vector<Vector2f> curveArray;
 
+	const float xOffset = 20;
+	const float yOffset = 20;
+
+	float textDistance = 40;
+	float playersOffset = yOffset;
+	int characterSize = 24;
+
 	bool isCollided;
 
 public:
@@ -44,7 +51,7 @@ public:
 	void resetKeys();
 
 	void move();
-	void draw(RenderWindow* window);
+	void draw(RenderWindow* window, Font* font, int i);
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 
@@ -53,6 +60,7 @@ public:
 	vector<Vector2f> getCurveArray() { return curveArray; }
 	bool getCollided() { return isCollided; }
 	void setCollided(bool collision) { isCollided = collision; }
+	Color getColor() { return color; }
 	
 	void nextRound();
 };
