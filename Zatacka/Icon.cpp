@@ -56,19 +56,3 @@ bool Icon::isActive() {
 void Icon::update(int framesToLive) {
 	this->framesToLive += framesToLive;
 }
-
-float Icon::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
-	framesToLive--;
-	float newAngle = angle;
-	if (Keyboard::isKeyPressed(leftKey)) {
-		newAngle = fmod(angle - MIN_RADIUS, 2 * PI);		// Measure in radians
-	}
-	else if (Keyboard::isKeyPressed(rightKey)) {
-		newAngle = fmod(angle + MIN_RADIUS, 2 * PI);
-	}
-	return newAngle;
-}
-
-float Icon::alterSpeed(float speed) { 
-	return speed; 
-}

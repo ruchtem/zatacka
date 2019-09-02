@@ -27,11 +27,13 @@ private:
 	vector<Vector2f> curveArray;
 
 	vector<Icon*> consumedIcons;
+	int numFramesToBlockKeyInput = 0;
 
 	bool isCollided;
 
 	const float PI = 3.14159265358979f;
 	const float MIN_RADIUS = 0.02f;
+	const float STD_SPEED = 1;
 
 public:
 	const int HOLE_DISTANCE = 10;
@@ -51,6 +53,7 @@ public:
 	void draw();
 
 	void addConsumedIcon(Icon* icon);
+	void setFramesToBlockKeyInput(int numFrames);
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 

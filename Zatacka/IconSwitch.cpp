@@ -7,14 +7,24 @@ using namespace sf;
 
 IconSwitch::IconSwitch(RenderWindow* window, Texture* texture) : Icon(window, texture) { }
 
-float IconSwitch::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
+void IconSwitch::alterKeys(Keyboard::Key* leftKey, Keyboard::Key* rightKey) {
 	framesToLive--;
-	float newAngle = angle;
-	if (Keyboard::isKeyPressed(rightKey)) {
-		newAngle = fmod(angle - MIN_RADIUS, 2 * PI);		// Measure in radians
+
+	if (!switched) {
+		switched = true;
+		// Store everything to be able to restore
+		originalLeftKeyPtr = leftKey;
+		originalRightKeyPtr = rightKey;
+		originalLeftKey = *leftKey;
+		originalRightKey = *rightKey;
+
+		*leftKey = originalRightKey;
+		*rightKey = originalLeftKey;
 	}
-	else if (Keyboard::isKeyPressed(leftKey)) {
-		newAngle = fmod(angle + MIN_RADIUS, 2 * PI);
+
+	// Restore
+	if (framesToLive == 0) {
+		*originalLeftKeyPtr = originalLeftKey;
+		*originalRightKeyPtr = originalRightKey;
 	}
-	return newAngle;
 }

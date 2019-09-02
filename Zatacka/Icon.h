@@ -11,7 +11,7 @@ protected:
 	Sprite icon;
 	bool forCollector;
 	int framesDisplayed = 0;
-	int framesToLive = 2000;
+	int framesToLive = 200;
 	float PI = 3.14159265358979f;
 	float MIN_RADIUS = 0.02f;
 
@@ -24,8 +24,10 @@ public:
 	bool isForCollector();
 	bool isActive();
 	virtual string getType() { return "icon"; }
-	virtual float alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey);
-	virtual float alterSpeed(float speed);
+	virtual void alterKeyBlock(int* framesToBlock) { }
+	virtual void alterKeys(Keyboard::Key* leftKey, Keyboard::Key* rightKey) { }
+	virtual void alterAngle(float* angle) { }
+	virtual void alterSpeed(float* speed) { }
 	void update(int framesToLive);
 };
 
@@ -35,12 +37,19 @@ private:
 public:
 	virtual string getType() { return "angular"; }
 	IconAngular(RenderWindow* window, Texture* texture);
-	virtual float alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey);
+	virtual void alterAngle(float* angle);
+	virtual void alterKeyBlock(int* framesToBlock);
 };
 
 class IconSwitch : public Icon {
+private:
+	Keyboard::Key originalLeftKey = Keyboard::Key::Unknown;
+	Keyboard::Key originalRightKey = Keyboard::Key::Unknown;
+	Keyboard::Key* originalLeftKeyPtr = NULL;
+	Keyboard::Key* originalRightKeyPtr = NULL;
+	bool switched = false;
 public:
 	virtual string getType() { return "switch"; }
 	IconSwitch(RenderWindow* window, Texture* texture);
-	virtual float alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey);
+	virtual void alterKeys(Keyboard::Key* leftKey, Keyboard::Key* rightKey);
 };

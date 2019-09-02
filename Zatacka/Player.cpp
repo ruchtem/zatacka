@@ -47,48 +47,60 @@ void Player::resetKeys() {
 
 void Player::move() {
 	
-	//cout << "Player: " << name << " has " << consumedIcons.size() << " active icons" << endl;
+	// Delete non-active items
+	vector<Icon>::size_type i = 0;
+	while (i < consumedIcons.size()) {
+		if (!consumedIcons.at(i)->isActive()) {
+			delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
+			consumedIcons.erase(consumedIcons.begin() + i);
+			cout << "Player: " << name << " an active icon finished and is removed!" << endl;
+		}
+		else
+			++i;
+	}
 
-	if (consumedIcons.empty()) {
-		// Change the angle when a relevant key is pressed
+	//cout << "Player: " << name << " has " << consumedIcons.size() << " active icons" << endl;
+	float angleChange = MIN_RADIUS;
+	float speedChange = STD_SPEED;
+	int blockChange = 0;
+	
+	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
+		if (consumedIcons.at(i)->isActive()) {
+			consumedIcons.at(i)->alterSpeed(&speedChange);
+			consumedIcons.at(i)->alterAngle(&angleChange);
+			consumedIcons.at(i)->alterKeys(&leftKey, &rightKey);
+			consumedIcons.at(i)->alterKeyBlock(&blockChange);
+		}
+	}
+
+	// Change the angle when a relevant key is pressed
+	// This can be modified by icons
+	if (numFramesToBlockKeyInput == 0) {
 		if (Keyboard::isKeyPressed(leftKey)) {
-			angle = fmod(angle - MIN_RADIUS, 2 * PI);		// Measure in radians
+			angle = fmod(angle - angleChange, 2 * PI);		// Measure in radians
 		}
 		else if (Keyboard::isKeyPressed(rightKey)) {
-			angle = fmod(angle + MIN_RADIUS, 2 * PI);
+			angle = fmod(angle + angleChange, 2 * PI);
 		}
 		else {
 			// We move straight, no need to change the angle
 		}
+
+		numFramesToBlockKeyInput = blockChange;
 	}
 	else {
-		for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
-			if (consumedIcons.at(i)->isActive()) {
-				speed = consumedIcons.at(i)->alterSpeed(speed);
-				angle = consumedIcons.at(i)->alterAngle(angle, leftKey, rightKey);
-			}
-		}
-
-		// Delete non-active items
-		vector<Icon>::size_type i = 0;
-		while (i < consumedIcons.size()) {
-			if (!consumedIcons.at(i)->isActive()) {
-				delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
-				consumedIcons.erase(consumedIcons.begin() + i);
-				cout << "Player: " << name << " an active icon finished and is removed!" << endl;
-			}
-			else
-				++i;
-		}
+		numFramesToBlockKeyInput--;
 	}
+
+	
+	
 	
 	// New position based on speed and angle
-	float x = position.x + speed * cos(angle);
-	float y = position.y + speed * sin(angle);
+	float x = position.x + speedChange * cos(angle);
+	float y = position.y + speedChange * sin(angle);
 	
 	// Update position
 	position = Vector2f(x, y);
-
 
 	curve.append(Vertex(Vector2f(x, y), color));
 	curveArray.push_back(Vector2f(x, y));
