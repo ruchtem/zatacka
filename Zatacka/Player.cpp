@@ -58,18 +58,20 @@ void Player::move() {
 		}
 	}
 	else {
-		for (vector<IconAngular>::size_type i = 0; i < consumedIcons.size(); ++i) {
-			if (consumedIcons.at(i).isActive()) {
-				speed = consumedIcons.at(i).alterSpeed(speed);
-				angle = consumedIcons.at(i).alterAngle(angle, leftKey, rightKey);
+		for (vector<Icon>::size_type i = 0; i < consumedIcons.size(); ++i) {
+			if (consumedIcons.at(i)->isActive()) {
+				speed = consumedIcons.at(i)->alterSpeed(speed);
+				angle = consumedIcons.at(i)->alterAngle(angle, leftKey, rightKey);
 			}
 		}
 
 		// Delete non-active items
-		vector<IconAngular>::size_type i = 0;
+		vector<Icon>::size_type i = 0;
 		while (i < consumedIcons.size()) {
-			if (!consumedIcons.at(i).isActive())
+			if (!consumedIcons.at(i)->isActive()) {
+				delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 				consumedIcons.erase(consumedIcons.begin() + i);
+			}
 			else
 				++i;
 		}
@@ -89,13 +91,11 @@ void Player::move() {
 }
 
 void Player::draw(RenderWindow* window) {
-
-
 	window->draw(curve);
 	window->draw(curveDot);
 }
 
-void Player::addConsumedIcon(IconAngular icon) {
+void Player::addConsumedIcon(Icon* icon) {
 	cout << "Player: " << name << " consumed an item!" << endl;
 	consumedIcons.push_back(icon);
 }

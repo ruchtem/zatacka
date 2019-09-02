@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Icon.cpp" />
     <ClCompile Include="IconAngular.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -154,7 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameOver.h" />
-    <ClInclude Include="IconAngular.h" />
+    <ClInclude Include="Icon.h" />
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerSelection.h" />

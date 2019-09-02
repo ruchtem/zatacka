@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Player.h"
-#include "IconAngular.h"
+#include "Icon.h"
 
 using namespace sf;
 using namespace std;
@@ -11,9 +11,9 @@ private:
 	RenderWindow* window;
 	vector<Player*> players;
 	int frameCount = 0;
-	const int ITEMFREE_START_FRAMES = 10;
-	const unsigned int MAX_ITEMS = 10;
-	vector<IconAngular> displayedItems;
+	const int ICONFREE_START_FRAMES = 10;
+	const unsigned int MAX_ICONS = 10;
+	vector<Icon*> displayedIcons;
 	Texture texture;
 
 public:

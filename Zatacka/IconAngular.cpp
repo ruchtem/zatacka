@@ -1,52 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "IconAngular.h"
+#include "Icon.h"
 
 using namespace std;
 using namespace sf;
 
-IconAngular::IconAngular(RenderWindow* window, Texture* texture) {
-	this->window = window;
-	this->texture = texture;
+IconAngular::IconAngular(RenderWindow* window, Texture* texture) : Icon(window, texture) {
 
-	icon.setTexture(*texture);
-
-	// Determine randomly if for the collecting player or all others
-	if (rand() % 2 == 0) {
-		forCollector = false;
-		icon.setColor(Color::Red);
-	}
-	else {
-		forCollector = true;
-		icon.setColor(Color::Green);
-	}
-
-	Vector2u windowSize = window->getSize();
-	icon.setPosition(rand() % windowSize.x, rand() % windowSize.y);
-}
-
-int IconAngular::getFramesDisplayed() {
-	return framesDisplayed;
-}
-
-void IconAngular::draw() {
-	framesDisplayed++;
-	window->draw(icon);
-}
-
-FloatRect IconAngular::getBounds() {
-	return icon.getGlobalBounds();
-}
-
-bool IconAngular::isForCollector() {
-	return forCollector;
-}
-
-bool IconAngular::isActive() {
-	if (framesActive < 200)
-		return true;
-	else
-		return false;
 }
 
 float IconAngular::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {

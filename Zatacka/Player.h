@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "IconAngular.h"
+#include "Icon.h"
 
 using namespace sf;
 using namespace std;
@@ -26,7 +26,7 @@ private:
 	VertexArray curve;
 	vector<Vector2f> curveArray;
 
-	vector<IconAngular> consumedIcons;
+	vector<Icon*> consumedIcons;
 
 	bool isCollided;
 
@@ -50,7 +50,7 @@ public:
 	void move();
 	void draw(RenderWindow* window);
 
-	void addConsumedIcon(IconAngular icon);
+	void addConsumedIcon(Icon* icon);
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 

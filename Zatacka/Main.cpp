@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "PlayerSelection.h"
 #include "GameOver.h"
-#include "IconAngular.h"
+#include "Icon.h"
 #include "ItemManager.h"
 
 using namespace std;

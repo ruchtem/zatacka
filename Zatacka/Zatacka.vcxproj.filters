@@ -33,6 +33,9 @@
     <ClCompile Include="ItemManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Icon.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -44,10 +47,10 @@
     <ClInclude Include="GameOver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="IconAngular.h">
+    <ClInclude Include="ItemManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ItemManager.h">
+    <ClInclude Include="Icon.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

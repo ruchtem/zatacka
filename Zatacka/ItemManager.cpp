@@ -20,25 +20,26 @@ void ItemManager::setPlayers(vector<Player*> players) {
 
 void ItemManager::onNewFrame() {
 	frameCount++;
+	
 	// Check if a player collected an item
-	vector<IconAngular>::size_type j = 0;
-	while (j < displayedItems.size()) {
+	vector<Icon*>::size_type j = 0;
+	while (j < displayedIcons.size()) {
 		int items_consumed = 0;
 		for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 			Player* p = players.at(i);
-			if (displayedItems.at(j).getBounds().contains(p->getPosition())) {
-				if (displayedItems.at(j).isForCollector()) {
-					players.at(i)->addConsumedIcon(displayedItems.at(j));
+			if (displayedIcons.at(j)->getBounds().contains(p->getPosition())) {
+				if (displayedIcons.at(j)->isForCollector()) {
+					players.at(i)->addConsumedIcon(displayedIcons.at(j));
 				}
 				else {
 					for (vector<Player*>::size_type k = 0; k < players.size(); ++k) {
 						if (k != i) {
-							players.at(i)->addConsumedIcon(displayedItems.at(j));
+							players.at(i)->addConsumedIcon(displayedIcons.at(j));
 						}
 					}
 				}
 				items_consumed++;
-				displayedItems.erase(displayedItems.begin() + j);
+				displayedIcons.erase(displayedIcons.begin() + j);
 			}
 		}
 		if (items_consumed == 0) {
@@ -47,14 +48,12 @@ void ItemManager::onNewFrame() {
 		
 	}
 
-	
-
-
 	// Remove old icon?
-	vector<IconAngular>::size_type i = 0;
-	while (i < displayedItems.size()) {
-		if (displayedItems.at(i).getFramesDisplayed() > 500) {
-			displayedItems.erase(displayedItems.begin() + i);
+	vector<Icon>::size_type i = 0;
+	while (i < displayedIcons.size()) {
+		if (displayedIcons.at(i)->getFramesDisplayed() > 500) {
+			delete displayedIcons.at(i); displayedIcons.at(i) = NULL;
+			displayedIcons.erase(displayedIcons.begin() + i);
 		}
 		else {
 			++i;
@@ -62,20 +61,23 @@ void ItemManager::onNewFrame() {
 	}
 	
 	// Add new Icon?
-	if (frameCount > ITEMFREE_START_FRAMES && displayedItems.size() < MAX_ITEMS) {
+	if (frameCount > ICONFREE_START_FRAMES && displayedIcons.size() < MAX_ICONS) {
 		if (rand() % 50 == 0) {	// New Icon all 500 frames
-			displayedItems.push_back(IconAngular(window, &texture));
+			displayedIcons.push_back(new IconAngular(window, &texture));
 		}
 	}
 }
 
 void ItemManager::reset() {
 	frameCount = 0;
-	displayedItems.clear();
+	for (vector<Icon*>::size_type i = 0; i < displayedIcons.size(); ++i) {
+		delete displayedIcons.at(i); displayedIcons.at(i) = NULL;
+	}
+	displayedIcons.clear();
 }
 
 void ItemManager::draw() {
-	for (vector<IconAngular>::size_type i = 0; i < displayedItems.size(); ++i) {
-		displayedItems.at(i).draw();
+	for (vector<Icon*>::size_type i = 0; i < displayedIcons.size(); ++i) {
+		displayedIcons.at(i)->draw();
 	}
 }
