@@ -42,14 +42,23 @@ bool Icon::isForCollector() {
 	return forCollector;
 }
 
+int Icon::getFramesToLive() {
+	return framesToLive;
+}
+
 bool Icon::isActive() {
-	if (framesActive < 200)
+	if (framesToLive > 0)
 		return true;
 	else
 		return false;
 }
 
+void Icon::update(int framesToLive) {
+	this->framesToLive += framesToLive;
+}
+
 float Icon::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
+	framesToLive--;
 	float newAngle = angle;
 	if (Keyboard::isKeyPressed(leftKey)) {
 		newAngle = fmod(angle - MIN_RADIUS, 2 * PI);		// Measure in radians

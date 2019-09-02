@@ -8,7 +8,7 @@ using namespace sf;
 IconSwitch::IconSwitch(RenderWindow* window, Texture* texture) : Icon(window, texture) { }
 
 float IconSwitch::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
-	framesActive++;
+	framesToLive--;
 	float newAngle = angle;
 	if (Keyboard::isKeyPressed(rightKey)) {
 		newAngle = fmod(angle - MIN_RADIUS, 2 * PI);		// Measure in radians

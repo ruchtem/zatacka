@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <iostream>
+#include <typeinfo>
 #include "Player.h"
 
 using namespace std;
@@ -46,6 +47,8 @@ void Player::resetKeys() {
 
 void Player::move() {
 	
+	//cout << "Player: " << name << " has " << consumedIcons.size() << " active icons" << endl;
+
 	if (consumedIcons.empty()) {
 		// Change the angle when a relevant key is pressed
 		if (Keyboard::isKeyPressed(leftKey)) {
@@ -59,7 +62,7 @@ void Player::move() {
 		}
 	}
 	else {
-		for (vector<Icon>::size_type i = 0; i < consumedIcons.size(); ++i) {
+		for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 			if (consumedIcons.at(i)->isActive()) {
 				speed = consumedIcons.at(i)->alterSpeed(speed);
 				angle = consumedIcons.at(i)->alterAngle(angle, leftKey, rightKey);
@@ -72,7 +75,7 @@ void Player::move() {
 			if (!consumedIcons.at(i)->isActive()) {
 				delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 				consumedIcons.erase(consumedIcons.begin() + i);
-				cout << "Player: " << name << " an asctive icon finished and is removed!" << endl;
+				cout << "Player: " << name << " an active icon finished and is removed!" << endl;
 			}
 			else
 				++i;
@@ -99,7 +102,25 @@ void Player::draw() {
 
 void Player::addConsumedIcon(Icon* icon) {
 	cout << "Player: " << name << " consumed an icon!" << endl;
-	consumedIcons.push_back(icon);
+	if (consumedIcons.empty()) {
+		consumedIcons.push_back(icon);
+	}
+	else {
+		// We need to check if the current item is already active. If so extend its time to live
+		bool updated = false;
+		for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
+			if (consumedIcons.at(i)->getType() == icon->getType()) {
+				consumedIcons.at(i)->update(icon->getFramesToLive());
+				delete icon; icon = NULL;
+				updated = true;
+			}
+		}
+		if (!updated) {
+			consumedIcons.push_back(icon);
+		}
+	}
+	
+	
 }
 
 bool Player::collision(Image image, vector<Player*> players, sf::Vector2u windowSize) {

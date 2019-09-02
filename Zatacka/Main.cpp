@@ -59,7 +59,7 @@ int main()
 		case SelectPlayers:
 			if (playerSelection.isFinished()) {
 				players = playerSelection.getPlayers();
-				//itemManager.setPlayers(players);
+				iconManager.setPlayers(players);
 				stage = CurvesRunning;
 			}
 			break;
@@ -84,7 +84,7 @@ int main()
 				}
 			}
 
-			//itemManager.onNewFrame();
+			iconManager.onNewFrame();
 			break;
 
 		case GameIsOver:
@@ -96,7 +96,7 @@ int main()
 				}
 				else {
 					players.at(i)->nextRound();
-					//itemManager.reset();
+					iconManager.reset();
 					stage = CurvesRunning;
 				}
 			}
@@ -129,7 +129,7 @@ int main()
 			break;
 
 		case CurvesRunning:
-			//itemManager.draw();
+			iconManager.draw();
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 				players.at(i)->draw();
 			}

@@ -10,7 +10,7 @@ IconAngular::IconAngular(RenderWindow* window, Texture* texture) : Icon(window, 
 }
 
 float IconAngular::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey) {
-	framesActive++;
+	framesToLive--;
 	float newAngle = angle;
 
 	if (framesSinceLastBend > 10) {
@@ -28,3 +28,4 @@ float IconAngular::alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key 
 	
 	return newAngle;
 }
+
