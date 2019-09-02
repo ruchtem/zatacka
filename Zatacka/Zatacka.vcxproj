@@ -148,6 +148,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="IconAngular.cpp" />
+    <ClCompile Include="IconSwitch.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Main.cpp" />

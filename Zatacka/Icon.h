@@ -33,3 +33,9 @@ public:
 	IconAngular(RenderWindow* window, Texture* texture);
 	virtual float alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey);
 };
+
+class IconSwitch : public Icon {
+public:
+	IconSwitch(RenderWindow* window, Texture* texture);
+	virtual float alterAngle(float angle, Keyboard::Key leftKey, Keyboard::Key rightKey);
+};

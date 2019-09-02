@@ -1,17 +1,43 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "ItemManager.h"
+#include <map>
+#include <iterator>
 
 using namespace sf;
 using namespace std;
 
+map<string, string> textureFileNames = {
+	{"angular", "resources\\angular.png" },
+	{"switch", "resources\\switch-keys.png" }
+};
+
+map<string, Texture> textureMap;
+
 ItemManager::ItemManager(RenderWindow* window) {
 	this->window = window;
 
-	if (!texture.loadFromFile("resources\\angular-others.png")) {
-		throw exception("Could not load texture");
+	// Necessary to do here because textures are shared resources.
+	map<string, string>::iterator it;
+	for (it = textureFileNames.begin(); it != textureFileNames.end(); it++) {
+		if (!textureMap[it->first].loadFromFile(textureFileNames[it->first])) {
+			throw exception("Could not load texture");
+		}
+		textureMap[it->first].setSmooth(true);
 	}
-	texture.setSmooth(true);
+}
+
+Icon* ItemManager::newRandomIcon() {
+	map<string, Texture>::iterator it = textureMap.begin();
+	advance(it, rand() % textureMap.size());
+
+	if (it->first == "angular") {
+		return new IconAngular(window, &(it->second));
+	}
+	if (it->first == "switch") {
+		return new IconSwitch(window, &(it->second));
+	}
+	throw exception("Trying to create a new random item which is not defined.");
 }
 
 void ItemManager::setPlayers(vector<Player*> players) {
@@ -63,7 +89,7 @@ void ItemManager::onNewFrame() {
 	// Add new Icon?
 	if (frameCount > ICONFREE_START_FRAMES && displayedIcons.size() < MAX_ICONS) {
 		if (rand() % 50 == 0) {	// New Icon all 500 frames
-			displayedIcons.push_back(new IconAngular(window, &texture));
+			displayedIcons.push_back(newRandomIcon());
 		}
 	}
 }

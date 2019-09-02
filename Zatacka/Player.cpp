@@ -71,6 +71,7 @@ void Player::move() {
 			if (!consumedIcons.at(i)->isActive()) {
 				delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 				consumedIcons.erase(consumedIcons.begin() + i);
+				cout << "Player: " << name << " an asctive icon finished and is removed!" << endl;
 			}
 			else
 				++i;
@@ -96,7 +97,7 @@ void Player::draw(RenderWindow* window) {
 }
 
 void Player::addConsumedIcon(Icon* icon) {
-	cout << "Player: " << name << " consumed an item!" << endl;
+	cout << "Player: " << name << " consumed an icon!" << endl;
 	consumedIcons.push_back(icon);
 }
 
