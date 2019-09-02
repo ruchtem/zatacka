@@ -217,7 +217,7 @@ void PlayerSelection::prepareSelectionDrawing() {
 void PlayerSelection::registerKeySelections(const Event event) {
 	if (selectedPlayer >= 0 && event.type == Event::KeyPressed) {
 		if (players[selectedPlayer] == NULL) {
-			players[selectedPlayer] = new Player(colors[selectedPlayer], names[selectedPlayer]);
+			players[selectedPlayer] = new Player(window, colors[selectedPlayer], names[selectedPlayer]);
 		}
 
 		// When we get a new key for a player with already set keys -> override both

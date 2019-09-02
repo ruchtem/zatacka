@@ -7,6 +7,7 @@ using namespace std;
 
 class Player {
 private:
+	RenderWindow* window;
 	Color color;
 	string name;
 	float speed = 1;
@@ -19,7 +20,6 @@ private:
 	// The dot to be moved
 	CircleShape curveDot;
 	
-
 	Vector2f position;
 	float angle;	// Measured in radians
 	vector<Vector2f> pastPositions;
@@ -36,7 +36,7 @@ private:
 public:
 	const int HOLE_DISTANCE = 10;
 
-	Player(const Color color, const string username);
+	Player(RenderWindow* window, const Color color, const string username);
 
 	inline void setScore(int score) { this->score = score; }
 	int getScore() { return score; }
@@ -48,7 +48,7 @@ public:
 	void resetKeys();
 
 	void move();
-	void draw(RenderWindow* window);
+	void draw();
 
 	void addConsumedIcon(Icon* icon);
 

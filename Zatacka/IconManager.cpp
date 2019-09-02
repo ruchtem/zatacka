@@ -7,13 +7,6 @@
 using namespace sf;
 using namespace std;
 
-map<string, string> textureFileNames = {
-	{"angular", "resources\\angular.png" },
-	{"switch", "resources\\switch-keys.png" }
-};
-
-map<string, Texture> textureMap;
-
 IconManager::IconManager(RenderWindow* window) {
 	this->window = window;
 
@@ -65,6 +58,7 @@ void IconManager::onNewFrame() {
 					}
 				}
 				items_consumed++;
+				// Icon still active, now handled by the player -> Memory managed there
 				displayedIcons.erase(displayedIcons.begin() + j);
 			}
 		}
@@ -88,7 +82,7 @@ void IconManager::onNewFrame() {
 	
 	// Add new Icon?
 	if (frameCount > ICONFREE_START_FRAMES && displayedIcons.size() < MAX_ICONS) {
-		if (rand() % 50 == 0) {	// New Icon all 500 frames
+		if (rand() % ICON_FREQUENCY == 0) {	// New Icon all ICON_FREQUENCY frames
 			displayedIcons.push_back(newRandomIcon());
 		}
 	}

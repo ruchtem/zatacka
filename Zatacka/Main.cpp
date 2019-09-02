@@ -28,7 +28,7 @@ int main()
 	GameStages stage = SelectPlayers;
 
 	PlayerSelection playerSelection = PlayerSelection(window, &font);
-	IconManager itemManager = IconManager(window);
+	IconManager iconManager = IconManager(window);
 
 	vector<Player*> players;
 
@@ -54,14 +54,12 @@ int main()
 				playerSelection.processEvent(event);
 		}
 
-
-
 		// Controll game flow
 		switch (stage) {
 		case SelectPlayers:
 			if (playerSelection.isFinished()) {
 				players = playerSelection.getPlayers();
-				itemManager.setPlayers(players);
+				//itemManager.setPlayers(players);
 				stage = CurvesRunning;
 			}
 			break;
@@ -86,7 +84,7 @@ int main()
 				}
 			}
 
-			itemManager.onNewFrame();
+			//itemManager.onNewFrame();
 			break;
 
 		case GameIsOver:
@@ -98,7 +96,7 @@ int main()
 				}
 				else {
 					players.at(i)->nextRound();
-					itemManager.reset();
+					//itemManager.reset();
 					stage = CurvesRunning;
 				}
 			}
@@ -131,9 +129,9 @@ int main()
 			break;
 
 		case CurvesRunning:
-			itemManager.draw();
+			//itemManager.draw();
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-				players.at(i)->draw(window);
+				players.at(i)->draw();
 			}
 			break;
 

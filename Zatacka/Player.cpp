@@ -6,7 +6,8 @@
 using namespace std;
 using namespace sf;
 
-Player::Player(const Color color, const string name) {
+Player::Player(RenderWindow* window, const Color color, const string name) {
+	this->window = window;
 	this->color = color;
 	this->name = name;
 
@@ -14,7 +15,7 @@ Player::Player(const Color color, const string name) {
 	curve = VertexArray(PrimitiveType::LineStrip);
 
 	// Initialize random starting position and angle
-	position = Vector2f(rand() % 800, rand() % 600);
+	position = Vector2f(rand() % window->getSize().x, rand() % window->getSize().y);
 	angle = 0;
 
 	curveDot = CircleShape(4.f);
@@ -91,7 +92,7 @@ void Player::move() {
 	curveDot.setPosition(Vector2f(x - 2.f, y - 2.f));
 }
 
-void Player::draw(RenderWindow* window) {
+void Player::draw() {
 	window->draw(curve);
 	window->draw(curveDot);
 }
@@ -127,6 +128,6 @@ void Player::nextRound() {
 	curve.clear();
 	curveArray.clear();
 	pastPositions.clear();
-	position = Vector2f(rand() % 800, rand() % 600);
+	position = Vector2f(rand() % window->getSize().x, rand() % window->getSize().y);
 }
 
