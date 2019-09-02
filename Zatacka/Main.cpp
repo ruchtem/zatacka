@@ -4,7 +4,7 @@
 #include "PlayerSelection.h"
 #include "GameOver.h"
 #include "Icon.h"
-#include "ItemManager.h"
+#include "IconManager.h"
 
 using namespace std;
 using namespace sf;
@@ -28,7 +28,7 @@ int main()
 	GameStages stage = SelectPlayers;
 
 	PlayerSelection playerSelection = PlayerSelection(window, &font);
-	ItemManager itemManager = ItemManager(window);
+	IconManager itemManager = IconManager(window);
 
 	vector<Player*> players;
 

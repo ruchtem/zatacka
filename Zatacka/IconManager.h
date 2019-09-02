@@ -6,7 +6,7 @@
 using namespace sf;
 using namespace std;
 
-class ItemManager {
+class IconManager {
 private:
 	RenderWindow* window;
 	vector<Player*> players;
@@ -20,7 +20,7 @@ private:
 	Icon* newRandomIcon();
 
 public:
-	ItemManager(RenderWindow* window);
+	IconManager(RenderWindow* window);
 	void setPlayers(vector<Player*> players);
 	void reset();
 	void onNewFrame();

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "ItemManager.h"
+#include "IconManager.h"
 #include <map>
 #include <iterator>
 
@@ -14,7 +14,7 @@ map<string, string> textureFileNames = {
 
 map<string, Texture> textureMap;
 
-ItemManager::ItemManager(RenderWindow* window) {
+IconManager::IconManager(RenderWindow* window) {
 	this->window = window;
 
 	// Necessary to do here because textures are shared resources.
@@ -27,7 +27,7 @@ ItemManager::ItemManager(RenderWindow* window) {
 	}
 }
 
-Icon* ItemManager::newRandomIcon() {
+Icon* IconManager::newRandomIcon() {
 	map<string, Texture>::iterator it = textureMap.begin();
 	advance(it, rand() % textureMap.size());
 
@@ -40,11 +40,11 @@ Icon* ItemManager::newRandomIcon() {
 	throw exception("Trying to create a new random item which is not defined.");
 }
 
-void ItemManager::setPlayers(vector<Player*> players) {
+void IconManager::setPlayers(vector<Player*> players) {
 	this->players = players;
 }
 
-void ItemManager::onNewFrame() {
+void IconManager::onNewFrame() {
 	frameCount++;
 	
 	// Check if a player collected an item
@@ -94,7 +94,7 @@ void ItemManager::onNewFrame() {
 	}
 }
 
-void ItemManager::reset() {
+void IconManager::reset() {
 	frameCount = 0;
 	for (vector<Icon*>::size_type i = 0; i < displayedIcons.size(); ++i) {
 		delete displayedIcons.at(i); displayedIcons.at(i) = NULL;
@@ -102,7 +102,7 @@ void ItemManager::reset() {
 	displayedIcons.clear();
 }
 
-void ItemManager::draw() {
+void IconManager::draw() {
 	for (vector<Icon*>::size_type i = 0; i < displayedIcons.size(); ++i) {
 		displayedIcons.at(i)->draw();
 	}
