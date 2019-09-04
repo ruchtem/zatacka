@@ -41,32 +41,30 @@ void IconManager::onNewFrame() {
 	frameCount++;
 	
 	// Check if a player collected an item
-	vector<Icon*>::size_type j = 0;
-	while (j < displayedIcons.size()) {
-		int items_consumed = 0;
+	// Restriction: Process only one icon collection per frame (the second one is processed in the
+	// proceeding frame anyways as the player is still within bounds).
+	int iconCollected = -1;
+	for (vector<Icon*>::size_type j = 0; j < displayedIcons.size(); ++j) {
 		for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-			Player* p = players.at(i);
-			if (displayedIcons.at(j)->getBounds().contains(p->getPosition())) {
+			if (displayedIcons.at(j)->contains(players.at(i)->getPosition())) {
+				// player i collected an icon! Now, whom does it affect?
 				if (displayedIcons.at(j)->isForCollector()) {
 					players.at(i)->addConsumedIcon(displayedIcons.at(j));
 				}
 				else {
 					for (vector<Player*>::size_type k = 0; k < players.size(); ++k) {
-						if (k != i) {
-							players.at(i)->addConsumedIcon(displayedIcons.at(j));
-						}
+						// All others
+						if (k != i)
+							players.at(k)->addConsumedIcon(displayedIcons.at(j)->copy());
 					}
+					delete displayedIcons.at(j); displayedIcons.at(j) = NULL;
 				}
-				items_consumed++;
-				// Icon still active, now handled by the player -> Memory managed there
-				displayedIcons.erase(displayedIcons.begin() + j);
+				iconCollected = j;
 			}
 		}
-		if (items_consumed == 0) {
-			j++;
-		}
-		
 	}
+	if (iconCollected >= 0)
+		displayedIcons.erase(displayedIcons.begin() + iconCollected);
 
 	// Remove old icon?
 	vector<Icon>::size_type i = 0;

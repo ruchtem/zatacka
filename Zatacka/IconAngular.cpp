@@ -16,3 +16,7 @@ void IconAngular::alterKeyBlock(int* framesToBlock) {
 	*framesToBlock = 10;
 }
 
+Icon* IconAngular::copy() {
+	return new IconAngular(*this);
+}
+

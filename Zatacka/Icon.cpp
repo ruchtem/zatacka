@@ -34,8 +34,8 @@ void Icon::draw() {
 	window->draw(icon);
 }
 
-FloatRect Icon::getBounds() {
-	return icon.getGlobalBounds();
+bool Icon::contains(Vector2f position) {
+	return icon.getGlobalBounds().contains(position);
 }
 
 bool Icon::isForCollector() {
@@ -55,4 +55,8 @@ bool Icon::isActive() {
 
 void Icon::update(int framesToLive) {
 	this->framesToLive += framesToLive;
+}
+
+Icon* Icon::copy() {
+	return new Icon(*this);
 }

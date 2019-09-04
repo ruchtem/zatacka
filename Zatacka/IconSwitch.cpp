@@ -8,6 +8,7 @@ using namespace sf;
 IconSwitch::IconSwitch(RenderWindow* window, Texture* texture) : Icon(window, texture) { }
 
 void IconSwitch::alterKeys(Keyboard::Key* leftKey, Keyboard::Key* rightKey) {
+	cout << "IconSwitch frames to live " << framesToLive << endl;
 	framesToLive--;
 
 	if (!switched) {
@@ -27,4 +28,8 @@ void IconSwitch::alterKeys(Keyboard::Key* leftKey, Keyboard::Key* rightKey) {
 		*originalLeftKeyPtr = originalLeftKey;
 		*originalRightKeyPtr = originalRightKey;
 	}
+}
+
+Icon* IconSwitch::copy() {
+	return new IconSwitch(*this);
 }
