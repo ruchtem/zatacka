@@ -70,4 +70,6 @@ public:
 	vector<Player*> getPlayers();
 
 	void draw();
+
+	void prepareNewGame();
 };

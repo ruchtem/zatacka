@@ -26,7 +26,6 @@ int maxScore(vector<Player*> players) { //What is the highest score
 int main() {
 
 
-
 	Font font;
 	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
 		throw exception("Could not load font!");
@@ -40,9 +39,17 @@ int main() {
 	PlayerSelection playerSelection = PlayerSelection(window, &font);
 	
 	vector<Player*> players;
+
+	GameOver gameover = GameOver(window, &font, players);
 	
 
 	int collidedCounter = 0;
+
+	Vertex leftBorder[2];
+	leftBorder[0].position = sf::Vector2f(window->getSize().x / 100 * 7, 0);
+	leftBorder[0].color = sf::Color::Magenta;
+	leftBorder[1].position = sf::Vector2f(window->getSize().x / 100 * 7, window->getSize().y);
+	leftBorder[1].color = sf::Color::Magenta;
 
 	// main loop
 	while (window->isOpen())		
@@ -56,6 +63,10 @@ int main() {
 
 			if (stage == SelectPlayers)
 				playerSelection.processEvent(event);
+
+			if (stage == GameIsOver) {
+				gameover.processEvent(event);
+			}
 		}
 
 
@@ -97,13 +108,18 @@ int main() {
 			break;
 
 		case GameIsOver:
+			if (gameover.isNewGame()) {
+				gameover.initiateNewGame();
+				stage = SelectPlayers;
+				playerSelection.prepareNewGame();
+			}
 			collidedCounter = 0;
 			if (maxScore(players) > 10) {
 				stage = GameIsOver; //Game is either finished...
 			}
 			else {
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-					players.at(i)->nextRound(); //...or a new round should start
+					players.at(i)->nextRound(windowSize); //...or a new round should start
 				}
 				stage = CurvesRunning;
 			}
@@ -141,10 +157,12 @@ int main() {
 				players.at(i)->draw(window, &font, i);
 
 			}
+			window->draw(leftBorder, 4, sf::Lines);
 			break;
 
 		case GameIsOver:
-			GameOver gameover = GameOver(window, &font, players);
+			//GameOver gameover = GameOver(window, &font, players);
+			gameover.setPlayers(players);
 			gameover.draw();
 			break;
 		}

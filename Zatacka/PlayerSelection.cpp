@@ -302,3 +302,14 @@ bool PlayerSelection::isFinished() {
 bool PlayerSelection::isFullscreen() {
 	return fullscreenToggled;
 }
+
+void PlayerSelection::prepareNewGame() {
+	players[8] = { NULL };
+
+	bool isPlayerSelected = false;
+	int hoverSelection = -1;	// Mouse not hovering over a player
+	int selectedPlayer = -1;	// No player selected
+
+	bool playerSelectionFinished = false;
+	bool fullscreenToggled = false;
+}

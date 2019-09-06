@@ -24,6 +24,7 @@ private:
 	vector<Vector2f> pastPositions;
 	VertexArray curve;
 	vector<Vector2f> curveArray;
+	vector<CircleShape> circleCurve;
 
 	const float xOffset = 20;
 	const float yOffset = 20;
@@ -62,5 +63,5 @@ public:
 	void setCollided(bool collision) { isCollided = collision; }
 	Color getColor() { return color; }
 	
-	void nextRound();
+	void nextRound(Vector2u windowSize);
 };

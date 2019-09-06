@@ -43,21 +43,22 @@ private:
 	Text playerNames[8];
 	RectangleShape selectionRect;
 
-	Text selectedKeys[8][2];
 
-	bool isPlayerSelected = false;
-	int hoverSelection = -1;	// Mouse not hovering over a player
-	int selectedPlayer = -1;	// No player selected
-
-	bool playerSelectionFinished = false;
-	bool fullscreenToggled = false;
+	bool newGame = false;
 
 public:
 
 	GameOver(RenderWindow* window, Font* font, vector<Player*> players);
+	GameOver(RenderWindow* window, Font* font);
 
-	void setPlayers(vector<Player*> players) { this->players = players; }
+	void setPlayers(vector<Player*> players);
 
 	void draw();
+
+	bool isNewGame() { return newGame; }
+	void initiateNewGame();
+
+	void registerNewGameClicked(const Event event);
+	void processEvent(const Event event);
 };
 

@@ -21,6 +21,7 @@ Player::Player(const Color color, const string name) {
 	curveDot = CircleShape(4.f);
 	curveDot.setFillColor(color);
 	curveDot.setPosition(position);
+	circleCurve.push_back(curveDot);
 }
 
 void Player::setLeftKey(Keyboard::Key key) {
@@ -67,6 +68,7 @@ void Player::move() {
 	curve.append(Vertex(Vector2f(x, y), color));
 	curveArray.push_back(Vector2f(x, y));
 	curveDot.setPosition(Vector2f(x - 2.f, y - 2.f));
+	circleCurve.push_back(curveDot);
 }
 
 void Player::draw(RenderWindow* window, Font* font, int i) {
@@ -82,20 +84,25 @@ void Player::draw(RenderWindow* window, Font* font, int i) {
 
 	window->draw(curve);
 	window->draw(curveDot);
+
+	for (vector<CircleShape>::size_type i = 0; i < circleCurve.size(); i++) {
+		window->draw(circleCurve.at(i));
+	}
 	window->draw(scoreText);
+
 }
 
-bool Player::collision(Image image, vector<Player*> players, sf::Vector2u windowSize) {
+bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize) {
 	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 		if (!players.at(i)->curveArray.empty()) {
 			//cout << "curve Array not empty!";
 			Vector2f point = curveArray.back();
 
-			if (point.x >= windowSize.x || point.x <= 0 || point.y >= windowSize.y || point.y <= 0) {
+			if (point.x + 8 * cos(angle) >= windowSize.x || point.x + 8 * cos(angle) <= 0 || point.y + 8 * sin(angle) >= windowSize.y || point.y + 8 * sin(angle) <= 0) {
 				cout << "Collision";
 				return true;
 			}
-			if (image.getPixel(point.x, point.y) == players.at(i)->color && color != players.at(i)->color) {
+			if (image.getPixel(point.x + 8 * cos(angle), point.y + 8 * sin(angle)) != Color::Black) {
 				//Curve2 contains Point of Curve1 -> Collision
 				cout << "Collision";
 				return true;
@@ -105,11 +112,12 @@ bool Player::collision(Image image, vector<Player*> players, sf::Vector2u window
 	return false;
 }
 
-void Player::nextRound() {
+void Player::nextRound(Vector2u windowSize) {
 	isCollided = false;
 	curve.clear();
 	curveArray.clear();
+	circleCurve.clear();
 	pastPositions.clear();
-	position = Vector2f(rand() % 800, rand() % 600);
+	position = Vector2f(rand() % (windowSize.x - windowSize.x / 100 * 7) + windowSize.x / 100 * 7, rand() % windowSize.y);
 }
 
