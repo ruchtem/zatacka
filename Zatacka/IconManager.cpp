@@ -53,13 +53,15 @@ void IconManager::onNewFrame() {
 				}
 				else {
 					for (vector<Player*>::size_type k = 0; k < players.size(); ++k) {
-						// All others
+						// Copies for all other players, cause they take care of it individually
 						if (k != i)
 							players.at(k)->addConsumedIcon(displayedIcons.at(j)->copy());
 					}
+					// We have to clear up the original now cause we copied
 					delete displayedIcons.at(j); displayedIcons.at(j) = NULL;
 				}
 				iconCollected = j;
+				break;
 			}
 		}
 	}
