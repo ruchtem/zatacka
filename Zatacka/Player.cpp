@@ -66,7 +66,7 @@ void Player::move() {
 	
 	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 		if (consumedIcons.at(i)->isActive()) {
-			consumedIcons.at(i)->alterSpeed(&speedChange);
+			consumedIcons.at(i)->alterSpeed(&speedChange, &angleChange);
 			consumedIcons.at(i)->alterAngle(&angleChange);
 			consumedIcons.at(i)->alterKeys(&leftKey, &rightKey);
 			consumedIcons.at(i)->alterKeyBlock(&blockChange);
@@ -92,9 +92,6 @@ void Player::move() {
 		numFramesToBlockKeyInput--;
 	}
 
-	
-	
-	
 	// New position based on speed and angle
 	float x = position.x + speedChange * cos(angle);
 	float y = position.y + speedChange * sin(angle);
@@ -118,18 +115,28 @@ void Player::addConsumedIcon(Icon* icon) {
 		consumedIcons.push_back(icon);
 	}
 	else {
-		// We need to check if the current item is already active. If so extend its time to live
-		bool updated = false;
-		for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
-			if (consumedIcons.at(i)->getType() == icon->getType()) {
-				consumedIcons.at(i)->update(icon->getFramesToLive());
-				delete icon; icon = NULL;
-				updated = true;
+		if (icon->getUpdateType() == IncreaseTime) {
+			// Increase the time to live for the same kind of icon
+			bool updated = false;
+			for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
+				if (consumedIcons.at(i)->getType() == icon->getType()) {
+					consumedIcons.at(i)->update(icon->getFramesToLive());
+					delete icon; icon = NULL;
+					updated = true;
+				}
+			}
+			if (!updated) {
+				consumedIcons.push_back(icon);
 			}
 		}
-		if (!updated) {
+		else if (icon->getUpdateType() == Additive) {
+			// These kind of icons work additive
 			consumedIcons.push_back(icon);
 		}
+		else {
+			throw exception("Unknown update type for icon.");
+		}
+		
 	}
 	
 	

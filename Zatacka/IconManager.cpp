@@ -22,13 +22,16 @@ IconManager::IconManager(RenderWindow* window) {
 
 Icon* IconManager::newRandomIcon() {
 	map<string, Texture>::iterator it = textureMap.begin();
-	advance(it, rand() % textureMap.size());
+	advance(it, rand() % textureMap.size());	// pick a random element from the icon texture map
 
 	if (it->first == "angular") {
 		return new IconAngular(window, &(it->second));
 	}
 	if (it->first == "switch") {
 		return new IconSwitch(window, &(it->second));
+	}
+	if (it->first == "faster") {
+		return new IconFaster(window, &(it->second));
 	}
 	throw exception("Trying to create a new random item which is not defined.");
 }

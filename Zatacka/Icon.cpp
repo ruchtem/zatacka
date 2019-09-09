@@ -57,6 +57,10 @@ void Icon::update(int framesToLive) {
 	this->framesToLive += framesToLive;
 }
 
+UpdateType Icon::getUpdateType() {
+	return Additive;	// Should never been used.
+}
+
 Icon* Icon::copy() {
 	return new Icon(*this);
 }

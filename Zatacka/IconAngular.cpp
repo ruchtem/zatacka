@@ -16,6 +16,10 @@ void IconAngular::alterKeyBlock(int* framesToBlock) {
 	*framesToBlock = 10;
 }
 
+UpdateType IconAngular::getUpdateType() {
+	return IncreaseTime;
+}
+
 Icon* IconAngular::copy() {
 	return new IconAngular(*this);
 }

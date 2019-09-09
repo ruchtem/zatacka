@@ -30,6 +30,10 @@ void IconSwitch::alterKeys(Keyboard::Key* leftKey, Keyboard::Key* rightKey) {
 	}
 }
 
+UpdateType IconSwitch::getUpdateType() {
+	return IncreaseTime;
+}
+
 Icon* IconSwitch::copy() {
 	return new IconSwitch(*this);
 }
