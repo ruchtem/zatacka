@@ -67,6 +67,8 @@ void IconManager::onNewFrame() {
 				break;
 			}
 		}
+		if (iconCollected >= 0)
+			break;
 	}
 	if (iconCollected >= 0)
 		displayedIcons.erase(displayedIcons.begin() + iconCollected);
