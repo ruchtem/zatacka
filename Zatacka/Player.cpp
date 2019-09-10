@@ -6,7 +6,7 @@
 using namespace std;
 using namespace sf;
 
-Player::Player(RenderWindow* window, Font* font const Color color, const string name) {
+Player::Player(RenderWindow* window, Font* font, const Color color, const string name, const int rank) {
 	this->window = window;
 	this->font = font;
 	this->color = color;
