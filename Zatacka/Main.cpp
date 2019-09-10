@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "PlayerSelection.h"
 #include "GameOver.h"
+#include "Icon.h"
+#include "IconManager.h"
 
 using namespace std;
 using namespace sf;
@@ -37,7 +39,8 @@ int main() {
 	GameStages stage = SelectPlayers;
 
 	PlayerSelection playerSelection = PlayerSelection(window, &font);
-	
+	IconManager iconManager = IconManager(window);
+
 	vector<Player*> players;
 
 	GameOver gameover = GameOver(window, &font, players);
@@ -82,6 +85,7 @@ int main() {
 		case SelectPlayers:
 			if (playerSelection.isFinished()) {
 				players = playerSelection.getPlayers();
+				iconManager.setPlayers(players);
 				stage = CurvesRunning;
 			}
 			break;
@@ -105,6 +109,8 @@ int main() {
 					}
 				}
 			}
+
+			iconManager.onNewFrame();
 			break;
 
 		case GameIsOver:
@@ -121,6 +127,7 @@ int main() {
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 					players.at(i)->nextRound(windowSize); //...or a new round should start
 				}
+				iconManager.reset();
 				stage = CurvesRunning;
 			}
 			break;
@@ -153,9 +160,9 @@ int main() {
 			break;
 
 		case CurvesRunning:
+			iconManager.draw();
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-				players.at(i)->draw(window, &font, i);
-
+				players.at(i)->draw();
 			}
 			window->draw(leftBorder, 4, sf::Lines);
 			break;

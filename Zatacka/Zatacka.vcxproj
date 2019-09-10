@@ -117,6 +117,10 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\libs\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;gdi32.lib;opengl32.lib;winmm.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /s "$(ProjectDir)resources\arial.ttf" "$(OutDir)resources\"</Command>
+      <Message>Copys the font file to be available for the release build</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -135,15 +139,26 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)\libs\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /s "$(ProjectDir)resources\arial.ttf" "$(OutDir)resources\"</Command>
+      <Message>Copys the font file to be available for the release build</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Icon.cpp" />
+    <ClCompile Include="IconAngular.cpp" />
+    <ClCompile Include="IconFaster.cpp" />
+    <ClCompile Include="IconSwitch.cpp" />
+    <ClCompile Include="IconManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerSelection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Icon.h" />
+    <ClInclude Include="IconManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerSelection.h" />
   </ItemGroup>

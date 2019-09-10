@@ -1,13 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Icon.h"
 
 using namespace sf;
 using namespace std;
 
 class Player {
 private:
+	RenderWindow* window;
+	Font* font;
 	Color color;
 	string name;
+	int rank;
 	float speed = 1;
 	Keyboard::Key leftKey = Keyboard::Key::Unknown;
 	Keyboard::Key rightKey = Keyboard::Key::Unknown;
@@ -18,7 +22,6 @@ private:
 	// The dot to be moved
 	CircleShape curveDot;
 	
-
 	Vector2f position;
 	float angle;	// Measured in radians
 	vector<Vector2f> pastPositions;
@@ -29,18 +32,23 @@ private:
 	const float xOffset = 20;
 	const float yOffset = 20;
 
+	vector<Icon*> consumedIcons;
+	int numFramesToBlockKeyInput = 0;
+
 	float textDistance = 40;
 	float playersOffset = yOffset;
 	int characterSize = 24;
 
 	bool isCollided;
 
-public:
-	const float MIN_RADIUS = 0.02f;
-	const int HOLE_DISTANCE = 10;
 	const float PI = 3.14159265358979f;
+	const float MIN_RADIUS = 0.02f;
+	const float STD_SPEED = 1;
 
-	Player(const Color color, const string username);
+public:
+	const int HOLE_DISTANCE = 10;
+
+	Player(RenderWindow* window, Font* font, const Color color, const string username, const int rank);
 
 	inline void setScore(int score) { this->score = score; }
 	int getScore() { return score; }
@@ -52,11 +60,15 @@ public:
 	void resetKeys();
 
 	void move();
-	void draw(RenderWindow* window, Font* font, int i);
+	void draw();
+
+	void addConsumedIcon(Icon* icon);
+	void setFramesToBlockKeyInput(int numFrames);
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 
 	CircleShape getDot() { return curveDot; }
+	Vector2f getPosition() { return position; }
 	VertexArray getCurve() { return curve; }
 	vector<Vector2f> getCurveArray() { return curveArray; }
 	bool getCollided() { return isCollided; }
