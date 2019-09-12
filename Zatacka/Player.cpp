@@ -179,6 +179,9 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 }
 
 void Player::nextRound(Vector2u windowSize) {
+	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
+		delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
+	}
 	consumedIcons.clear();	// TODO Memory leak!
 	isCollided = false;
 	curve.clear();
