@@ -152,10 +152,7 @@ void Player::addConsumedIcon(Icon* icon) {
 		else {
 			throw exception("Unknown update type for icon.");
 		}
-		
 	}
-	
-	
 }
 
 bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize) {
@@ -182,7 +179,7 @@ void Player::nextRound(Vector2u windowSize) {
 	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 		delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 	}
-	consumedIcons.clear();	// TODO Memory leak!
+	consumedIcons.clear();
 	isCollided = false;
 	curve.clear();
 	curveArray.clear();

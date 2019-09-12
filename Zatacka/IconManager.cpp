@@ -33,6 +33,9 @@ Icon* IconManager::newRandomIcon() {
 	if (it->first == "faster") {
 		return new IconFaster(window, &(it->second));
 	}
+	if (it->first == "slower") {
+		return new IconSlower(window, &(it->second));
+	}
 	throw exception("Trying to create a new random item which is not defined.");
 }
 
@@ -73,15 +76,12 @@ void IconManager::onNewFrame() {
 	if (iconCollected >= 0)
 		displayedIcons.erase(displayedIcons.begin() + iconCollected);
 
-	// Remove old icon?
-	vector<Icon>::size_type i = 0;
-	while (i < displayedIcons.size()) {
+	// Remove old icon? Again we handle just one, all others are handled in the next frame
+	for (vector<Icon*>::size_type i = 0; i < displayedIcons.size(); ++i) {
 		if (displayedIcons.at(i)->getFramesDisplayed() > 500) {
 			delete displayedIcons.at(i); displayedIcons.at(i) = NULL;
 			displayedIcons.erase(displayedIcons.begin() + i);
-		}
-		else {
-			++i;
+			break;
 		}
 	}
 	

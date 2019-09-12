@@ -19,8 +19,8 @@ private:
 	map<string, string> textureFileNames = {
 		{"angular", "resources\\angular.png" },
 		{"switch", "resources\\switch-keys.png" },
-		{"faster", "resources\\faster.png"}
-		//{"slower", "resources\\slower.png"}
+		{"faster", "resources\\faster.png"},
+		{"slower", "resources\\slower.png"}
 	};
 	map<string, Texture> textureMap;
 

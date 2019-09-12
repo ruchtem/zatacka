@@ -149,6 +149,7 @@
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="IconAngular.cpp" />
     <ClCompile Include="IconFaster.cpp" />
+    <ClCompile Include="IconSlower.cpp" />
     <ClCompile Include="IconSwitch.cpp" />
     <ClCompile Include="IconManager.cpp" />
     <ClCompile Include="Player.cpp" />

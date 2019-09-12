@@ -78,3 +78,15 @@ public:
 	virtual Icon* copy();
 	virtual void alterSpeed(float* speed, float* angle);
 };
+
+class IconSlower : public Icon {
+private:
+	const float DECREASE_SPEED = 0.5f;
+	const float DECREASE_MIN_ANGLE = 0.01f;
+public:
+	virtual UpdateType getUpdateType();
+	virtual string getType() { return "slower"; }
+	IconSlower(RenderWindow* window, Texture* texture);
+	virtual Icon* copy();
+	virtual void alterSpeed(float* speed, float* angle);
+};
