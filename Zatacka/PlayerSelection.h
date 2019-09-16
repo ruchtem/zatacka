@@ -31,9 +31,12 @@ private:
 	Player* players[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 	RenderWindow* window;
 	
-	const float xOffset = 20;
-	const float yOffset = 20;
-	const float selectionSpace = 4;
+	const float xOffset = .02;
+	const float yOffset = .02;
+	const float selectionSpace = .07;
+	const float textSize = .05;
+	const float playerNamesOffset = .1;
+	const float startButtonOffset = .9;
 
 	Font* font;		// Necessary to render text
 
@@ -62,11 +65,13 @@ private:
 public:
 
 	PlayerSelection(RenderWindow* window, Font* font);
+	void init();
 
 	void processEvent(const Event event);
 
 	bool isFinished();
-	bool isFullscreen();
+	bool shouldMakeFullscreen();
+	void isFullscreenToggled(bool isFullscreen);
 	vector<Player*> getPlayers();
 
 	void draw();

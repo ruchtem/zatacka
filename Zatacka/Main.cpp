@@ -34,7 +34,7 @@ int main() {
 
 	RenderWindow* window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
 	window->setFramerateLimit(60);
-	bool fullscreen = false;
+	bool fullscreenToggled = false;
 
 	GameStages stage = SelectPlayers;
 
@@ -54,9 +54,18 @@ int main() {
 	leftBorder[1].position = sf::Vector2f(window->getSize().x / 100 * 7, window->getSize().y);
 	leftBorder[1].color = sf::Color::Magenta;
 
+	//Create a screenshot of the game before moving
+	sf::Vector2u windowSize = window->getSize();
+	sf::Texture texture;
+	texture.create(windowSize.x, windowSize.y);
+	texture.update(*window);
+	sf::Image screenshot = texture.copyToImage();
+
 	// main loop
-	while (window->isOpen())		
+	while (window->isOpen())
 	{
+		cout << "window " << window << endl;
+		
 		// Handle events
 		Event event;
 		while (window->pollEvent(event))
@@ -64,21 +73,36 @@ int main() {
 			if (event.type == Event::Closed)
 				window->close();
 
-			if (stage == SelectPlayers)
+			if (stage == SelectPlayers) {
 				playerSelection.processEvent(event);
+
+				if (playerSelection.shouldMakeFullscreen() && !fullscreenToggled) {
+					fullscreenToggled = true;
+					window->close();
+					delete window;
+					window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
+					window->setFramerateLimit(60);
+					playerSelection.isFullscreenToggled(true);
+				}
+
+				// Turn fullscreen off
+				if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
+					if (fullscreenToggled) {
+						fullscreenToggled = false;
+						window->close();
+						delete window;
+						window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
+						window->setFramerateLimit(60);
+						playerSelection.isFullscreenToggled(false);
+					}
+				}
+			}
 
 			if (stage == GameIsOver) {
 				gameover.processEvent(event);
 			}
+
 		}
-
-
-		//Create a screenshot of the game before moving
-		sf::Vector2u windowSize = window->getSize();
-		sf::Texture texture;
-		texture.create(windowSize.x, windowSize.y);
-		texture.update(*window);
-		sf::Image screenshot = texture.copyToImage();
 
 		// Controll game flow
 		switch (stage) {
@@ -131,22 +155,6 @@ int main() {
 				stage = CurvesRunning;
 			}
 			break;
-		}
-
-		
-		if (playerSelection.isFullscreen() && !fullscreen) {
-			fullscreen = true;
-			window->close();
-			delete window;
-			window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
-			window->setFramerateLimit(60);
-		}
-		else if (!playerSelection.isFullscreen() && fullscreen) {
-				fullscreen = false;
-				window->close();
-				delete window;
-				window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
-				window->setFramerateLimit(60);
 		}
 
 
