@@ -21,8 +21,8 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 		icon.setColor(Color::Green);
 	}
 
-	Vector2u windowSize = window->getSize();
-	icon.setPosition(rand() % windowSize.x, rand() % windowSize.y);
+	this->windowSize = window->getSize();
+	icon.setPosition(rand() % (windowSize.x - windowSize.x / 100 * 13) + (windowSize.x / 100 * 10), rand() % (windowSize.y - windowSize.y / 100 * 13) + (windowSize.y / 100 * 10)); //Setting position with distance to window bounds
 }
 
 int Icon::getFramesDisplayed() {
@@ -35,7 +35,17 @@ void Icon::draw() {
 }
 
 bool Icon::contains(Vector2f position) {
-	return icon.getGlobalBounds().contains(position);
+	float xUnit = windowSize.x / 100;
+	float yUnit = windowSize.y / 100;
+	float xCorrection = 1.5 * xUnit;
+	float yCorrection = 1.5 * yUnit;
+
+	float xLeft = icon.getGlobalBounds().left - xCorrection;
+	float xRight = icon.getGlobalBounds().left + icon.getGlobalBounds().width + xCorrection;
+	float yTop = icon.getGlobalBounds().top - yCorrection;
+	float yBottom = icon.getGlobalBounds().top + icon.getGlobalBounds().height + yCorrection;
+	return (position.x > xLeft && position.x < xRight && position.y > yTop && position.y < yBottom);
+	//return icon.getGlobalBounds().contains(position);
 }
 
 bool Icon::isForCollector() {

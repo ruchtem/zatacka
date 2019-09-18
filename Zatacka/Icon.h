@@ -13,6 +13,7 @@ enum UpdateType {
 class Icon {
 protected:
 	RenderWindow* window;
+	Vector2u windowSize;
 	Texture* texture;
 	Sprite icon;
 	bool forCollector;

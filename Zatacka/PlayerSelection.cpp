@@ -304,12 +304,21 @@ bool PlayerSelection::isFullscreen() {
 }
 
 void PlayerSelection::prepareNewGame() {
-	players[8] = { NULL };
+	/*delete selectedKeys;
+	delete players;
+
+	delete& headline;
+	delete& startButton;
+	delete& fullscreen;
+
+
 
 	bool isPlayerSelected = false;
 	int hoverSelection = -1;	// Mouse not hovering over a player
 	int selectedPlayer = -1;	// No player selected
 
 	bool playerSelectionFinished = false;
-	bool fullscreenToggled = false;
+	bool fullscreenToggled = false;*/
+
+	PlayerSelection(window, font);
 }

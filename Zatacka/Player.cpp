@@ -17,7 +17,7 @@ Player::Player(RenderWindow* window, Font* font, const Color color, const string
 	curve = VertexArray(PrimitiveType::LineStrip);
 
 	// Initialize random starting position and angle
-	position = Vector2f(rand() % window->getSize().x, rand() % window->getSize().y);
+	position = Vector2f(rand() % (window->getSize().x - (window->getSize().x / 100 * 21)) + (window->getSize().x / 100 * 14), rand() % (window->getSize().y - window->getSize().y / 100 * 14) + (window->getSize().y / 100 * 7));
 	angle = 0;
 
 	curveDot = CircleShape(4.f);
@@ -125,6 +125,10 @@ void Player::draw() {
 	window->draw(scoreText);
 }
 
+Vector2f Player::getPosition() {
+	return this->position;
+}
+
 void Player::addConsumedIcon(Icon* icon) {
 	cout << "Player: " << name << " consumed an icon!" << endl;
 	if (consumedIcons.empty()) {
@@ -159,13 +163,17 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 		if (!players.at(i)->curveArray.empty()) {
 			//cout << "curve Array not empty!";
-			Vector2f point = curveArray.back();
+			Vector2f position = curveArray.back();
 
-			if (point.x + 8 * cos(angle) >= windowSize.x || point.x + 8 * cos(angle) <= 0 || point.y + 8 * sin(angle) >= windowSize.y || point.y + 8 * sin(angle) <= 0) {
+			float xUnit = windowSize.x / 100;
+			float yUnit = windowSize.y / 100;
+			float xCollisionCorrection = 1.3 * xUnit;
+			float yCollisionCorrection = 1.3 * yUnit;
+			if (position.x + xCollisionCorrection * cos(angle) >= windowSize.x || position.x + xCollisionCorrection * cos(angle) <= 0 || position.y + yCollisionCorrection * sin(angle) >= windowSize.y || position.y + yCollisionCorrection * sin(angle) <= 0) {
 				cout << "Collision";
 				return true;
 			}
-			if (image.getPixel(point.x + 8 * cos(angle), point.y + 8 * sin(angle)) != Color::Black) {
+			if (image.getPixel(position.x + yCollisionCorrection * cos(angle), position.y + yCollisionCorrection * sin(angle)) != Color::Black) {
 				//Curve2 contains Point of Curve1 -> Collision
 				cout << "Collision";
 				return true;
@@ -185,6 +193,6 @@ void Player::nextRound(Vector2u windowSize) {
 	curveArray.clear();
 	circleCurve.clear();
 	pastPositions.clear();
-	position = Vector2f(rand() % (windowSize.x - windowSize.x / 100 * 7) + windowSize.x / 100 * 7, rand() % windowSize.y);
+	position = Vector2f((rand() % window->getSize().x - window->getSize().x / 100 * 21) + window->getSize().x / 100 * 14, (rand() % window->getSize().y - window->getSize().y / 100 * 14) + window->getSize().y / 100 * 7);
 }
 

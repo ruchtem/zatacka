@@ -12,7 +12,7 @@ private:
 	Color color;
 	string name;
 	int rank;
-	float speed = 1;
+	float speed = 4;
 	Keyboard::Key leftKey = Keyboard::Key::Unknown;
 	Keyboard::Key rightKey = Keyboard::Key::Unknown;
 
@@ -66,14 +66,16 @@ public:
 	void setFramesToBlockKeyInput(int numFrames);
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
+	Vector2f getPosition();
 
 	CircleShape getDot() { return curveDot; }
-	Vector2f getPosition() { return position; }
+
 	VertexArray getCurve() { return curve; }
 	vector<Vector2f> getCurveArray() { return curveArray; }
 	bool getCollided() { return isCollided; }
 	void setCollided(bool collision) { isCollided = collision; }
 	Color getColor() { return color; }
+	float getAngle() { return angle; }
 	
 	void nextRound(Vector2u windowSize);
 };

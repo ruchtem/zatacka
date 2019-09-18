@@ -28,6 +28,9 @@ int maxScore(vector<Player*> players) { //What is the highest score
 int main() {
 
 
+	srand(time(0)); //Initializing rand for better pseudo random starting positions
+
+
 	Font font;
 	if (!font.loadFromFile("resources/arial.ttf"))	// Necessary to render text
 		throw exception("Could not load font!");
@@ -84,6 +87,7 @@ int main() {
 		switch (stage) {
 		case SelectPlayers:
 			if (playerSelection.isFinished()) {
+				cout << "Buuuuuuhhhh";
 				players = playerSelection.getPlayers();
 				iconManager.setPlayers(players);
 				stage = CurvesRunning;
@@ -113,22 +117,25 @@ int main() {
 			iconManager.onNewFrame();
 			break;
 
+
 		case GameIsOver:
 			if (gameover.isNewGame()) {
 				gameover.initiateNewGame();
 				stage = SelectPlayers;
 				playerSelection.prepareNewGame();
 			}
-			collidedCounter = 0;
-			if (maxScore(players) > 10) {
-				stage = GameIsOver; //Game is either finished...
-			}
 			else {
-				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-					players.at(i)->nextRound(windowSize); //...or a new round should start
+				collidedCounter = 0;
+				if (maxScore(players) > 0) {
+					stage = GameIsOver; //Game is either finished...
 				}
-				iconManager.reset();
-				stage = CurvesRunning;
+				else {
+					for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+						players.at(i)->nextRound(windowSize); //...or a new round should start
+					}
+					iconManager.reset();
+					stage = CurvesRunning;
+				}
 			}
 			break;
 		}
