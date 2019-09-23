@@ -46,7 +46,7 @@ int main() {
 
 	vector<Player*> players;
 
-	GameOver gameover = GameOver(window, &font, players);
+	GameOver gameover = GameOver(window, &font);
 	
 
 	int collidedCounter = 0;

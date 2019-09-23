@@ -7,27 +7,6 @@ using namespace sf;
 
 class GameOver {
 private:
-	const string names[8] = {
-		"Greenly",
-		"Red Rat",
-		"Greydon",
-		"Purple Fish",
-		"Blueband",
-		"Yellomingo",
-		"Cyanus",
-		"Whitey"
-	};
-
-	const Color colors[8] = {
-		Color::Green,
-		Color::Red,
-		Color(150, 150, 150),
-		Color::Magenta,
-		Color::Blue,
-		Color::Yellow,
-		Color::Cyan,
-		Color::White };
-
 	vector<Player*> players;
 	RenderWindow* window;
 
@@ -47,8 +26,6 @@ private:
 	bool newGame = false;
 
 public:
-
-	GameOver(RenderWindow* window, Font* font, vector<Player*> players);
 	GameOver(RenderWindow* window, Font* font);
 
 	void setPlayers(vector<Player*> players);
