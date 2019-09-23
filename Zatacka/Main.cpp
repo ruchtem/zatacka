@@ -99,7 +99,7 @@ int main() {
 				if (!players.at(i)->getCollided()) // Only move, if not collided
 					players.at(i)->move();			
 			}
-			if (collidedCounter == players.size()) {
+			if (collidedCounter == players.size() || maxScore(players) > 10) {
 				stage = GameIsOver;
 				break;
 			}
@@ -127,16 +127,16 @@ int main() {
 			}
 			else {
 				collidedCounter = 0;
-				if (maxScore(players) > 0) {
+				if (maxScore(players) > 10) {
 					stage = GameIsOver; //Game is either finished...
 				}
 				else {
-					for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-						players.at(i)->nextRound(windowSize); //...or a new round should start
-					}
-					iconManager.reset();
-					stage = CurvesRunning;
+					stage = CurvesRunning; //...or a new round should start
 				}
+				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+					players.at(i)->nextRound(windowSize);
+				}
+				iconManager.reset();
 			}
 			break;
 		}
