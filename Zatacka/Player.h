@@ -76,6 +76,7 @@ public:
 	void setCollided(bool collision) { isCollided = collision; }
 	Color getColor() { return color; }
 	float getAngle() { return angle; }
+	String getName() { return name; }
 	
 	void nextRound(Vector2u windowSize);
 };

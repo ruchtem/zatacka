@@ -105,8 +105,8 @@ void GameOver::setPlayers(vector<Player*> players) {
 	float rightKeyOffset = xOffset + 400;
 
 	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-		playerNames[i].setString(names[i] + " " + to_string(players.at(i)->getScore()));
-		playerNames[i].setFillColor(colors[i]);
+		playerNames[i].setString(players.at(i)->getName() + " " + to_string(players.at(i)->getScore()));
+		playerNames[i].setFillColor(players.at(i)->getColor());
 		playerNames[i].setFont((*font));
 		playerNames[i].setCharacterSize(characterSize);
 		playerNames[i].setStyle(Text::Bold);
@@ -118,6 +118,6 @@ void GameOver::setPlayers(vector<Player*> players) {
 void GameOver::initiateNewGame() {
 	newGame = false;
 	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-		delete players.at(i);
+		playerNames[i].setString("");
 	}
 }

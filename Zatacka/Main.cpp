@@ -120,9 +120,10 @@ int main() {
 
 		case GameIsOver:
 			if (gameover.isNewGame()) {
+				cout << "Trueeeeee";
 				gameover.initiateNewGame();
-				stage = SelectPlayers;
 				playerSelection.prepareNewGame();
+				stage = SelectPlayers;
 			}
 			else {
 				collidedCounter = 0;

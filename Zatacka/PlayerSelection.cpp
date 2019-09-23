@@ -312,13 +312,24 @@ void PlayerSelection::prepareNewGame() {
 	delete& fullscreen;
 
 
-
-	bool isPlayerSelected = false;
-	int hoverSelection = -1;	// Mouse not hovering over a player
-	int selectedPlayer = -1;	// No player selected
-
-	bool playerSelectionFinished = false;
+	bool 
 	bool fullscreenToggled = false;*/
+	cout << "Jop passier";
 
-	PlayerSelection(window, font);
+	/*for (int i = 0; i < 8; i++) {
+		players[i]->resetKeys();
+	}*/
+
+	for (int i = 0; i < 8; i++) {
+		players[i] = NULL;
+	}
+
+
+	isPlayerSelected = false;
+	hoverSelection = -1;	// Mouse not hovering over a player
+	selectedPlayer = -1;	// No player selected
+
+	playerSelectionFinished = false;
+
+	cout << playerSelectionFinished;
 }
