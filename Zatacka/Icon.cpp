@@ -22,7 +22,13 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 	}
 
 	Vector2u windowSize = window->getSize();
-	icon.setPosition(rand() % windowSize.x, rand() % windowSize.y);
+	int x = rand() % (windowSize.x - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
+	int y = rand() % (windowSize.y - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
+	icon.setPosition(x, y);
+	
+	float newSize = windowSize.x * SCALING_FACTOR;
+	float scaling = newSize / ICON_SIZE;
+	icon.setScale(Vector2f(scaling, scaling));
 }
 
 int Icon::getFramesDisplayed() {

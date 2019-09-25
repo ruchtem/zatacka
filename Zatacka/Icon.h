@@ -18,8 +18,11 @@ protected:
 	bool forCollector;
 	int framesDisplayed = 0;
 	int framesToLive = 200;
-	float PI = 3.14159265358979f;
-	float MIN_RADIUS = 0.02f;
+	const float PI = 3.14159265358979f;
+	const float MIN_RADIUS = 0.02f;
+	const float SCALING_FACTOR = 1.f / 32.f;
+	const int ICON_SIZE = 25;
+	const int ICON_FREE_BORDER = 30;
 
 public:
 	Icon(RenderWindow* window, Texture* texture);

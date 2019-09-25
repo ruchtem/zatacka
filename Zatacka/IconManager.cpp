@@ -10,7 +10,7 @@ using namespace std;
 IconManager::IconManager(RenderWindow* window) {
 	this->window = window;
 
-	// Necessary to do here because textures are shared resources.
+	// Necessary to load here because textures are shared resources.
 	map<string, string>::iterator it;
 	for (it = textureFileNames.begin(); it != textureFileNames.end(); it++) {
 		if (!textureMap[it->first].loadFromFile(textureFileNames[it->first])) {
@@ -48,12 +48,12 @@ void IconManager::onNewFrame() {
 	
 	// Check if a player collected an item
 	// Restriction: Process only one icon collection per frame (the second one is processed in the
-	// proceeding frame anyways as the player is still within bounds).
+	// proceeding frame anyways as the other player is for the next frame also within the icon's bounds).
 	int iconCollected = -1;
 	for (vector<Icon*>::size_type j = 0; j < displayedIcons.size(); ++j) {
 		for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 			if (displayedIcons.at(j)->contains(players.at(i)->getPosition())) {
-				// player i collected an icon! Now, whom does it affect?
+				// player i collected icon j! Now, whom does it affect?
 				if (displayedIcons.at(j)->isForCollector()) {
 					players.at(i)->addConsumedIcon(displayedIcons.at(j));
 				}
