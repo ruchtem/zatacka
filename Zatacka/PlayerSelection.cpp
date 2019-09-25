@@ -130,13 +130,13 @@ void PlayerSelection::init() {
 	startButton.setCharacterSize(h * textSize);
 	startButton.setFillColor(Color::White);
 	startButton.setStyle(Text::Bold);
-	startButton.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset + h * startButtonOffset);
+	startButton.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset + h * .9);
 
 	fullscreen.setFont((*font));
 	fullscreen.setString("Fullscreen");
-	fullscreen.setCharacterSize(20);
+	fullscreen.setCharacterSize(h * textSize);
 	fullscreen.setFillColor(Color::White);
-	fullscreen.setPosition(xOffset + 600.f, yOffset + 500.f);
+	fullscreen.setPosition(w * xOffset + w * .7, h * yOffset + h * .9);
 
 	float textDistance = h * selectionSpace;
 	float playersOffset = h * yOffset + h * .1;

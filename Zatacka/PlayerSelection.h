@@ -31,12 +31,11 @@ private:
 	Player* players[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 	RenderWindow* window;
 	
-	const float xOffset = .02;
+	const float xOffset = .02;	// percentages of window size
 	const float yOffset = .02;
 	const float selectionSpace = .07;
 	const float textSize = .05;
 	const float playerNamesOffset = .1;
-	const float startButtonOffset = .9;
 
 	Font* font;		// Necessary to render text
 
