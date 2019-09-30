@@ -54,13 +54,6 @@ int main() {
 	leftBorder[1].position = sf::Vector2f(window->getSize().x / 100 * 7, window->getSize().y);
 	leftBorder[1].color = sf::Color::Magenta;
 
-	//Create a screenshot of the game before moving
-	sf::Vector2u windowSize = window->getSize();
-	sf::Texture texture;
-	texture.create(windowSize.x, windowSize.y);
-	texture.update(*window);
-	sf::Image screenshot = texture.copyToImage();
-
 	// main loop
 	while (window->isOpen())
 	{
@@ -103,6 +96,13 @@ int main() {
 			}
 
 		}
+
+		//Create a screenshot of the game before moving
+		sf::Vector2u windowSize = window->getSize();
+		sf::Texture texture;
+		texture.create(windowSize.x, windowSize.y);
+		texture.update(*window);
+		sf::Image screenshot = texture.copyToImage();
 
 		// Controll game flow
 		switch (stage) {
