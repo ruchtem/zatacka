@@ -5,6 +5,10 @@
 #include "GameOver.h"
 #include "Icon.h"
 #include "IconManager.h"
+#include <thread>
+#include <chrono>
+#include <dos.h>
+
 
 using namespace std;
 using namespace sf;
@@ -23,6 +27,26 @@ int maxScore(vector<Player*> players) { //What is the highest score
 		}
 	}
 	return maxScore;
+}
+
+void showCountdown(Text countdown, RenderWindow* window) {
+	sf::Vector2u windowSize = window->getSize();
+	countdown.setPosition(windowSize.x / 2 - 48, windowSize.y / 2 - 48);
+	countdown.setString("3");
+	window->clear();
+	window->draw(countdown);
+	window->display();
+	sleep(seconds(1));
+	window->clear();
+	countdown.setString("2");
+	window->draw(countdown);
+	window->display();
+	sleep(seconds(1));
+	window->clear();
+	countdown.setString("1");
+	window->draw(countdown);
+	window->display();
+	sleep(seconds(1));
 }
 
 int main() {
@@ -47,7 +71,16 @@ int main() {
 	vector<Player*> players;
 
 	GameOver gameover = GameOver(window, &font);
+
+	bool startCountdown = false;
 	
+	int winningScore = 0;
+
+	Text countdown;
+	countdown.setFont(font);
+	countdown.setCharacterSize(144);
+	countdown.setFillColor(Color::Red);
+	countdown.setStyle(Text::Bold);
 
 	int collidedCounter = 0;
 
@@ -87,10 +120,11 @@ int main() {
 		switch (stage) {
 		case SelectPlayers:
 			if (playerSelection.isFinished()) {
-				cout << "Buuuuuuhhhh";
 				players = playerSelection.getPlayers();
+				winningScore = (players.size() - 1) * 10;
 				iconManager.setPlayers(players);
 				stage = CurvesRunning;
+				showCountdown(countdown, window);
 			}
 			break;
 
@@ -120,7 +154,6 @@ int main() {
 
 		case GameIsOver:
 			if (gameover.isNewGame()) {
-				cout << "Trueeeeee";
 				gameover.initiateNewGame();
 				playerSelection.prepareNewGame();
 				stage = SelectPlayers;
@@ -132,6 +165,7 @@ int main() {
 				}
 				else {
 					stage = CurvesRunning; //...or a new round should start
+					//this_thread::sleep_for(std::chrono::milliseconds(1000));
 				}
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 					players.at(i)->nextRound(windowSize);
@@ -159,7 +193,6 @@ int main() {
 
 
 		// Draw everything
-
 		window->clear();
 
 		switch (stage) {
@@ -176,9 +209,13 @@ int main() {
 			break;
 
 		case GameIsOver:
-			//GameOver gameover = GameOver(window, &font, players);
-			gameover.setPlayers(players);
-			gameover.draw();
+			if (maxScore(players) >= winningScore) {
+				gameover.setPlayers(players);
+				gameover.draw();
+			}
+			else {
+				showCountdown(countdown, window);
+			}
 			break;
 		}
 

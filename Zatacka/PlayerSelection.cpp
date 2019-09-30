@@ -256,27 +256,6 @@ void PlayerSelection::registerFullscreenClicked(const Event event) {
 
 }
 
-void PlayerSelection::draw() {
-	window->draw(headline);
-	window->draw(startButton);
-	window->draw(fullscreen);
-	
-	for (int i = 0; i < 8; ++i) {
-		window->draw(playerNames[i]);
-		if (players[i] != NULL) {
-			if (players[i]->isLeftKeySet()) {
-				window->draw(selectedKeys[i][0]);
-			}
-			if (players[i]->areBothKeysSet()) {
-				window->draw(selectedKeys[i][1]);
-			}
-		}
-	}
-
-	if (hoverSelection >= 0 || selectedPlayer >= 0)
-		window->draw(selectionRect);
-}
-
 void PlayerSelection::registerStartClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 	
@@ -304,32 +283,34 @@ bool PlayerSelection::isFullscreen() {
 }
 
 void PlayerSelection::prepareNewGame() {
-	/*delete selectedKeys;
-	delete players;
-
-	delete& headline;
-	delete& startButton;
-	delete& fullscreen;
-
-
-	bool 
-	bool fullscreenToggled = false;*/
-	cout << "Jop passier";
-
-	/*for (int i = 0; i < 8; i++) {
-		players[i]->resetKeys();
-	}*/
-
 	for (int i = 0; i < 8; i++) {
 		players[i] = NULL;
 	}
-
 
 	isPlayerSelected = false;
 	hoverSelection = -1;	// Mouse not hovering over a player
 	selectedPlayer = -1;	// No player selected
 
 	playerSelectionFinished = false;
+}
 
-	cout << playerSelectionFinished;
+void PlayerSelection::draw() {
+	window->draw(headline);
+	window->draw(startButton);
+	window->draw(fullscreen);
+
+	for (int i = 0; i < 8; ++i) {
+		window->draw(playerNames[i]);
+		if (players[i] != NULL) {
+			if (players[i]->isLeftKeySet()) {
+				window->draw(selectedKeys[i][0]);
+			}
+			if (players[i]->areBothKeysSet()) {
+				window->draw(selectedKeys[i][1]);
+			}
+		}
+	}
+
+	if (hoverSelection >= 0 || selectedPlayer >= 0)
+		window->draw(selectionRect);
 }
