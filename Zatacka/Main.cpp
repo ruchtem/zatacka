@@ -45,7 +45,6 @@ int main() {
 
 	GameOver gameover = GameOver(window, &font, players);
 	
-
 	int collidedCounter = 0;
 
 	Vertex leftBorder[2];
@@ -57,8 +56,6 @@ int main() {
 	// main loop
 	while (window->isOpen())
 	{
-		cout << "window " << window << endl;
-		
 		// Handle events
 		Event event;
 		while (window->pollEvent(event))
@@ -94,7 +91,6 @@ int main() {
 			if (stage == GameIsOver) {
 				gameover.processEvent(event);
 			}
-
 		}
 
 		//Create a screenshot of the game before moving
