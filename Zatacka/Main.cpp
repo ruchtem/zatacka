@@ -5,9 +5,6 @@
 #include "GameOver.h"
 #include "Icon.h"
 #include "IconManager.h"
-#include <thread>
-#include <chrono>
-#include <dos.h>
 
 
 using namespace std;
@@ -133,7 +130,7 @@ int main() {
 				if (!players.at(i)->getCollided()) // Only move, if not collided
 					players.at(i)->move();			
 			}
-			if (collidedCounter == players.size() || maxScore(players) > 10) {
+			if (collidedCounter == players.size() || maxScore(players) >= winningScore) {
 				stage = GameIsOver;
 				break;
 			}
@@ -160,12 +157,11 @@ int main() {
 			}
 			else {
 				collidedCounter = 0;
-				if (maxScore(players) > 10) {
+				if (maxScore(players) >= winningScore) {
 					stage = GameIsOver; //Game is either finished...
 				}
 				else {
 					stage = CurvesRunning; //...or a new round should start
-					//this_thread::sleep_for(std::chrono::milliseconds(1000));
 				}
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 					players.at(i)->nextRound(windowSize);

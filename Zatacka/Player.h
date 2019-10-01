@@ -12,7 +12,6 @@ private:
 	Color color;
 	string name;
 	int rank;
-	float speed = 4;
 	Keyboard::Key leftKey = Keyboard::Key::Unknown;
 	Keyboard::Key rightKey = Keyboard::Key::Unknown;
 
@@ -42,8 +41,8 @@ private:
 	bool isCollided;
 
 	const float PI = 3.14159265358979f;
-	const float MIN_RADIUS = 0.02f;
-	const float STD_SPEED = 1;
+	const float MIN_RADIUS = 0.06f;
+	const float STD_SPEED = 2;
 
 public:
 	const int HOLE_DISTANCE = 10;

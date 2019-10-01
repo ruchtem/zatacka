@@ -193,6 +193,7 @@ void Player::nextRound(Vector2u windowSize) {
 	curveArray.clear();
 	circleCurve.clear();
 	pastPositions.clear();
-	position = Vector2f((rand() % window->getSize().x - window->getSize().x / 100 * 21) + window->getSize().x / 100 * 14, (rand() % window->getSize().y - window->getSize().y / 100 * 14) + window->getSize().y / 100 * 7);
+	position = Vector2f(rand() % (window->getSize().x - (window->getSize().x / 100 * 21)) + (window->getSize().x / 100 * 14), rand() % (window->getSize().y - window->getSize().y / 100 * 14) + (window->getSize().y / 100 * 7));
+	cout << "X: " << position.x << "  Y: " << position.y;
 }
 
