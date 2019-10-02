@@ -70,6 +70,7 @@ int main() {
 	GameOver gameover = GameOver(window, &font);
 
 	bool startCountdown = false;
+	bool speedDynamization = false;
 	
 	int winningScore = 0;
 
@@ -117,6 +118,7 @@ int main() {
 		switch (stage) {
 		case SelectPlayers: //Players have to get selected
 			if (playerSelection.isFinished()) {
+				speedDynamization = playerSelection.dynamizeSpeed();
 				players = playerSelection.getPlayers();
 				winningScore = (players.size() - 1) * 10;
 				iconManager.setPlayers(players);
@@ -164,7 +166,7 @@ int main() {
 					stage = CurvesRunning; //...or a new round should start
 				}
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-					players.at(i)->nextRound(windowSize);
+					players.at(i)->nextRound(playerSelection.dynamizeSpeed());
 				}
 				iconManager.reset();
 			}

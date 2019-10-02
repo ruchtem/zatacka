@@ -13,7 +13,6 @@ Player::Player(RenderWindow* window, Font* font, const Color color, const string
 	this->name = name;
 	this->rank = rank;
 
-	//curve = VertexArray(PrimitiveType::TriangleStrip);
 	curve = VertexArray(PrimitiveType::LineStrip);
 
 	// Initialize random starting position
@@ -55,15 +54,19 @@ void Player::move() {
 		if (!consumedIcons.at(i)->isActive()) {
 			delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 			consumedIcons.erase(consumedIcons.begin() + i);
-			cout << "Player: " << name << " an active icon finished and is removed!" << endl;
 		}
 		else
 			++i;
 	}
 	
 	//Set angle and speed in every frame, to make sure there is no delay... 
-	float angleChange = MIN_RADIUS;
-	float speedChange = STD_SPEED;
+	float angleChange = MIN_RADIUS  * dynamizationRate;
+	float speedChange = STD_SPEED * dynamizationRate;
+	if (speedChange > MAX_SPEED) {
+		speedChange = MAX_SPEED;
+		angleChange = MAX_ANGLE;
+	}
+	cout << speedChange;
 	int blockChange = 0;
 	
 	//...if a player used an icon
@@ -187,10 +190,11 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 	return false;
 }
 
-void Player::nextRound(Vector2u windowSize) { //A round ended and a new would has to be prepared
+void Player::nextRound(bool dynamize) { //A round ended and a new one has to be prepared
 	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 		delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 	}
+	if (dynamize) dynamizationRate = dynamizationRate + 0.1f; //Speed will be increased next round
 	consumedIcons.clear();
 	isCollided = false;
 	curve.clear();

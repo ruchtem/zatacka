@@ -40,9 +40,13 @@ private:
 
 	bool isCollided;
 
+	float dynamizationRate = 1.0f;
+
 	const float PI = 3.14159265358979f;
-	const float MIN_RADIUS = 0.06f;
-	const float STD_SPEED = 2;
+	const float MIN_RADIUS = 0.05f;
+	const float STD_SPEED = 2.0f;
+	const float MAX_SPEED = 4.f;
+	const float MAX_ANGLE = 0.1f;
 
 public:
 	const int HOLE_DISTANCE = 10;
@@ -77,5 +81,5 @@ public:
 	float getAngle() { return angle; }
 	String getName() { return name; }
 	
-	void nextRound(Vector2u windowSize);
+	void nextRound(bool dynamize);
 };

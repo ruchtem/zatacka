@@ -132,6 +132,8 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	fullscreen.setFillColor(Color::White);
 	fullscreen.setPosition(xOffset + 600.f, yOffset + 500.f);
 
+	dynamizationCheckbox = Checkbox("Dynamisierung", false, Vector2f(xOffset + 500.f, yOffset + 400.f), font, window);
+
 	float textDistance = 40;
 	float playersOffset = yOffset + 50;
 	int characterSize = 24;
@@ -167,7 +169,10 @@ void PlayerSelection::processEvent(const Event event) {
 	registerKeySelections(event);
 	registerStartClicked(event);
 	registerFullscreenClicked(event);
+	registerSpeedDynamizationClicked(event);
 }
+
+
 
 void PlayerSelection::registerPlayerSelection(const Event event) {
 	hoverSelection = determineHoverSelection();
@@ -270,6 +275,15 @@ void PlayerSelection::registerStartClicked(const Event event) {
 	}
 }
 
+//Determine wether speed dynamizaiton should be used between rounds
+void PlayerSelection::registerSpeedDynamizationClicked(const Event event) {
+	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
+
+	if (dynamizationCheckbox.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
+		dynamizationCheckbox.check();
+	}
+}
+
 vector<Player*> PlayerSelection::getPlayers() {
 	vector<Player*> activePlayers;
 	for (int i = 0; i < 8; ++i) {
@@ -280,12 +294,18 @@ vector<Player*> PlayerSelection::getPlayers() {
 	return activePlayers;
 }
 
+
+
 bool PlayerSelection::isFinished() {
 	return playerSelectionFinished;
 }
 
 bool PlayerSelection::isFullscreen() {
 	return fullscreenToggled;
+}
+
+bool PlayerSelection::dynamizeSpeed() {
+	return dynamizationCheckbox.isChecked();
 }
 
 void PlayerSelection::prepareNewGame() {
@@ -319,4 +339,6 @@ void PlayerSelection::draw() {
 
 	if (hoverSelection >= 0 || selectedPlayer >= 0)
 		window->draw(selectionRect);
+
+	dynamizationCheckbox.draw();
 }

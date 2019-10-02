@@ -145,6 +145,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="IconAngular.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="PlayerSelection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Checkbox.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Icon.h" />
     <ClInclude Include="IconManager.h" />

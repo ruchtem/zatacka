@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "Checkbox.h"
 
 using namespace std;
 using namespace sf;
@@ -46,6 +47,8 @@ private:
 
 	Text selectedKeys[8][2];
 
+	Checkbox dynamizationCheckbox;
+
 	bool isPlayerSelected = false;
 	int hoverSelection = -1;	// Mouse not hovering over a player
 	int selectedPlayer = -1;	// No player selected
@@ -59,6 +62,7 @@ private:
 	void prepareSelectionDrawing();
 	void registerStartClicked(const Event event);
 	void registerFullscreenClicked(const Event event);
+	void registerSpeedDynamizationClicked(const Event event);
 
 public:
 
@@ -68,6 +72,7 @@ public:
 
 	bool isFinished();
 	bool isFullscreen();
+	bool dynamizeSpeed();
 	vector<Player*> getPlayers();
 
 	void draw();
