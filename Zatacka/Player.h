@@ -42,8 +42,8 @@ private:
 
 	const float PI = 3.14159265358979f;
 	const float MIN_RADIUS = 0.05f;
-	const float STD_SPEED = 2.0f;
-	const float MAX_SPEED = 4.f;
+	const float STD_SPEED = 1.75f;
+	const float MAX_SPEED = 3.5f;
 	const float MAX_ANGLE = 0.1f;
 
 public:
