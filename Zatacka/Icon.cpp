@@ -37,8 +37,8 @@ void Icon::draw() {
 bool Icon::contains(Vector2f position) { //test, if the player is collided with an icon
 	float xUnit = windowSize.x / 100;
 	float yUnit = windowSize.y / 100;
-	float xCorrection = 1.5 * xUnit;
-	float yCorrection = 1.5 * yUnit;
+	float xCorrection = 1.9 * xUnit;
+	float yCorrection = 1.9 * yUnit;
 
 	float xLeft = icon.getGlobalBounds().left - xCorrection;
 	float xRight = icon.getGlobalBounds().left + icon.getGlobalBounds().width + xCorrection;

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Checkbox.h"
+#include "SpeedChooser.h"
 
 using namespace std;
 using namespace sf;
@@ -47,7 +48,8 @@ private:
 
 	Text selectedKeys[8][2];
 
-	Checkbox dynamizationCheckbox;
+	SpeedChooser* speedChooser;
+	Checkbox* dynamizationCheckbox;
 
 	bool isPlayerSelected = false;
 	int hoverSelection = -1;	// Mouse not hovering over a player
@@ -63,6 +65,7 @@ private:
 	void registerStartClicked(const Event event);
 	void registerFullscreenClicked(const Event event);
 	void registerSpeedDynamizationClicked(const Event event);
+	void registerSpeedChooserClicked(const Event event);
 
 public:
 
@@ -78,4 +81,6 @@ public:
 	void draw();
 
 	void prepareNewGame();
+
+	float getStartSpeed();
 };

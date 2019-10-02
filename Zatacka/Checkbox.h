@@ -15,10 +15,9 @@ private:
 	bool checked;
 
 public:
-	Checkbox();
-	Checkbox(String optionName, bool checked, Vector2f position, Font* font, RenderWindow* window);
+	Checkbox(String optionName, Vector2f position, Font* font, RenderWindow* window);
 	inline bool isChecked() { return this->checked; }
-	inline void setChecked(bool checked) { this->checked = checked; }
+	void setChecked(bool checked);
 	void check();
 	FloatRect getGlobalBounds();
 	void draw();

@@ -1,11 +1,7 @@
 #include "Checkbox.h"
 
-Checkbox::Checkbox() {
 
-}
-
-
-Checkbox::Checkbox(String optionName, bool checked, Vector2f position, Font* font, RenderWindow* window) {
+Checkbox::Checkbox(String optionName, Vector2f position, Font* font, RenderWindow* window) {
 	this->window = window;
 	this->windowSize = window->getSize();
 	this->optionName.setString(optionName);
@@ -20,6 +16,16 @@ Checkbox::Checkbox(String optionName, bool checked, Vector2f position, Font* fon
 	checkRect.setPosition(position);
 
 	this->checked = false;
+}
+
+void Checkbox::setChecked(bool checked) {
+	this->checked = checked;
+	if (checked) {
+		checkRect.setFillColor((sf::Color(150, 150, 150)));
+	}
+	else {
+		checkRect.setFillColor(Color::Transparent);
+	}
 }
 
 void Checkbox::check() {

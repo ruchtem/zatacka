@@ -118,7 +118,8 @@ int main() {
 		switch (stage) {
 		case SelectPlayers: //Players have to get selected
 			if (playerSelection.isFinished()) {
-				speedDynamization = playerSelection.dynamizeSpeed();
+				speedDynamization = playerSelection.dynamizeSpeed(); //Should the speed be increased after each round?
+				Player::dynamizationRate = playerSelection.getStartSpeed(); //Set the start speed: "langsam", "mittel", "schnell"
 				players = playerSelection.getPlayers();
 				winningScore = (players.size() - 1) * 10;
 				iconManager.setPlayers(players);
@@ -165,7 +166,11 @@ int main() {
 				else {
 					stage = CurvesRunning; //...or a new round should start
 				}
+				if (speedDynamization) { //Speed will be increased next round
+					Player::dynamizationRate = Player::dynamizationRate + 0.1f;
+				}
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+					
 					players.at(i)->nextRound(playerSelection.dynamizeSpeed());
 				}
 				iconManager.reset();

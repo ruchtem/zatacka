@@ -40,8 +40,6 @@ private:
 
 	bool isCollided;
 
-	float dynamizationRate = 1.0f;
-
 	const float PI = 3.14159265358979f;
 	const float MIN_RADIUS = 0.05f;
 	const float STD_SPEED = 2.0f;
@@ -49,6 +47,8 @@ private:
 	const float MAX_ANGLE = 0.1f;
 
 public:
+	static float dynamizationRate;
+
 	const int HOLE_DISTANCE = 10;
 
 	Player(RenderWindow* window, Font* font, const Color color, const string username, const int rank);

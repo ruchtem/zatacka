@@ -25,6 +25,8 @@ Player::Player(RenderWindow* window, Font* font, const Color color, const string
 	circleCurve.push_back(curveDot);
 }
 
+float Player::dynamizationRate = 1.0f;
+
 void Player::setLeftKey(Keyboard::Key key) {
 	this->leftKey = key;
 }
@@ -172,8 +174,8 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 
 			float xUnit = windowSize.x / 100; //Fit the collision detection to the screen size
 			float yUnit = windowSize.y / 100;
-			float xCollisionCorrection = 1.3 * xUnit;
-			float yCollisionCorrection = 1.3 * yUnit;
+			float xCollisionCorrection = 1.5 * xUnit;
+			float yCollisionCorrection = 1.5 * yUnit;
 			if (position.x + xCollisionCorrection * cos(angle) >= windowSize.x || 
 					position.x + xCollisionCorrection * cos(angle) <= 0 || 
 					position.y + yCollisionCorrection * sin(angle) >= windowSize.y || 
@@ -194,7 +196,6 @@ void Player::nextRound(bool dynamize) { //A round ended and a new one has to be 
 	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 		delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 	}
-	if (dynamize) dynamizationRate = dynamizationRate + 0.1f; //Speed will be increased next round
 	consumedIcons.clear();
 	isCollided = false;
 	curve.clear();

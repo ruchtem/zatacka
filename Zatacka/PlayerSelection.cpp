@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "PlayerSelection.h"
+#include "SpeedChooser.h"
 
 using namespace std;
 using namespace sf;
@@ -132,7 +133,8 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	fullscreen.setFillColor(Color::White);
 	fullscreen.setPosition(xOffset + 600.f, yOffset + 500.f);
 
-	dynamizationCheckbox = Checkbox("Dynamisierung", false, Vector2f(xOffset + 500.f, yOffset + 400.f), font, window);
+	speedChooser = new SpeedChooser("langsam", "mittel", "schnell", Vector2f(xOffset + 500.f, yOffset + 100.f), window, font);
+	dynamizationCheckbox = new Checkbox("Dynamisierung", Vector2f(xOffset + 500.f, yOffset + 400.f), font, window);
 
 	float textDistance = 40;
 	float playersOffset = yOffset + 50;
@@ -170,6 +172,7 @@ void PlayerSelection::processEvent(const Event event) {
 	registerStartClicked(event);
 	registerFullscreenClicked(event);
 	registerSpeedDynamizationClicked(event);
+	registerSpeedChooserClicked(event);
 }
 
 
@@ -279,9 +282,15 @@ void PlayerSelection::registerStartClicked(const Event event) {
 void PlayerSelection::registerSpeedDynamizationClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 
-	if (dynamizationCheckbox.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
-		dynamizationCheckbox.check();
+	if (dynamizationCheckbox->getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
+		dynamizationCheckbox->check();
 	}
+}
+
+void PlayerSelection::registerSpeedChooserClicked(const Event event) {
+	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
+	if (event.type == Event::MouseButtonPressed)
+		speedChooser->check(mousePosition);
 }
 
 vector<Player*> PlayerSelection::getPlayers() {
@@ -305,7 +314,7 @@ bool PlayerSelection::isFullscreen() {
 }
 
 bool PlayerSelection::dynamizeSpeed() {
-	return dynamizationCheckbox.isChecked();
+	return dynamizationCheckbox->isChecked();
 }
 
 void PlayerSelection::prepareNewGame() {
@@ -318,6 +327,10 @@ void PlayerSelection::prepareNewGame() {
 	selectedPlayer = -1;	// No player selected
 
 	playerSelectionFinished = false; //Players have to be selected
+}
+
+float PlayerSelection::getStartSpeed() {
+	return speedChooser->getPrefferedSpeed();
 }
 
 void PlayerSelection::draw() {
@@ -340,5 +353,6 @@ void PlayerSelection::draw() {
 	if (hoverSelection >= 0 || selectedPlayer >= 0)
 		window->draw(selectionRect);
 
-	dynamizationCheckbox.draw();
+	speedChooser->draw();
+	dynamizationCheckbox->draw();
 }
