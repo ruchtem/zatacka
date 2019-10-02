@@ -16,9 +16,9 @@ Player::Player(RenderWindow* window, Font* font, const Color color, const string
 	//curve = VertexArray(PrimitiveType::TriangleStrip);
 	curve = VertexArray(PrimitiveType::LineStrip);
 
-	// Initialize random starting position and angle
+	// Initialize random starting position
 	position = Vector2f(rand() % (window->getSize().x - (window->getSize().x / 100 * 21)) + (window->getSize().x / 100 * 14), rand() % (window->getSize().y - window->getSize().y / 100 * 14) + (window->getSize().y / 100 * 7));
-	angle = 0;
+	angle = 0; //Starting with an angle of zero in the first round
 
 	curveDot = CircleShape(4.f);
 	curveDot.setFillColor(color);
@@ -42,7 +42,7 @@ bool Player::areBothKeysSet() {
 	return leftKey != Keyboard::Key::Unknown && rightKey != Keyboard::Key::Unknown;
 }
 
-void Player::resetKeys() {
+void Player::resetKeys() { //Delete saved keys
 	leftKey = Keyboard::Key::Unknown;
 	rightKey = Keyboard::Key::Unknown;
 }
@@ -60,12 +60,13 @@ void Player::move() {
 		else
 			++i;
 	}
-
-	//cout << "Player: " << name << " has " << consumedIcons.size() << " active icons" << endl;
+	
+	//Set angle and speed in every frame, to make sure there is no delay... 
 	float angleChange = MIN_RADIUS;
 	float speedChange = STD_SPEED;
 	int blockChange = 0;
 	
+	//...if a player used an icon
 	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 		if (consumedIcons.at(i)->isActive()) {
 			consumedIcons.at(i)->alterSpeed(&speedChange, &angleChange);
@@ -108,6 +109,7 @@ void Player::move() {
 }
 
 void Player::draw() {
+	//draw the score of every player
 	Text scoreText;
 	scoreText.setString(to_string(score));
 	scoreText.setFillColor(color);
@@ -116,12 +118,13 @@ void Player::draw() {
 	scoreText.setStyle(Text::Bold);
 	scoreText.setPosition(xOffset, playersOffset + rank * textDistance);
 
+	//Draw the curve
 	window->draw(curve);
 	window->draw(curveDot);
-
 	for (vector<CircleShape>::size_type i = 0; i < circleCurve.size(); i++) {
 		window->draw(circleCurve.at(i));
 	}
+	//Draw score
 	window->draw(scoreText);
 }
 
@@ -159,22 +162,23 @@ void Player::addConsumedIcon(Icon* icon) {
 	}
 }
 
-bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize) {
+bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize) { //Player collision mehtod
 	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-		if (!players.at(i)->curveArray.empty()) {
-			//cout << "curve Array not empty!";
+		if (!players.at(i)->curveArray.empty()) { //Curve shouldn't be empty
 			Vector2f position = curveArray.back();
 
-			float xUnit = windowSize.x / 100;
+			float xUnit = windowSize.x / 100; //Fit the collision detection to the screen size
 			float yUnit = windowSize.y / 100;
 			float xCollisionCorrection = 1.3 * xUnit;
 			float yCollisionCorrection = 1.3 * yUnit;
-			if (position.x + xCollisionCorrection * cos(angle) >= windowSize.x || position.x + xCollisionCorrection * cos(angle) <= 0 || position.y + yCollisionCorrection * sin(angle) >= windowSize.y || position.y + yCollisionCorrection * sin(angle) <= 0) {
+			if (position.x + xCollisionCorrection * cos(angle) >= windowSize.x || 
+					position.x + xCollisionCorrection * cos(angle) <= 0 || 
+					position.y + yCollisionCorrection * sin(angle) >= windowSize.y || 
+					position.y + yCollisionCorrection * sin(angle) <= 0) { //Is the player inside the screen?
 				cout << "Collision";
 				return true;
 			}
-			if (image.getPixel(position.x + yCollisionCorrection * cos(angle), position.y + yCollisionCorrection * sin(angle)) != Color::Black) {
-				//Curve2 contains Point of Curve1 -> Collision
+			if (image.getPixel(position.x + yCollisionCorrection * cos(angle), position.y + yCollisionCorrection * sin(angle)) != Color::Black) { //pixel perfect detection with position correction too reduce errors
 				cout << "Collision";
 				return true;
 			}
@@ -183,7 +187,7 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 	return false;
 }
 
-void Player::nextRound(Vector2u windowSize) {
+void Player::nextRound(Vector2u windowSize) { //A round ended and a new would has to be prepared
 	for (vector<Icon*>::size_type i = 0; i < consumedIcons.size(); ++i) {
 		delete consumedIcons.at(i); consumedIcons.at(i) = NULL;
 	}
@@ -194,6 +198,5 @@ void Player::nextRound(Vector2u windowSize) {
 	circleCurve.clear();
 	pastPositions.clear();
 	position = Vector2f(rand() % (window->getSize().x - (window->getSize().x / 100 * 21)) + (window->getSize().x / 100 * 14), rand() % (window->getSize().y - window->getSize().y / 100 * 14) + (window->getSize().y / 100 * 7));
-	cout << "X: " << position.x << "  Y: " << position.y;
 }
 

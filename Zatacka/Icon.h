@@ -5,7 +5,7 @@ using namespace sf;
 using namespace std;
 
 // How the player moves should be affected  if an already active icon is collected again
-enum UpdateType {
+enum UpdateType { 
 	IncreaseTime = 0,
 	Additive = 1
 };
@@ -53,7 +53,7 @@ public:
 	virtual Icon* copy();
 };
 
-class IconSwitch : public Icon {
+class IconSwitch : public Icon { //child class of the Icon parent
 private:
 	Keyboard::Key originalLeftKey = Keyboard::Key::Unknown;
 	Keyboard::Key originalRightKey = Keyboard::Key::Unknown;
@@ -68,7 +68,7 @@ public:
 	virtual Icon* copy();
 };
 
-class IconFaster : public Icon {
+class IconFaster : public Icon { //child class of the Icon parent
 private:
 	const float INCREASE_SPEED = 0.5f;
 	const float INCREASE_MIN_ANGLE = 0.01f;
@@ -80,7 +80,7 @@ public:
 	virtual void alterSpeed(float* speed, float* angle);
 };
 
-class IconSlower : public Icon {
+class IconSlower : public Icon { //child class of the Icon parent
 private:
 	const float DECREASE_SPEED = 0.5f;
 	const float DECREASE_MIN_ANGLE = 0.01f;

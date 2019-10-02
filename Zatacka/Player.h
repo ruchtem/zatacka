@@ -15,7 +15,7 @@ private:
 	Keyboard::Key leftKey = Keyboard::Key::Unknown;
 	Keyboard::Key rightKey = Keyboard::Key::Unknown;
 
-	//score of 10 wins
+	//score of (playercount - 1)*10 wins wins
 	int score = 0;
 
 	// The dot to be moved
@@ -62,7 +62,7 @@ public:
 	void draw();
 
 	void addConsumedIcon(Icon* icon);
-	void setFramesToBlockKeyInput(int numFrames);
+	void setFramesToBlockKeyInput(int numFrames); //to implement
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 	Vector2f getPosition();

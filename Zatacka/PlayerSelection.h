@@ -7,7 +7,7 @@ using namespace sf;
 
 class PlayerSelection {
 private:
-	const string names[8] = { 
+	const string names[8] = { //Every possible player name
 		"Greenly", 
 		"Red Rat", 
 		"Greydon", 
@@ -18,6 +18,7 @@ private:
 		"Whitey" 
 	};
 
+	//Colors of the players
 	const Color colors[8] = { 
 		Color::Green, 
 		Color::Red, 
@@ -28,7 +29,7 @@ private:
 		Color::Cyan, 
 		Color::White };
 
-	Player* players[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+	Player* players[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL}; //Maximum of 8 players
 	RenderWindow* window;
 	
 	const float xOffset = 20;

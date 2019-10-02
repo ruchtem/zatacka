@@ -111,6 +111,7 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	this->window = window;
 	this->font = font;
 
+	//Initialize text
 	headline.setFont((*font));
 	headline.setString("Bitte die Tasten auswählen");
 	headline.setCharacterSize(24);
@@ -138,6 +139,7 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	float leftKeyOffset = xOffset + 200;
 	float rightKeyOffset = xOffset + 400;
 
+	//Fill the playerNames array with the right names
 	for (int i = 0; i < 8; ++i) {
 		playerNames[i].setString(names[i]);
 		playerNames[i].setFillColor(colors[i]);
@@ -153,11 +155,13 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 			selectedKeys[i][j].setStyle(Text::Bold);
 		}
 
+		//The selected keys should be displayed behind every name
 		selectedKeys[i][0].setPosition(leftKeyOffset, playersOffset + i * textDistance);
 		selectedKeys[i][1].setPosition(rightKeyOffset, playersOffset + i * textDistance);
 	}
 }
 
+//Set: This surface processes click events
 void PlayerSelection::processEvent(const Event event) {
 	registerPlayerSelection(event);
 	registerKeySelections(event);
@@ -193,8 +197,9 @@ int PlayerSelection::determineHoverSelection() {
 	return -1;
 }
 
+//Draw bounds around the selcted player
 void PlayerSelection::prepareSelectionDrawing() {
-	if (selectedPlayer >= 0) {
+	if (selectedPlayer >= 0) { //A players name got clicked on
 		FloatRect textBounds = playerNames[selectedPlayer].getGlobalBounds();
 
 		selectionRect = RectangleShape(sf::Vector2f(textBounds.width + 2 * selectionSpace, textBounds.height + 2 * selectionSpace));
@@ -203,7 +208,7 @@ void PlayerSelection::prepareSelectionDrawing() {
 		selectionRect.setOutlineColor(sf::Color(150, 150, 150));
 		selectionRect.setPosition(textBounds.left - selectionSpace, textBounds.top - selectionSpace);
 	}
-	else if (hoverSelection >= 0) {
+	else if (hoverSelection >= 0) { // A players name got hovered over
 		FloatRect textBounds = playerNames[hoverSelection].getGlobalBounds();
 
 		selectionRect = RectangleShape(sf::Vector2f(textBounds.width + 2 * selectionSpace, textBounds.height + 2 * selectionSpace));
@@ -256,11 +261,12 @@ void PlayerSelection::registerFullscreenClicked(const Event event) {
 
 }
 
+//Determine wether the game start button was clicked
 void PlayerSelection::registerStartClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 	
 	if (startButton.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
-		playerSelectionFinished = true;
+		playerSelectionFinished = true; //If the button was clicked, a game shoud start in the next frame
 	}
 }
 
@@ -284,14 +290,14 @@ bool PlayerSelection::isFullscreen() {
 
 void PlayerSelection::prepareNewGame() {
 	for (int i = 0; i < 8; i++) {
-		players[i] = NULL;
+		players[i] = NULL; //Delete actual players
 	}
 
-	isPlayerSelected = false;
+	isPlayerSelected = false; //No player selected
 	hoverSelection = -1;	// Mouse not hovering over a player
 	selectedPlayer = -1;	// No player selected
 
-	playerSelectionFinished = false;
+	playerSelectionFinished = false; //Players have to be selected
 }
 
 void PlayerSelection::draw() {

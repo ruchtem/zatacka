@@ -22,7 +22,7 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 	}
 
 	this->windowSize = window->getSize();
-	icon.setPosition(rand() % (windowSize.x - windowSize.x / 100 * 13) + (windowSize.x / 100 * 10), rand() % (windowSize.y - windowSize.y / 100 * 13) + (windowSize.y / 100 * 10)); //Setting position with distance to window bounds
+	icon.setPosition(rand() % (windowSize.x - windowSize.x / 100 * 17) + (windowSize.x / 100 * 14), rand() % (windowSize.y - windowSize.y / 100 * 13) + (windowSize.y / 100 * 10)); //Setting position with distance to window bounds
 }
 
 int Icon::getFramesDisplayed() {
@@ -34,7 +34,7 @@ void Icon::draw() {
 	window->draw(icon);
 }
 
-bool Icon::contains(Vector2f position) {
+bool Icon::contains(Vector2f position) { //test, if the player is collided with an icon
 	float xUnit = windowSize.x / 100;
 	float yUnit = windowSize.y / 100;
 	float xCorrection = 1.5 * xUnit;
@@ -44,8 +44,7 @@ bool Icon::contains(Vector2f position) {
 	float xRight = icon.getGlobalBounds().left + icon.getGlobalBounds().width + xCorrection;
 	float yTop = icon.getGlobalBounds().top - yCorrection;
 	float yBottom = icon.getGlobalBounds().top + icon.getGlobalBounds().height + yCorrection;
-	return (position.x > xLeft && position.x < xRight && position.y > yTop && position.y < yBottom);
-	//return icon.getGlobalBounds().contains(position);
+	return (position.x > xLeft && position.x < xRight && position.y > yTop && position.y < yBottom); //player is in bounds?
 }
 
 bool Icon::isForCollector() {

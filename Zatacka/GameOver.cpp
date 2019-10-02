@@ -10,15 +10,15 @@ GameOver::GameOver(RenderWindow* window, Font* font) {
 	this->window = window;
 	this->font = font;
 
-	headline.setFont((*font));
+	headline.setFont((*font)); //Winner headline
 	headline.setString("Wir haben einen Gewinner!");
 	headline.setCharacterSize(24);
 	headline.setFillColor(Color::Red);
 	headline.setStyle(Text::Bold);
 	headline.setPosition(xOffset + 300.f, yOffset);
 
-	startButton.setFont((*font));
-	startButton.setString("Neues Spiel"); //Muss noch implementiert werden
+	startButton.setFont((*font)); //Start a new game
+	startButton.setString("Neues Spiel"); 
 	startButton.setCharacterSize(30);
 	startButton.setFillColor(Color::White);
 	startButton.setStyle(Text::Bold);
@@ -35,6 +35,7 @@ GameOver::GameOver(RenderWindow* window, Font* font) {
 
 
 void GameOver::draw() {
+	//Draw buttons and labels
 	window->draw(headline);
 	window->draw(startButton);
 	window->draw(fullscreen);
@@ -44,10 +45,13 @@ void GameOver::draw() {
 	}
 }
 
+
+//This surface is processing click events
 void GameOver::processEvent(const Event event) {
 	registerNewGameClicked(event);
 }
 
+//A new game should start
 void GameOver::registerNewGameClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 
@@ -56,6 +60,7 @@ void GameOver::registerNewGameClicked(const Event event) {
 	}
 }
 
+//Learn which players should be displayed on the end screen
 void GameOver::setPlayers(vector<Player*> players) { 
 	this->players = players; 
 
@@ -77,6 +82,7 @@ void GameOver::setPlayers(vector<Player*> players) {
 	}
 }
 
+//Preparing this class for a new game
 void GameOver::initiateNewGame() {
 	newGame = false;
 	for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {

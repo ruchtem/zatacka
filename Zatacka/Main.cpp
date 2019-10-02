@@ -26,7 +26,7 @@ int maxScore(vector<Player*> players) { //What is the highest score
 	return maxScore;
 }
 
-void showCountdown(Text countdown, RenderWindow* window) {
+void showCountdown(Text countdown, RenderWindow* window) { //Draw a countdown -> Draw a number and let the screen freeze for one second
 	sf::Vector2u windowSize = window->getSize();
 	countdown.setPosition(windowSize.x / 2 - 48, windowSize.y / 2 - 48);
 	countdown.setString("3");
@@ -115,7 +115,7 @@ int main() {
 
 		// Controll game flow
 		switch (stage) {
-		case SelectPlayers:
+		case SelectPlayers: //Players have to get selected
 			if (playerSelection.isFinished()) {
 				players = playerSelection.getPlayers();
 				winningScore = (players.size() - 1) * 10;
@@ -125,12 +125,12 @@ int main() {
 			}
 			break;
 
-		case CurvesRunning:
+		case CurvesRunning: //The actual game is running
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 				if (!players.at(i)->getCollided()) // Only move, if not collided
 					players.at(i)->move();			
 			}
-			if (collidedCounter == players.size() || maxScore(players) >= winningScore) {
+			if (collidedCounter == players.size() || maxScore(players) >= winningScore) { //Determine, if the there is already a winner
 				stage = GameIsOver;
 				break;
 			}
@@ -149,8 +149,8 @@ int main() {
 			break;
 
 
-		case GameIsOver:
-			if (gameover.isNewGame()) {
+		case GameIsOver: //Whole game is over or a new round has to start
+			if (gameover.isNewGame()) { //Go back to start screen
 				gameover.initiateNewGame();
 				playerSelection.prepareNewGame();
 				stage = SelectPlayers;
@@ -172,7 +172,7 @@ int main() {
 		}
 
 		
-		if (playerSelection.isFullscreen() && !fullscreen) {
+		if (playerSelection.isFullscreen() && !fullscreen) { //Fullscreen
 			fullscreen = true;
 			window->close();
 			delete window;
