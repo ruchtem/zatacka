@@ -55,6 +55,7 @@ public:
 
 	inline void setScore(int score) { this->score = score; }
 	int getScore() { return score; }
+	Keyboard::Key getLeftKey() { return leftKey; }
 
 	void setLeftKey(Keyboard::Key key);
 	void setRightKey(Keyboard::Key key);

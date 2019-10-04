@@ -266,8 +266,10 @@ void PlayerSelection::registerKeySelections(const Event event) {
 			selectedKeys[selectedPlayer][0].setString(KeyString[event.key.code]);
 		}
 		else {
-			players[selectedPlayer]->setRightKey(event.key.code);
-			selectedKeys[selectedPlayer][1].setString(KeyString[event.key.code]);
+			if (event.key.code != players[selectedPlayer]->getLeftKey()) {
+				players[selectedPlayer]->setRightKey(event.key.code);
+				selectedKeys[selectedPlayer][1].setString(KeyString[event.key.code]);
+			}
 		}
 	}
 }
