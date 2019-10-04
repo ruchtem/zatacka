@@ -28,7 +28,7 @@ int maxScore(vector<Player*> players) { //What is the highest score
 
 void showCountdown(Text countdown, RenderWindow* window) { //Draw a countdown -> Draw a number and let the screen freeze for one second
 	sf::Vector2u windowSize = window->getSize();
-	countdown.setPosition(windowSize.x / 2 - 48, windowSize.y / 2 - 48);
+	countdown.setPosition(windowSize.x / 2.f - 48.f, windowSize.y / 2.f - 48.f);
 	countdown.setString("3");
 	window->clear();
 	window->draw(countdown);
@@ -49,7 +49,7 @@ void showCountdown(Text countdown, RenderWindow* window) { //Draw a countdown ->
 int main() {
 
 
-	srand(time(0)); //Initializing rand for better pseudo random starting positions
+	srand(static_cast<unsigned int>(time(0))); //Initializing rand for better pseudo random starting positions
 
 
 	Font font;
@@ -83,9 +83,9 @@ int main() {
 	int collidedCounter = 0;
 
 	Vertex leftBorder[2];
-	leftBorder[0].position = sf::Vector2f(window->getSize().x / 100 * 7, 0);
+	leftBorder[0].position = sf::Vector2f(window->getSize().x / 100.f * 7.f, 0.f);
 	leftBorder[0].color = sf::Color::Magenta;
-	leftBorder[1].position = sf::Vector2f(window->getSize().x / 100 * 7, window->getSize().y);
+	leftBorder[1].position = sf::Vector2f(window->getSize().x / 100.f * 7.f, static_cast<float>(window->getSize().y));
 	leftBorder[1].color = sf::Color::Magenta;
 
 	// main loop
@@ -113,7 +113,7 @@ int main() {
 						// Scale window at least to maximum size
 						cout << "INFO: Unfortunately, your grafik card does not allow for a larger window with SFML." << endl;
 						unsigned int width = Texture::getMaximumSize();
-						unsigned int height = width / 800.f * 600;
+						unsigned int height = static_cast<unsigned int>(width / 800.f * 600);
 						window = new RenderWindow(VideoMode(width, height), "Achtung - die Kurve!");
 					}
 					
@@ -210,7 +210,6 @@ int main() {
 					Player::dynamizationRate = Player::dynamizationRate + 0.1f;
 				}
 				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
-					
 					players.at(i)->nextRound(playerSelection.dynamizeSpeed());
 				}
 				iconManager.reset();
@@ -232,7 +231,7 @@ int main() {
 				players.at(i)->draw();
 			}
 			// Draw the line for the points correctly
-			leftBorder[1].position = Vector2f(leftBorder[0].position.x, window->getSize().y);
+			leftBorder[1].position = Vector2f(leftBorder[0].position.x, static_cast<float>(window->getSize().y));
 			window->draw(leftBorder, 4, sf::Lines);
 			break;
 

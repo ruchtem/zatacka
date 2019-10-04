@@ -174,8 +174,8 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 
 			float xUnit = windowSize.x / 100; //Fit the collision detection to the screen size
 			float yUnit = windowSize.y / 100;
-			float xCollisionCorrection = 1.5 * xUnit;
-			float yCollisionCorrection = 1.5 * yUnit;
+			float xCollisionCorrection = 1.5f * xUnit;
+			float yCollisionCorrection = 1.5f * yUnit;
 			if (position.x + xCollisionCorrection * cos(angle) >= windowSize.x || 
 					position.x + xCollisionCorrection * cos(angle) <= 0 || 
 					position.y + yCollisionCorrection * sin(angle) >= windowSize.y || 

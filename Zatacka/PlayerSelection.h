@@ -34,11 +34,11 @@ private:
 	Player* players[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL}; //Maximum of 8 players
 	RenderWindow* window;
 	
-	const float xOffset = .02;	// percentages of window size
-	const float yOffset = .02;
-	const float selectionSpace = .07;
-	const float textSize = .05;
-	const float playerNamesOffset = .1;
+	const float xOffset = .02f;	// percentages of window size
+	const float yOffset = .02f;
+	const float selectionSpace = .07f;
+	const float textSize = .05f;
+	const float playerNamesOffset = .1f;
 
 	Font* font;		// Necessary to render text
 

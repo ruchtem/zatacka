@@ -118,24 +118,25 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 void PlayerSelection::init() {
 	float w = window->getSize().x;
 	float h = window->getSize().y;
+	unsigned int cTextSize = static_cast<unsigned int>(h * textSize);
 
 	headline.setFont((*font));
 	headline.setString("Bitte die Tasten auswählen");
-	headline.setCharacterSize(h * textSize);
+	headline.setCharacterSize(cTextSize);
 	headline.setFillColor(Color::Red);
 	headline.setStyle(Text::Bold);
 	headline.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset);
 
 	startButton.setFont((*font));
 	startButton.setString("START");
-	startButton.setCharacterSize(h * textSize);
+	startButton.setCharacterSize(cTextSize);
 	startButton.setFillColor(Color::White);
 	startButton.setStyle(Text::Bold);
 	startButton.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset + h * .9);
 
 	fullscreen.setFont((*font));
 	fullscreen.setString("Fullscreen");
-	fullscreen.setCharacterSize(h * textSize);
+	fullscreen.setCharacterSize(cTextSize);
 	fullscreen.setFillColor(Color::White);
 	fullscreen.setPosition(w * xOffset + w * .7, h * yOffset + h * .9);
 
@@ -144,7 +145,6 @@ void PlayerSelection::init() {
 
 	float textDistance = h * selectionSpace;
 	float playersOffset = h * yOffset + h * .1;
-	int characterSize = h * textSize;
 
 	float leftKeyOffset = w * xOffset + w * .3;
 	float rightKeyOffset = w * xOffset + w * .5;
@@ -154,14 +154,14 @@ void PlayerSelection::init() {
 		playerNames[i].setString(names[i]);
 		playerNames[i].setFillColor(colors[i]);
 		playerNames[i].setFont((*font));
-		playerNames[i].setCharacterSize(characterSize);
+		playerNames[i].setCharacterSize(cTextSize);
 		playerNames[i].setStyle(Text::Bold);
 		playerNames[i].setPosition(w * xOffset, playersOffset + i * textDistance);
 
 		for (int j = 0; j < 2; ++j) {
 			selectedKeys[i][j].setFillColor(colors[i]);
 			selectedKeys[i][j].setFont((*font));
-			selectedKeys[i][j].setCharacterSize(characterSize);
+			selectedKeys[i][j].setCharacterSize(cTextSize);
 			selectedKeys[i][j].setStyle(Text::Bold);
 		}
 
