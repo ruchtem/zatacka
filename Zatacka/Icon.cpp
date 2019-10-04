@@ -22,9 +22,9 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 	}
 
 	windowSize = window->getSize();
-	int pointsArea = windowSize.x * .17;
-	int x = rand() % (windowSize.x - 2 * ICON_FREE_BORDER - pointsArea) + ICON_FREE_BORDER + pointsArea;
-	int y = rand() % (windowSize.y - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
+	float pointsArea = windowSize.x * .17f;
+	float x = rand() % static_cast<int>(windowSize.x - 2 * ICON_FREE_BORDER - pointsArea) + ICON_FREE_BORDER + pointsArea;
+	float y = rand() % static_cast<int>(windowSize.y - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
 	icon.setPosition(x, y);
 	
 	float newSize = windowSize.x * SCALING_FACTOR;

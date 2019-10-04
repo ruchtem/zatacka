@@ -23,7 +23,7 @@ protected:
 	const float MIN_RADIUS = 0.02f;
 	const float SCALING_FACTOR = 1.f / 32.f;
 	const int ICON_SIZE = 25;
-	const int ICON_FREE_BORDER = 30;
+	const float ICON_FREE_BORDER = 30.f;
 
 public:
 	Icon(RenderWindow* window, Texture* texture);

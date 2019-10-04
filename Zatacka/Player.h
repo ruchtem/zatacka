@@ -67,7 +67,6 @@ public:
 	void draw();
 
 	void addConsumedIcon(Icon* icon);
-	void setFramesToBlockKeyInput(int numFrames); //to implement
 
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
 	Vector2f getPosition();

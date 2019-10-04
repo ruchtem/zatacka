@@ -16,7 +16,9 @@ Player::Player(RenderWindow* window, Font* font, const Color color, const string
 	curve = VertexArray(PrimitiveType::LineStrip);
 
 	// Initialize random starting position
-	position = Vector2f(rand() % (window->getSize().x - (window->getSize().x / 100 * 21)) + (window->getSize().x / 100 * 14), rand() % (window->getSize().y - window->getSize().y / 100 * 14) + (window->getSize().y / 100 * 7));
+	float x = rand() % static_cast<int>(window->getSize().x - (window->getSize().x * .21f)) + (window->getSize().x * .14f);
+	float y = rand() % static_cast<int>(window->getSize().y - window->getSize().y * .14f) + (window->getSize().y * .07f);
+	position = Vector2f(x, y);
 	angle = 0; //Starting with an angle of zero in the first round
 
 	curveDot = CircleShape(4.f);
@@ -172,8 +174,8 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 		if (!players.at(i)->curveArray.empty()) { //Curve shouldn't be empty
 			Vector2f position = curveArray.back();
 
-			float xUnit = windowSize.x / 100; //Fit the collision detection to the screen size
-			float yUnit = windowSize.y / 100;
+			float xUnit = windowSize.x / 100.f; //Fit the collision detection to the screen size
+			float yUnit = windowSize.y / 100.f;
 			float xCollisionCorrection = 1.5f * xUnit;
 			float yCollisionCorrection = 1.5f * yUnit;
 			if (position.x + xCollisionCorrection * cos(angle) >= windowSize.x || 
@@ -183,7 +185,9 @@ bool Player::collision(Image image, vector<Player*> players, Vector2u windowSize
 				cout << "Collision";
 				return true;
 			}
-			if (image.getPixel(position.x + yCollisionCorrection * cos(angle), position.y + yCollisionCorrection * sin(angle)) != Color::Black) { //pixel perfect detection with position correction too reduce errors
+			unsigned int x = static_cast<unsigned int>(position.x + yCollisionCorrection * cos(angle));
+			unsigned int y = static_cast<unsigned int>(position.y + yCollisionCorrection * sin(angle));
+			if (image.getPixel(x, y) != Color::Black) { //pixel perfect detection with position correction too reduce errors
 				cout << "Collision";
 				return true;
 			}
@@ -202,6 +206,8 @@ void Player::nextRound(bool dynamize) { //A round ended and a new one has to be 
 	curveArray.clear();
 	circleCurve.clear();
 	pastPositions.clear();
-	position = Vector2f(rand() % (window->getSize().x - (window->getSize().x / 100 * 21)) + (window->getSize().x / 100 * 14), rand() % (window->getSize().y - window->getSize().y / 100 * 14) + (window->getSize().y / 100 * 7));
+	float x = rand() % static_cast<int>(window->getSize().x - (window->getSize().x * .21f)) + (window->getSize().x * .14f);
+	float y = rand() % static_cast<int>(window->getSize().y - window->getSize().y * .14f) + (window->getSize().y * .07f);
+	position = Vector2f(x, y);
 }
 

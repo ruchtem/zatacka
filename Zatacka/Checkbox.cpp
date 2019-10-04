@@ -9,10 +9,10 @@ Checkbox::Checkbox(String optionName, Vector2f position, Font* font, RenderWindo
 	this->optionName.setFont(*font);
 	this->optionName.setPosition(Vector2f(position.x + windowSize.x / 100 * 4, position.y)); //Text is placed behind the checkbox with 2% screen width distance
 
-	checkRect = RectangleShape(sf::Vector2f(windowSize.x/100*3, windowSize.x / 100 * 3)); //Checkbox size scales to the size of the width of the game window
+	checkRect = RectangleShape(Vector2f(windowSize.x * .03f, windowSize.x * .03f)); //Checkbox size scales to the size of the width of the game window
 	checkRect.setFillColor(Color::Transparent);
 	checkRect.setOutlineThickness(2.f);
-	checkRect.setOutlineColor(sf::Color(150, 150, 150));
+	checkRect.setOutlineColor(Color(150, 150, 150));
 	checkRect.setPosition(position);
 
 	this->checked = false;

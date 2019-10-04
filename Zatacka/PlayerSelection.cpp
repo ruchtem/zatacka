@@ -116,8 +116,8 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 }
 
 void PlayerSelection::init() {
-	float w = window->getSize().x;
-	float h = window->getSize().y;
+	float w = static_cast<float>(window->getSize().x);
+	float h = static_cast<float>(window->getSize().y);
 	unsigned int cTextSize = static_cast<unsigned int>(h * textSize);
 
 	headline.setFont((*font));
@@ -132,22 +132,22 @@ void PlayerSelection::init() {
 	startButton.setCharacterSize(cTextSize);
 	startButton.setFillColor(Color::White);
 	startButton.setStyle(Text::Bold);
-	startButton.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset + h * .9);
+	startButton.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset + h * .9f);
 
 	fullscreen.setFont((*font));
 	fullscreen.setString("Fullscreen");
 	fullscreen.setCharacterSize(cTextSize);
 	fullscreen.setFillColor(Color::White);
-	fullscreen.setPosition(w * xOffset + w * .7, h * yOffset + h * .9);
+	fullscreen.setPosition(w * xOffset + w * .7f, h * yOffset + h * .9f);
 
-	speedChooser = new SpeedChooser("langsam", "mittel", "schnell", Vector2f(w * xOffset + w * .7, h * yOffset + h * .3), window, font);
-	dynamizationCheckbox = new Checkbox("Dynamisierung", Vector2f(w * xOffset + w * .7, h * yOffset + h * .6), font, window);
+	speedChooser = new SpeedChooser("langsam", "mittel", "schnell", Vector2f(w * xOffset + w * .7f, h * yOffset + h * .3f), window, font);
+	dynamizationCheckbox = new Checkbox("Dynamisierung", Vector2f(w * xOffset + w * .7f, h * yOffset + h * .6f), font, window);
 
 	float textDistance = h * selectionSpace;
-	float playersOffset = h * yOffset + h * .1;
+	float playersOffset = h * yOffset + h * .1f;
 
-	float leftKeyOffset = w * xOffset + w * .3;
-	float rightKeyOffset = w * xOffset + w * .5;
+	float leftKeyOffset = w * xOffset + w * .3f;
+	float rightKeyOffset = w * xOffset + w * .5f;
 
 	//Fill the playerNames array with the right names
 	for (int i = 0; i < 8; ++i) {
