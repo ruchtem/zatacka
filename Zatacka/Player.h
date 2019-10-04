@@ -24,7 +24,6 @@ private:
 	Vector2f position;
 	float angle;	// Measured in radians
 	vector<Vector2f> pastPositions;
-	VertexArray curve;
 	vector<Vector2f> curveArray;
 	vector<CircleShape> circleCurve;
 
@@ -33,6 +32,8 @@ private:
 
 	vector<Icon*> consumedIcons;
 	int numFramesToBlockKeyInput = 0;
+	int framesUntilGap = 0;
+	int framesUntilLine = 0;
 
 	float textDistance = 40;
 	float playersOffset = yOffset;
@@ -45,41 +46,33 @@ private:
 	const float STD_SPEED = 1.75f;
 	const float MAX_SPEED = 3.5f;
 	const float MAX_ANGLE = 0.1f;
+	const int GAP_FRAMES = 5;
+	const int LINE_FRAMES = 80;
 
 public:
-	static float dynamizationRate;
-
-	const int HOLE_DISTANCE = 10;
-
 	Player(RenderWindow* window, Font* font, const Color color, const string username, const int rank);
 
-	inline void setScore(int score) { this->score = score; }
-	int getScore() { return score; }
-	Keyboard::Key getLeftKey() { return leftKey; }
+	static float dynamizationRate;
 
+	inline void setScore(int score) { this->score = score; }
 	void setLeftKey(Keyboard::Key key);
 	void setRightKey(Keyboard::Key key);
 	bool isLeftKeySet();
 	bool areBothKeysSet();
 	void resetKeys();
-
 	void move();
 	void draw();
-
 	void addConsumedIcon(Icon* icon);
-
 	bool collision(Image image, vector<Player*> players, sf::Vector2u windowSize);
+	void nextRound(bool dynamize);
+	
 	Vector2f getPosition();
-
-	CircleShape getDot() { return curveDot; }
-
-	VertexArray getCurve() { return curve; }
-	vector<Vector2f> getCurveArray() { return curveArray; }
 	bool getCollided() { return isCollided; }
 	void setCollided(bool collision) { isCollided = collision; }
 	Color getColor() { return color; }
-	float getAngle() { return angle; }
 	String getName() { return name; }
+	int getScore() { return score; }
+	Keyboard::Key getLeftKey() { return leftKey; }
 	
-	void nextRound(bool dynamize);
+	
 };

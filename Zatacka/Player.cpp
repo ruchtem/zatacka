@@ -13,13 +13,13 @@ Player::Player(RenderWindow* window, Font* font, const Color color, const string
 	this->name = name;
 	this->rank = rank;
 
-	curve = VertexArray(PrimitiveType::LineStrip);
-
 	// Initialize random starting position
 	float x = rand() % static_cast<int>(window->getSize().x - (window->getSize().x * .21f)) + (window->getSize().x * .14f);
 	float y = rand() % static_cast<int>(window->getSize().y - window->getSize().y * .14f) + (window->getSize().y * .07f);
 	position = Vector2f(x, y);
 	angle = 0; //Starting with an angle of zero in the first round
+	framesUntilGap = LINE_FRAMES;
+	framesUntilLine = GAP_FRAMES;
 
 	curveDot = CircleShape(4.f);
 	curveDot.setFillColor(color);
@@ -70,7 +70,6 @@ void Player::move() {
 		speedChange = MAX_SPEED;
 		angleChange = MAX_ANGLE;
 	}
-	cout << speedChange;
 	int blockChange = 0;
 	
 	//...if a player used an icon
@@ -109,7 +108,22 @@ void Player::move() {
 	// Update position
 	position = Vector2f(x, y);
 
-	curve.append(Vertex(Vector2f(x, y), color));
+	// Gap handling
+	if (framesUntilGap > 0) {
+		framesUntilGap--;
+	}
+	else {
+		for (vector<CircleShape>::size_type i = circleCurve.size() - 3; i < circleCurve.size(); i++) {
+			circleCurve.at(i).setFillColor(Color::Black);
+		}
+		
+		framesUntilLine--;
+		if (framesUntilLine == 0) {
+			framesUntilGap = LINE_FRAMES;
+			framesUntilLine = GAP_FRAMES;
+		}
+	}
+
 	curveArray.push_back(Vector2f(x, y));
 	curveDot.setPosition(Vector2f(x - 2.f, y - 2.f));
 	circleCurve.push_back(curveDot);
@@ -126,7 +140,6 @@ void Player::draw() {
 	scoreText.setPosition(xOffset, playersOffset + rank * textDistance);
 
 	//Draw the curve
-	window->draw(curve);
 	window->draw(curveDot);
 	for (vector<CircleShape>::size_type i = 0; i < circleCurve.size(); i++) {
 		window->draw(circleCurve.at(i));
@@ -202,10 +215,11 @@ void Player::nextRound(bool dynamize) { //A round ended and a new one has to be 
 	}
 	consumedIcons.clear();
 	isCollided = false;
-	curve.clear();
 	curveArray.clear();
 	circleCurve.clear();
 	pastPositions.clear();
+	framesUntilGap = LINE_FRAMES;
+	framesUntilLine = GAP_FRAMES;
 	float x = rand() % static_cast<int>(window->getSize().x - (window->getSize().x * .21f)) + (window->getSize().x * .14f);
 	float y = rand() % static_cast<int>(window->getSize().y - window->getSize().y * .14f) + (window->getSize().y * .07f);
 	position = Vector2f(x, y);
