@@ -223,6 +223,8 @@ int main() {
 			for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
 				players.at(i)->draw();
 			}
+			// Draw the line for the points correctly
+			leftBorder[1].position = Vector2f(leftBorder[0].position.x, window->getSize().y);
 			window->draw(leftBorder, 4, sf::Lines);
 			break;
 
