@@ -21,7 +21,7 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 		icon.setColor(Color::Green);
 	}
 
-	Vector2u windowSize = window->getSize();
+	windowSize = window->getSize();
 	int pointsArea = windowSize.x * .17;
 	int x = rand() % (windowSize.x - 2 * ICON_FREE_BORDER - pointsArea) + ICON_FREE_BORDER + pointsArea;
 	int y = rand() % (windowSize.y - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
@@ -42,10 +42,10 @@ void Icon::draw() {
 }
 
 bool Icon::contains(Vector2f position) { //test, if the player is collided with an icon
-	float xUnit = windowSize.x / 100;
-	float yUnit = windowSize.y / 100;
-	float xCorrection = 1.9 * xUnit;
-	float yCorrection = 1.9 * yUnit;
+	float xUnit = windowSize.x / 100.f;
+	float yUnit = windowSize.y / 100.f;
+	float xCorrection = 1.9f * xUnit;
+	float yCorrection = 1.9f * yUnit;
 
 	float xLeft = icon.getGlobalBounds().left - xCorrection;
 	float xRight = icon.getGlobalBounds().left + icon.getGlobalBounds().width + xCorrection;
