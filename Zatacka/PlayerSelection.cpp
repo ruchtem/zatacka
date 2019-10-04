@@ -139,15 +139,15 @@ void PlayerSelection::init() {
 	fullscreen.setFillColor(Color::White);
 	fullscreen.setPosition(w * xOffset + w * .7, h * yOffset + h * .9);
 
-	speedChooser = new SpeedChooser("langsam", "mittel", "schnell", Vector2f(xOffset + 500.f, yOffset + 100.f), window, font);
-	dynamizationCheckbox = new Checkbox("Dynamisierung", Vector2f(xOffset + 500.f, yOffset + 400.f), font, window);
+	speedChooser = new SpeedChooser("langsam", "mittel", "schnell", Vector2f(w * xOffset + w * .7, h * yOffset + h * .3), window, font);
+	dynamizationCheckbox = new Checkbox("Dynamisierung", Vector2f(w * xOffset + w * .7, h * yOffset + h * .6), font, window);
 
 	float textDistance = h * selectionSpace;
 	float playersOffset = h * yOffset + h * .1;
 	int characterSize = h * textSize;
 
 	float leftKeyOffset = w * xOffset + w * .3;
-	float rightKeyOffset = w * xOffset + w * .6;
+	float rightKeyOffset = w * xOffset + w * .5;
 
 	//Fill the playerNames array with the right names
 	for (int i = 0; i < 8; ++i) {
