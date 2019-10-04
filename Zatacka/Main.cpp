@@ -70,7 +70,14 @@ int main() {
 					fullscreenToggled = true;
 					window->close();
 					delete window;
-					window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
+					// Due to a SFML limitation in Texture::update(const Window &window) the max windows size is 1024 pixels
+					if (VideoMode::getDesktopMode().height < 1024 || VideoMode::getDesktopMode().width < 1024) {
+						window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
+					}
+					else {
+						window = new RenderWindow(VideoMode(1024, 768), "Achtung - die Kurve!");
+					}
+					
 					window->setFramerateLimit(60);
 					playerSelection.isFullscreenToggled(true);
 				}
