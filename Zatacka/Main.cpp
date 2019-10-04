@@ -105,12 +105,16 @@ int main() {
 					fullscreenToggled = true;
 					window->close();
 					delete window;
-					// Due to a SFML limitation in Texture::update(const Window &window) the max windows size is 1024 pixels
-					if (VideoMode::getDesktopMode().height < 1024 || VideoMode::getDesktopMode().width < 1024) {
+					// Max size of the window depends on graphic card driver restriction for the collition check texture
+					if (VideoMode::getDesktopMode().height < Texture::getMaximumSize() || VideoMode::getDesktopMode().width < Texture::getMaximumSize()) {
 						window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
 					}
 					else {
-						window = new RenderWindow(VideoMode(1024, 768), "Achtung - die Kurve!");
+						// Scale window at least to maximum size
+						cout << "INFO: Unfortunately, your grafik card does not allow for a larger window with SFML." << endl;
+						unsigned int width = Texture::getMaximumSize();
+						unsigned int height = width / 800.f * 600;
+						window = new RenderWindow(VideoMode(width, height), "Achtung - die Kurve!");
 					}
 					
 					window->setFramerateLimit(60);
@@ -135,7 +139,7 @@ int main() {
 			}
 		}
 
-		//Create a screenshot of the game before moving
+		//Create a screenshot of the game before moving to check collitions
 		sf::Vector2u windowSize = window->getSize();
 		sf::Texture texture;
 		texture.create(windowSize.x, windowSize.y);
