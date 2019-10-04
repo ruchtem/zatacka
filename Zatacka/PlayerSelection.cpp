@@ -286,7 +286,15 @@ void PlayerSelection::registerStartClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 	
 	if (startButton.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
-		playerSelectionFinished = true; //If the button was clicked, a game shoud start in the next frame
+		// Check if there are more than one player
+		int playerCount = 0;
+		for (int i = 0; i < 8; ++i) {
+			if (players[i] != NULL && players[i]->areBothKeysSet()) {
+				playerCount++;
+			}
+		}
+		if (playerCount > 1)
+			playerSelectionFinished = true; //If the button was clicked, a game shoud start in the next frame
 	}
 }
 
