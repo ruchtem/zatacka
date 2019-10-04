@@ -172,16 +172,15 @@ void PlayerSelection::init() {
 }
 
 void PlayerSelection::prepareNewGame() {
-	
+	for (int i = 0; i < 8; i++) {
+		delete players[i]; players[i] = NULL; //Delete actual players
+	}
 
-	players[8] = { NULL };
+	isPlayerSelected = false; //No player selected
+	hoverSelection = -1;	// Mouse not hovering over a player
+	selectedPlayer = -1;	// No player selected
 
-	bool isPlayerSelected = false;
-	int hoverSelection = -1;	// Mouse not hovering over a player
-	int selectedPlayer = -1;	// No player selected
-
-	bool playerSelectionFinished = false;
-	bool fullscreenToggled = false;
+	playerSelectionFinished = false; //Players have to be selected
 }
 
 //Set: This surface processes click events
@@ -282,8 +281,6 @@ void PlayerSelection::registerFullscreenClicked(const Event event) {
 	}
 }
 
-}
-
 //Determine wether the game start button was clicked
 void PlayerSelection::registerStartClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
@@ -332,17 +329,7 @@ bool PlayerSelection::dynamizeSpeed() {
 	return dynamizationCheckbox->isChecked();
 }
 
-void PlayerSelection::prepareNewGame() {
-	for (int i = 0; i < 8; i++) {
-		players[i] = NULL; //Delete actual players
-	}
 
-	isPlayerSelected = false; //No player selected
-	hoverSelection = -1;	// Mouse not hovering over a player
-	selectedPlayer = -1;	// No player selected
-
-	playerSelectionFinished = false; //Players have to be selected
-}
 
 float PlayerSelection::getStartSpeed() {
 	return speedChooser->getPrefferedSpeed();
@@ -370,6 +357,8 @@ void PlayerSelection::draw() {
 
 	speedChooser->draw();
 	dynamizationCheckbox->draw();
+}
+
 void PlayerSelection::isFullscreenToggled(bool isFullscreen) {
 	fullscreenToggled = isFullscreen;
 	init();

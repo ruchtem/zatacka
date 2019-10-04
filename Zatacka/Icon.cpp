@@ -22,7 +22,7 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 	}
 
 	Vector2u windowSize = window->getSize();
-	float pointsArea = windowSize.x * .17;
+	int pointsArea = windowSize.x * .17;
 	int x = rand() % (windowSize.x - 2 * ICON_FREE_BORDER - pointsArea) + ICON_FREE_BORDER + pointsArea;
 	int y = rand() % (windowSize.y - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
 	icon.setPosition(x, y);

@@ -206,23 +206,6 @@ int main() {
 			break;
 		}
 
-		
-		if (playerSelection.isFullscreen() && !fullscreen) {
-			fullscreen = true;
-			window->close();
-			delete window;
-			window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
-			window->setFramerateLimit(60);
-		}
-		else if (!playerSelection.isFullscreen() && fullscreen) {
-				fullscreen = false;
-				window->close();
-				delete window;
-				window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
-				window->setFramerateLimit(60);
-		}
-
-
 		// Draw everything
 		window->clear();
 

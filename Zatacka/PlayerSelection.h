@@ -77,7 +77,6 @@ public:
 	void processEvent(const Event event);
 
 	bool isFinished();
-	bool isFullscreen();
 	bool dynamizeSpeed();
 	bool shouldMakeFullscreen();
 	void isFullscreenToggled(bool isFullscreen);
