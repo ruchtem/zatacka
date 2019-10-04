@@ -112,36 +112,42 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	this->window = window;
 	this->font = font;
 
-	//Initialize text
+	init();
+}
+
+void PlayerSelection::init() {
+	float w = window->getSize().x;
+	float h = window->getSize().y;
+
 	headline.setFont((*font));
 	headline.setString("Bitte die Tasten auswählen");
-	headline.setCharacterSize(24);
+	headline.setCharacterSize(h * textSize);
 	headline.setFillColor(Color::Red);
 	headline.setStyle(Text::Bold);
-	headline.setPosition(xOffset + 300.f, yOffset);
+	headline.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset);
 
 	startButton.setFont((*font));
 	startButton.setString("START");
-	startButton.setCharacterSize(30);
+	startButton.setCharacterSize(h * textSize);
 	startButton.setFillColor(Color::White);
 	startButton.setStyle(Text::Bold);
-	startButton.setPosition(xOffset + 400.f, yOffset + 500.f);
+	startButton.setPosition(w * xOffset + w * playerNamesOffset, h * yOffset + h * .9);
 
 	fullscreen.setFont((*font));
 	fullscreen.setString("Fullscreen");
-	fullscreen.setCharacterSize(20);
+	fullscreen.setCharacterSize(h * textSize);
 	fullscreen.setFillColor(Color::White);
-	fullscreen.setPosition(xOffset + 600.f, yOffset + 500.f);
+	fullscreen.setPosition(w * xOffset + w * .7, h * yOffset + h * .9);
 
 	speedChooser = new SpeedChooser("langsam", "mittel", "schnell", Vector2f(xOffset + 500.f, yOffset + 100.f), window, font);
 	dynamizationCheckbox = new Checkbox("Dynamisierung", Vector2f(xOffset + 500.f, yOffset + 400.f), font, window);
 
-	float textDistance = 40;
-	float playersOffset = yOffset + 50;
-	int characterSize = 24;
+	float textDistance = h * selectionSpace;
+	float playersOffset = h * yOffset + h * .1;
+	int characterSize = h * textSize;
 
-	float leftKeyOffset = xOffset + 200;
-	float rightKeyOffset = xOffset + 400;
+	float leftKeyOffset = w * xOffset + w * .3;
+	float rightKeyOffset = w * xOffset + w * .6;
 
 	//Fill the playerNames array with the right names
 	for (int i = 0; i < 8; ++i) {
@@ -150,7 +156,7 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 		playerNames[i].setFont((*font));
 		playerNames[i].setCharacterSize(characterSize);
 		playerNames[i].setStyle(Text::Bold);
-		playerNames[i].setPosition(xOffset, playersOffset + i * textDistance);
+		playerNames[i].setPosition(w * xOffset, playersOffset + i * textDistance);
 
 		for (int j = 0; j < 2; ++j) {
 			selectedKeys[i][j].setFillColor(colors[i]);
@@ -163,6 +169,19 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 		selectedKeys[i][0].setPosition(leftKeyOffset, playersOffset + i * textDistance);
 		selectedKeys[i][1].setPosition(rightKeyOffset, playersOffset + i * textDistance);
 	}
+}
+
+void PlayerSelection::prepareNewGame() {
+	
+
+	players[8] = { NULL };
+
+	bool isPlayerSelected = false;
+	int hoverSelection = -1;	// Mouse not hovering over a player
+	int selectedPlayer = -1;	// No player selected
+
+	bool playerSelectionFinished = false;
+	bool fullscreenToggled = false;
 }
 
 //Set: This surface processes click events
@@ -257,15 +276,11 @@ void PlayerSelection::registerKeySelections(const Event event) {
 void PlayerSelection::registerFullscreenClicked(const Event event) {
 	Vector2f mousePosition = Vector2f(Mouse::getPosition((*window)));
 
-	// Turn fullscreen on
+	// Turn fullscreen on (turing off can be done anytime and is handled in the main loop)
 	if (fullscreen.getGlobalBounds().contains(mousePosition) && event.type == Event::MouseButtonPressed) {
 		fullscreenToggled = true;
 	}
-
-	// Turn off
-	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-		fullscreenToggled = false;
-	}
+}
 
 }
 
@@ -309,7 +324,7 @@ bool PlayerSelection::isFinished() {
 	return playerSelectionFinished;
 }
 
-bool PlayerSelection::isFullscreen() {
+bool PlayerSelection::shouldMakeFullscreen() {
 	return fullscreenToggled;
 }
 
@@ -355,4 +370,7 @@ void PlayerSelection::draw() {
 
 	speedChooser->draw();
 	dynamizationCheckbox->draw();
+void PlayerSelection::isFullscreenToggled(bool isFullscreen) {
+	fullscreenToggled = isFullscreen;
+	init();
 }

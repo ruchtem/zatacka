@@ -118,8 +118,8 @@
       <AdditionalDependencies>sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;gdi32.lib;opengl32.lib;winmm.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /s "$(ProjectDir)resources\arial.ttf" "$(OutDir)resources\"</Command>
-      <Message>Copys the font file to be available for the release build</Message>
+      <Command>xcopy /y /s "$(ProjectDir)resources\*" "$(OutDir)resources\"</Command>
+      <Message>Copys the resource files to be available for the release build</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,8 +140,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\libs\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /s "$(ProjectDir)resources\arial.ttf" "$(OutDir)resources\"</Command>
-      <Message>Copys the font file to be available for the release build</Message>
+      <Command>xcopy /y /s "$(ProjectDir)resources\*" "$(OutDir)resources\"</Command>
+      <Message>Copys the resource files to be available for the release build</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

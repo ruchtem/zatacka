@@ -58,7 +58,7 @@ int main() {
 
 	RenderWindow* window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
 	window->setFramerateLimit(60);
-	bool fullscreen = false;
+	bool fullscreenToggled = false;
 
 	GameStages stage = SelectPlayers;
 
@@ -89,7 +89,7 @@ int main() {
 	leftBorder[1].color = sf::Color::Magenta;
 
 	// main loop
-	while (window->isOpen())		
+	while (window->isOpen())
 	{
 		// Handle events
 		Event event;
@@ -98,14 +98,42 @@ int main() {
 			if (event.type == Event::Closed)
 				window->close();
 
-			if (stage == SelectPlayers)
+			if (stage == SelectPlayers) {
 				playerSelection.processEvent(event);
+
+				if (playerSelection.shouldMakeFullscreen() && !fullscreenToggled) {
+					fullscreenToggled = true;
+					window->close();
+					delete window;
+					// Due to a SFML limitation in Texture::update(const Window &window) the max windows size is 1024 pixels
+					if (VideoMode::getDesktopMode().height < 1024 || VideoMode::getDesktopMode().width < 1024) {
+						window = new RenderWindow(VideoMode::getDesktopMode(), "Achtung - die Kurve!", Style::fullscreen);
+					}
+					else {
+						window = new RenderWindow(VideoMode(1024, 768), "Achtung - die Kurve!");
+					}
+					
+					window->setFramerateLimit(60);
+					playerSelection.isFullscreenToggled(true);
+				}
+
+				// Turn fullscreen off
+				if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
+					if (fullscreenToggled) {
+						fullscreenToggled = false;
+						window->close();
+						delete window;
+						window = new RenderWindow(VideoMode(800, 600), "Achtung - die Kurve!");
+						window->setFramerateLimit(60);
+						playerSelection.isFullscreenToggled(false);
+					}
+				}
+			}
 
 			if (stage == GameIsOver) {
 				gameover.processEvent(event);
 			}
 		}
-
 
 		//Create a screenshot of the game before moving
 		sf::Vector2u windowSize = window->getSize();
@@ -179,7 +207,7 @@ int main() {
 		}
 
 		
-		if (playerSelection.isFullscreen() && !fullscreen) { //Fullscreen
+		if (playerSelection.isFullscreen() && !fullscreen) {
 			fullscreen = true;
 			window->close();
 			delete window;

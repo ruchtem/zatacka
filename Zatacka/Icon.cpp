@@ -21,8 +21,15 @@ Icon::Icon(RenderWindow* window, Texture* texture) {
 		icon.setColor(Color::Green);
 	}
 
-	this->windowSize = window->getSize();
-	icon.setPosition(rand() % (windowSize.x - windowSize.x / 100 * 17) + (windowSize.x / 100 * 14), rand() % (windowSize.y - windowSize.y / 100 * 13) + (windowSize.y / 100 * 10)); //Setting position with distance to window bounds
+	Vector2u windowSize = window->getSize();
+	float pointsArea = windowSize.x * .17;
+	int x = rand() % (windowSize.x - 2 * ICON_FREE_BORDER - pointsArea) + ICON_FREE_BORDER + pointsArea;
+	int y = rand() % (windowSize.y - 2 * ICON_FREE_BORDER) + ICON_FREE_BORDER;
+	icon.setPosition(x, y);
+	
+	float newSize = windowSize.x * SCALING_FACTOR;
+	float scaling = newSize / ICON_SIZE;
+	icon.setScale(Vector2f(scaling, scaling));
 }
 
 int Icon::getFramesDisplayed() {
