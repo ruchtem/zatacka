@@ -165,7 +165,15 @@ int main() {
 				if (!players.at(i)->getCollided()) // Only move, if not collided
 					players.at(i)->move();			
 			}
-			if (collidedCounter == players.size() || maxScore(players) >= winningScore) { //Determine, if the there is already a winner
+			if (collidedCounter == players.size() - 1 || maxScore(players) >= winningScore) { //Determine, if the there is already a winner
+				// Give the suriving player also the points
+				for (vector<Player*>::size_type i = 0; i < players.size(); ++i) {
+					if (!players.at(i)->getCollided()) {
+						players.at(i)->setScore(players.at(i)->getScore() + collidedCounter);
+						break;
+					}
+				}
+				
 				stage = GameIsOver;
 				break;
 			}
@@ -234,6 +242,7 @@ int main() {
 				gameover.draw();
 			}
 			else {
+				sleep(seconds(3));
 				showCountdown(countdown, window);
 			}
 			break;
