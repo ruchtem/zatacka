@@ -72,6 +72,7 @@ private:
 public:
 
 	PlayerSelection(RenderWindow* window, Font* font);
+	~PlayerSelection();
 	void init();
 
 	void processEvent(const Event event);

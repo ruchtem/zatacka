@@ -115,6 +115,11 @@ PlayerSelection::PlayerSelection(RenderWindow* window, Font* font) {
 	init();
 }
 
+PlayerSelection::~PlayerSelection() {
+	delete speedChooser; speedChooser = NULL;
+	delete dynamizationCheckbox; dynamizationCheckbox = NULL;
+}
+
 void PlayerSelection::init() {
 	float w = static_cast<float>(window->getSize().x);
 	float h = static_cast<float>(window->getSize().y);
